@@ -18,6 +18,7 @@ RUN set -x && \
         bash-completion \
         bc \
         bsdmainutils \
+        build-essential \
         command-not-found \
         cpio \
         curl \
@@ -27,9 +28,11 @@ RUN set -x && \
         gdb \
         git \
         graphviz \
+        imagemagick \
         language-pack-ja \
+        libboost-all-dev \
+        libopencv-dev \
         libopenmpi-dev \
-        make \
         net-tools \
         openssh-server \
         screen \
@@ -63,7 +66,6 @@ RUN set -x && \
     /bin/bash /Anaconda3-5.0.1-Linux-x86_64.sh -f -b -p /opt/conda && \
     rm Anaconda3-5.0.1-Linux-x86_64.sh
 RUN set -x && \
-    conda update --all --yes && \
     conda install --yes \
         gensim \
         graphviz \
