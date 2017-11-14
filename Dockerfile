@@ -1,7 +1,6 @@
 FROM nvidia/cuda:8.0-cudnn6-devel
 
-ENV PATH=/opt/conda/bin:$PATH \
-    DEBIAN_FRONTEND=noninteractive
+ENV PATH=/opt/conda/bin:$PATH
 
 # apt
 RUN set -x && \
@@ -12,7 +11,7 @@ RUN set -x && \
     wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - && \
     wget https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
     apt-get update && \
-    apt-get install --yes \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         apt-transport-https \
         apt-utils \
         bash-completion \
@@ -77,7 +76,7 @@ RUN set -x && \
 # Caffe
 COPY Makefile.config /opt/
 RUN set -x && \
-    apt-get install --yes libatlas-base-dev libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev protobuf-compiler git wget && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes libatlas-base-dev libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libboost-all-dev libhdf5-serial-dev libgflags-dev libgoogle-glog-dev liblmdb-dev protobuf-compiler git wget && \
     apt-get clean && \
     ln -s /dev/null /dev/raw1394 && \
     cp -nv /opt/conda/pkgs/hdf5-*/lib/libhdf5.so.*.* /lib/x86_64-linux-gnu/ && \
@@ -93,12 +92,12 @@ RUN set -x && \
 RUN set -x && \
     LDFLAGS='-L/usr/local/nvidia/lib -L/usr/local/nvidia/lib64' pip install --no-cache-dir cupy chainer chainercv chainerrl
 RUN set -x && \
-    apt-get install --yes libopenmpi-dev && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes libopenmpi-dev && \
     apt-get clean && \
     git clone https://github.com/NVIDIA/nccl.git /opt/nccl && \
     cd /opt/nccl && \
     make PREFIX=/usr/local install && \
-    C_INCLUDE_PATH="/usr/local/cuda/targets/x86_64-linux/include" LDFLAGS='-L/usr/local/cuda/lib64/stubs' pip install --no-cache-dir chainermn
+    C_INCLUDE_PATH='/usr/local/cuda/targets/x86_64-linux/include' LDFLAGS='-L/usr/local/cuda/lib64/stubs' pip install --no-cache-dir chainermn
 
 # PyTorch
 RUN set -x && \
@@ -114,7 +113,7 @@ RUN set -x && \
 
 # horovod
 RUN set -x && \
-    apt-get install --yes libopenmpi-dev && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes libopenmpi-dev && \
     apt-get clean && \
     mv /opt/conda/lib/libstdc++.so.6 /opt/conda/lib/libstdc++.so.6.bk && \
     cp /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /opt/conda/lib/ && \
