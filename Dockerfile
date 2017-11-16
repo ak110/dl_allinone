@@ -149,5 +149,5 @@ RUN set -x && \
         && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
 
-CMD /usr/sbin/sshd -D
+CMD ["/usr/sbin/sshd", "-D"]
 
