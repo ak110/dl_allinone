@@ -108,7 +108,7 @@ RUN set -x && \
 RUN set -x && \
     pip install --no-cache-dir \
         git+https://www.github.com/farizrahman4u/keras-contrib.git \
-        keras==2.0.9 \
+        keras==2.1.1 \
         tensorflow-gpu==1.4.0
 
 # horovod
@@ -148,6 +148,8 @@ RUN set -x && \
         tqdm \
         && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
+
+RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
 
 CMD ["/usr/sbin/sshd", "-D"]
 
