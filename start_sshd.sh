@@ -41,4 +41,4 @@ if [ ! -e /root/.docker-initialized ] ; then
 fi
 
 # sshd
-/usr/sbin/sshd -D
+exec /usr/sbin/sshd -D
