@@ -68,7 +68,6 @@ RUN set -x && \
     conda install --yes \
         gensim \
         graphviz \
-        py-xgboost \
         && \
     conda clean --all --yes && \
     pip install --upgrade --no-cache-dir pip
@@ -105,11 +104,8 @@ RUN set -x && \
     conda clean --all --yes
 
 # Keras+TensorFlow
-RUN set -x && \
-    pip install --no-cache-dir \
-        git+https://www.github.com/farizrahman4u/keras-contrib.git \
-        keras==2.1.1 \
-        tensorflow-gpu==1.4.0
+RUN pip install --no-cache-dir tensorflow-gpu==1.4.0
+RUN pip install --no-cache-dir keras==2.1.1
 
 # horovod
 RUN set -x && \
@@ -124,6 +120,7 @@ RUN set -x && \
 # その他pythonライブラリ色々
 RUN set -x && \
     pip install --no-cache-dir \
+        git+https://www.github.com/farizrahman4u/keras-contrib.git \
         augmentor \
         better_exceptions \
         catboost \
@@ -146,10 +143,12 @@ RUN set -x && \
         pytest-xdist \
         sklearn_pandas \
         tqdm \
+        xgboost \
         && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
 
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
 
-CMD ["/usr/sbin/sshd", "-D"]
+COPY start_sshd.sh /root/
+CMD ["/bin/bash", "/root/start_sshd.sh"]
 
