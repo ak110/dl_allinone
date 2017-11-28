@@ -150,5 +150,5 @@ RUN set -x && \
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
 
 COPY start_sshd.sh /root/
-CMD ["/root/start_sshd.sh"]
+CMD ["/bin/bash", "/root/start_sshd.sh"]
 
