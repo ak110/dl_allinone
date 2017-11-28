@@ -14,7 +14,7 @@ if [ ! -e /root/.docker-initialized ] ; then
     if [ -v SSH_KEY ] ; then
         mkdir -pm 700 /home/$SSH_USER/.ssh
         if [ -e /home/$SSH_USER/.ssh/authorized_keys ] ; then
-            grep "${SSH_KEY//+/\+/}" /home/$SSH_USER/.ssh/authorized_keys > /dev/null
+            grep "${SSH_KEY//+/\\+}" /home/$SSH_USER/.ssh/authorized_keys > /dev/null
             if [ $? != 0 ] ; then
                 echo "$SSH_KEY" >> /home/$SSH_USER/.ssh/authorized_keys
             fi
