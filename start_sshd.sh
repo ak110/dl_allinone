@@ -40,5 +40,8 @@ if [ ! -e /root/.docker-initialized ] ; then
     touch /root/.docker-initialized
 fi
 
+# 更新
+ldconfig --verbose
+
 # sshd
 exec /usr/sbin/sshd -D
