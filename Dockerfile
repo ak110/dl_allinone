@@ -7,11 +7,13 @@ RUN set -x && \
     sed -ie 's@http://archive.ubuntu.com/@http://jp.archive.ubuntu.com/@g' /etc/apt/sources.list && \
     sed -ie 's@^deb-src@# deb-src@g' /etc/apt/sources.list && \
     apt-get update && \
-    apt-get install --yes wget && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends wget software-properties-common && \
     wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - && \
-    wget https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
+    wget -q https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
+    add-apt-repository ppa:git-core/ppa && \
     apt-get update && \
+    wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
         apt-transport-https \
         apt-utils \
@@ -30,6 +32,7 @@ RUN set -x && \
         fonts-liberation \
         gdb \
         git \
+        git-lfs \
         graphviz \
         imagemagick \
         iputils-ping \
@@ -61,13 +64,14 @@ RUN set -x && \
         zip \
         zsh \
         && \
-    apt-get autoremove --purge && \
     apt-get clean && \
-    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja'
+    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
+    cd /tmp && \
+    git lfs install
 
 # OpenMPI
 RUN set -x && \
-    wget https://www.open-mpi.org/software/ompi/v3.0/downloads/openmpi-3.0.0.tar.bz2 -O /opt/openmpi.tar.bz2 && \
+    wget -q https://www.open-mpi.org/software/ompi/v3.0/downloads/openmpi-3.0.0.tar.bz2 -O /opt/openmpi.tar.bz2 && \
     echo "757d51719efec08f9f1a7f32d58b3305 */opt/openmpi.tar.bz2" | md5sum -c - && \
     cd /opt && \
     tar xfj openmpi.tar.bz2 && \
@@ -81,7 +85,7 @@ RUN set -x && \
 # python
 RUN set -x && \
     mkdir -p /opt/conda && \
-    wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.30-Linux-x86_64.sh -O conda.sh && \
+    wget -q https://repo.continuum.io/miniconda/Miniconda3-4.3.30-Linux-x86_64.sh -O conda.sh && \
     echo "0b80a152332a4ce5250f3c09589c7a81 *conda.sh" | md5sum -c - && \
     /bin/bash /conda.sh -f -b -p /opt/conda && \
     rm conda.sh
@@ -163,6 +167,7 @@ RUN set -x && \
         flask_sqlalchemy \
         hacking \
         hyperopt \
+        imageio \
         janome \
         jupyterlab \
         kaggle-cli \
