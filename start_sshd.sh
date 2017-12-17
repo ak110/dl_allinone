@@ -37,11 +37,11 @@ if [ ! -e /root/.docker-initialized ] ; then
     fi
     chown -R $SSH_USER:users /opt &
 
+    # ライブラリパス更新
+    ldconfig --verbose
+
     touch /root/.docker-initialized
 fi
-
-# 更新
-ldconfig --verbose
 
 # sshd
 exec /usr/sbin/sshd -D
