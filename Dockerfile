@@ -34,6 +34,8 @@ RUN set -x && \
         git \
         git-lfs \
         graphviz \
+        htop \
+        iftop \
         imagemagick \
         iputils-ping \
         language-pack-ja \
@@ -53,12 +55,14 @@ RUN set -x && \
         net-tools \
         openssh-client \
         openssh-server \
+        p7zip-full \
         protobuf-compiler \
         rsync \
         screen \
         sl \
         sudo \
         telnet \
+        tmux \
         unzip \
         vim \
         zip \
