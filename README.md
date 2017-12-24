@@ -17,6 +17,7 @@
     NV_GPU=0,1,2,3 nvidia-docker run \
         --detach \
         --restart=always \
+        --volume="/etc/localtime:/etc/localtime:ro" \
         --volume="/お好みのパス:/home/user" \
         --volume="/お好みのパス:/data" \
         --env="SSH_USER=user" \
@@ -27,12 +28,12 @@
 
 環境変数:
 
-- SSH_USER: ユーザ名
-- SSH_UID: UID
-- SSH_KEY: SSHキー (例: ssh-rsa AAAAB3Nza(略)ILALci+4zLDQ0w==)
-- SSH_PASS: パスワード
+- `SSH_USER`: ユーザ名
+- `SSH_UID`: UID
+- `SSH_KEY`: SSHキー (例: ssh-rsa AAAAB3Nza(略)ILALci+4zLDQ0w==)
+- `SSH_PASS`: パスワード
 
-SSH_KEYとSSH_PASSはどちらか必須。
+`SSH_KEY` と `SSH_PASS` はどちらか必須。
 
 
 ## logs
