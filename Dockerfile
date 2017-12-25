@@ -152,7 +152,7 @@ RUN pip install --no-cache-dir keras==2.1.2
 # horovod
 RUN set -x && \
     ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1 && \
-    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda/lib64/stubs" HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod && \
+    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda/lib64/stubs" pip install --no-cache-dir horovod && \
     rm -f /usr/local/cuda/lib64/stubs/libcuda.so.1
 
 # その他pythonライブラリ色々
