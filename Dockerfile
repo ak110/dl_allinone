@@ -80,7 +80,7 @@ RUN set -x && \
     cd /opt && \
     tar xfj openmpi.tar.bz2 && \
     cd openmpi-3.0.0 && \
-    ./configure --prefix=/usr/local --with-cuda && \
+    ./configure --prefix=/usr/local --with-cuda --disable-mpi-fortran --disable-java && \
     make -j8 all && \
     make -j8 install && \
     ldconfig && \
@@ -92,6 +92,8 @@ RUN set -x && \
     wget -q https://repo.continuum.io/miniconda/Miniconda3-4.3.30-Linux-x86_64.sh -O conda.sh && \
     echo "0b80a152332a4ce5250f3c09589c7a81 *conda.sh" | md5sum -c - && \
     /bin/bash /conda.sh -f -b -p /opt/conda && \
+    conda install --yes libgcc && \
+    conda clean --all --yes && \
     rm conda.sh
 RUN pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
@@ -144,13 +146,11 @@ RUN set -x && \
     pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
-RUN pip install --no-cache-dir tensorflow-gpu==1.4.0
-RUN pip install --no-cache-dir keras==2.1.1
+RUN pip install --no-cache-dir tensorflow-gpu==1.4.1
+RUN pip install --no-cache-dir keras==2.1.2
 
 # horovod
 RUN set -x && \
-    mv /opt/conda/lib/libstdc++.so.6 /opt/conda/lib/libstdc++.so.6.bk && \
-    mv /opt/conda/lib/libgcc_s.so.1 /opt/conda/lib/libgcc_s.so.1.bk && \
     ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1 && \
     LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda/lib64/stubs" HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod && \
     rm -f /usr/local/cuda/lib64/stubs/libcuda.so.1
