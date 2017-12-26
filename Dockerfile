@@ -2,19 +2,25 @@ FROM nvidia/cuda:8.0-cudnn6-devel
 
 ENV PATH=/opt/conda/bin:$PATH
 
+# 実行時に残さないようにENVではなくARGでnoninteractive
+ARG DEBIAN_FRONTEND=noninteractive
+
+# apt用プロキシ(apt-cacher-ng用)
+ARG APT_PROXY=$http_proxy
+
 # apt
 RUN set -x && \
-    sed -ie 's@http://archive.ubuntu.com/@http://jp.archive.ubuntu.com/@g' /etc/apt/sources.list && \
+    sed -ie 's@http://archive.ubuntu.com/ubuntu/@http://ftp.riken.go.jp/Linux/ubuntu/@g' /etc/apt/sources.list && \
     sed -ie 's@^deb-src@# deb-src@g' /etc/apt/sources.list && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends wget software-properties-common && \
+    http_proxy=$APT_PROXY apt-get update && \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends wget software-properties-common && \
     wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
-    add-apt-repository ppa:git-core/ppa && \
-    apt-get update && \
+    http_proxy=$APT_PROXY add-apt-repository ppa:git-core/ppa && \
+    http_proxy=$APT_PROXY apt-get update && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
         apt-transport-https \
         apt-utils \
         bash-completion \
@@ -86,6 +92,11 @@ RUN set -x && \
     ldconfig && \
     rm /opt/openmpi.tar.bz2
 
+# devpi-server用
+ARG PIP_PROXY=$http_proxy
+ARG PIP_TRUSTED_HOST=""
+ARG PIP_INDEX_URL=""
+
 # python
 RUN set -x && \
     mkdir -p /opt/conda && \
@@ -95,8 +106,8 @@ RUN set -x && \
     conda install --yes libgcc && \
     conda clean --all --yes && \
     rm conda.sh
-RUN pip install --upgrade --no-cache-dir pip && \
-    pip install --no-cache-dir \
+RUN http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
+    http_proxy=$PIP_PROXY pip install --no-cache-dir \
         Pillow \
         bcolz \
         cython \
@@ -123,9 +134,6 @@ RUN pip install --upgrade --no-cache-dir pip && \
 # Caffe
 COPY Makefile.config /opt/
 RUN set -x && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler libatlas-base-dev libgflags-dev libgoogle-glog-dev liblmdb-dev && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends libboost-all-dev && \
-    apt-get clean && \
     ln -s /dev/null /dev/raw1394 && \
     ldconfig && \
     git clone https://github.com/BVLC/caffe.git /opt/caffe && \
@@ -137,27 +145,27 @@ RUN set -x && \
 
 # Chainer
 RUN set -x && \
-    LDFLAGS='-L/usr/local/nvidia/lib -L/usr/local/nvidia/lib64' pip install --no-cache-dir chainer chainercv chainerrl && \
-    LDFLAGS='-L/usr/local/cuda/lib64/stubs' C_INCLUDE_PATH='/usr/local/cuda/targets/x86_64-linux/include' pip install --no-cache-dir chainermn
+    LDFLAGS='-L/usr/local/nvidia/lib -L/usr/local/nvidia/lib64' http_proxy=$PIP_PROXY pip install --no-cache-dir chainer chainercv chainerrl && \
+    LDFLAGS='-L/usr/local/cuda/lib64/stubs' C_INCLUDE_PATH='/usr/local/cuda/targets/x86_64-linux/include' http_proxy=$PIP_PROXY pip install --no-cache-dir chainermn
 
 # PyTorch
 RUN set -x && \
     pip install --no-cache-dir http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl && \
-    pip install --no-cache-dir torchvision
+    http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
-RUN pip install --no-cache-dir tensorflow-gpu==1.4.1
-RUN pip install --no-cache-dir keras==2.1.2
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.4.1
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.2
 
 # horovod
 RUN set -x && \
     ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1 && \
-    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda/lib64/stubs" pip install --no-cache-dir horovod && \
+    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda/lib64/stubs" http_proxy=$PIP_PROXY pip install --no-cache-dir horovod && \
     rm -f /usr/local/cuda/lib64/stubs/libcuda.so.1
 
 # その他pythonライブラリ色々
 RUN set -x && \
-    pip install --no-cache-dir \
+    http_proxy=$PIP_PROXY pip install --no-cache-dir \
         git+https://www.github.com/farizrahman4u/keras-contrib.git \
         augmentor \
         better_exceptions \

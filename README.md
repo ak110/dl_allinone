@@ -4,13 +4,11 @@
 
 ## build
 
-通常:
+    docker build --build-arg --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy --tag=dl_allinone .
 
-    docker build --tag=dl_allinone .
+apt-cacher-ngを使う場合： `--build-arg APT_PROXY=http://xxxx:3142`
 
-プロキシ環境:
-
-    docker build --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy --tag=dl_allinone .
+devpi-serverを使う場合： `--build-arg PIP_PROXY="" --build-arg PIP_TRUSTED_HOST=xxxx --build-arg PIP_INDEX_URL=http://xxxx:3141/root/pypi/`
 
 ## run
 
