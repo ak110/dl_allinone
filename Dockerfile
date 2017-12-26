@@ -21,12 +21,14 @@ RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
+        apt-file \
         apt-transport-https \
         apt-utils \
         bash-completion \
         bc \
         bsdmainutils \
         ca-certificates \
+        cifs-utils \
         command-not-found \
         cpio \
         curl \
@@ -43,6 +45,7 @@ RUN set -x && \
         htop \
         iftop \
         imagemagick \
+        iotop \
         iputils-ping \
         language-pack-ja \
         less \
@@ -63,14 +66,18 @@ RUN set -x && \
         openssh-server \
         p7zip-full \
         protobuf-compiler \
+        psmisc \
         rsync \
         screen \
         sl \
+        smbclient \
         sudo \
         telnet \
         tmux \
         unzip \
+        valgrind \
         vim \
+        whiptail \
         zip \
         zsh \
         && \
