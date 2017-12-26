@@ -35,7 +35,6 @@ if [ ! -e /root/.docker-initialized ] ; then
     if [ -d /data ] ; then
         chown $SSH_USER:users /data
     fi
-    chown -R $SSH_USER:users /opt &
 
     # ライブラリパス更新
     ldconfig --verbose
