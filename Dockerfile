@@ -213,6 +213,9 @@ RUN set -x && \
     visudo --check && \
     ldconfig
 
+# monkey patch
+COPY sitecustomize.py /opt/conda/lib/python3.6/site-packages/
+
 COPY start_sshd.sh /root/
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
 CMD ["/bin/bash", "/root/start_sshd.sh"]
