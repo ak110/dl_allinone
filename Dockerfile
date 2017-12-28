@@ -202,11 +202,15 @@ RUN set -x && \
 # ・sshd用ディレクトリ作成
 # ・ログイン時にcudaなどのパスが通るようにしておく
 # ・sudoでhttp_proxy / https_proxyが引き継がれるようにしておく
+# ・sudoで/opt/conda/binにパスが通っているようにしておく
 RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
     echo export PATH=$PATH:'$PATH' > /etc/profile.d/docker-env.sh && \
     echo export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:'$LD_LIBRARY_PATH' >> /etc/profile.d/docker-env.sh && \
     echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/proxy && \
+    echo 'Defaults secure_path = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/conda/bin"' > /etc/sudoers.d/secure_path && \
+    chmod 0440 /etc/sudoers.d/* && \
+    visudo --check && \
     ldconfig
 
 COPY start_sshd.sh /root/
