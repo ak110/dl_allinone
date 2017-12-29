@@ -146,8 +146,9 @@ RUN set -x && \
     git clone https://github.com/BVLC/caffe.git /opt/caffe && \
     mv /opt/Makefile.config /opt/caffe/ && \
     cd /opt/caffe && \
-    make -j$(nproc) all && \
-    make -j$(nproc) test && \
+    make -j$(nproc) && \
+    echo "/opt/caffe/build/lib" >> /etc/ld.so.conf.d/caffe.conf && \
+    ldconfig && \
     rm /dev/raw1394
 
 # Chainer
@@ -205,8 +206,8 @@ RUN set -x && \
 # ・sudoで/opt/conda/binにパスが通っているようにしておく
 RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
-    echo export PATH=$PATH:'$PATH' > /etc/profile.d/docker-env.sh && \
-    echo export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:'$LD_LIBRARY_PATH' >> /etc/profile.d/docker-env.sh && \
+    echo 'export PATH=/opt/caffe/build/tools:/opt/conda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker-env.sh && \
+    echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker-env.sh && \
     echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/proxy && \
     echo 'Defaults secure_path = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/conda/bin"' > /etc/sudoers.d/secure_path && \
     chmod 0440 /etc/sudoers.d/* && \
