@@ -94,8 +94,8 @@ RUN set -x && \
     tar xfj openmpi.tar.bz2 && \
     cd openmpi-3.0.0 && \
     ./configure --prefix=/usr/local --with-cuda --disable-mpi-fortran --disable-java && \
-    make -j8 all && \
-    make -j8 install && \
+    make -j$(nproc) all && \
+    make -j$(nproc) install && \
     ldconfig && \
     rm /opt/openmpi.tar.bz2
 
@@ -146,8 +146,8 @@ RUN set -x && \
     git clone https://github.com/BVLC/caffe.git /opt/caffe && \
     mv /opt/Makefile.config /opt/caffe/ && \
     cd /opt/caffe && \
-    make -j8 all && \
-    make -j8 test && \
+    make -j$(nproc) all && \
+    make -j$(nproc) test && \
     rm /dev/raw1394
 
 # Chainer
