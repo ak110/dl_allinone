@@ -206,10 +206,11 @@ RUN set -x && \
 # ・sudoで/opt/conda/binにパスが通っているようにしておく
 RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
-    echo 'export PATH=/opt/caffe/build/tools:/opt/conda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker-env.sh && \
-    echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker-env.sh && \
-    echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/proxy && \
-    echo 'Defaults secure_path = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/conda/bin"' > /etc/sudoers.d/secure_path && \
+    echo 'export PATH=/opt/caffe/build/tools:/opt/conda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
+    echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker.sh && \
+    echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/docker && \
+    echo 'Defaults secure_path = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/conda/bin"' >> /etc/sudoers.d/docker && \
+    echo 'Defaults always_set_home' >> /etc/sudoers.d/docker && \
     chmod 0440 /etc/sudoers.d/* && \
     visudo --check && \
     ldconfig
