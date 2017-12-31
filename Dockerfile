@@ -27,8 +27,10 @@ RUN set -x && \
         bash-completion \
         bc \
         bsdmainutils \
+        build-essential \
         ca-certificates \
         cifs-utils \
+        cmake \
         command-not-found \
         cpio \
         curl \
@@ -72,6 +74,7 @@ RUN set -x && \
         sl \
         smbclient \
         sudo \
+        swig \
         telnet \
         tmux \
         unzip \
@@ -139,14 +142,14 @@ RUN http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
     echo .
 
 # Caffe
-COPY Makefile.config /opt/
+RUN set -x && \
+    git clone https://github.com/BVLC/caffe.git /opt/caffe
+COPY Makefile.config /opt/caffe/
 RUN set -x && \
     ln -s /dev/null /dev/raw1394 && \
-    ldconfig && \
-    git clone https://github.com/BVLC/caffe.git /opt/caffe && \
-    mv /opt/Makefile.config /opt/caffe/ && \
     cd /opt/caffe && \
-    make -j$(nproc) && \
+    ldconfig && \
+    make -j$(nproc) all pycaffe && \
     echo "/opt/caffe/build/lib" >> /etc/ld.so.conf.d/caffe.conf && \
     ldconfig && \
     rm /dev/raw1394
@@ -208,6 +211,7 @@ RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
     echo 'export PATH=/opt/caffe/build/tools:/opt/conda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
     echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker.sh && \
+    echo 'export PYTHONPATH=/opt/caffe/python' >> /etc/profile.d/docker.sh && \
     echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/docker && \
     echo 'Defaults secure_path = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/conda/bin"' >> /etc/sudoers.d/docker && \
     echo 'Defaults always_set_home' >> /etc/sudoers.d/docker && \
