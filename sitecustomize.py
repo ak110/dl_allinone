@@ -1,4 +1,5 @@
 import importlib.machinery
+import warnings
 import sys
 
 # TensorFlowで強制的にconfig.gpu_options.allow_growth = Trueをする
@@ -28,7 +29,9 @@ class CustomLoader(importlib.machinery.SourceFileLoader):
             import tensorflow as tf
             if config is None:
                 config = tf.ConfigProto()
-            config.gpu_options.allow_growth = True
+            if not config.gpu_options.allow_growth:
+                warnings.warn('Invalid session config: `gpu_options.allow_growth` should be True.')
+                config.gpu_options.allow_growth = True
             return original_init(self, *args, config=config, **kwargs)
 
         module.Session.__init__ = custom_init
