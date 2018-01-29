@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-cudnn6-devel
+FROM nvidia/cuda:9.0-cudnn7-devel
 
 ENV PATH=/opt/conda/bin:$PATH
 
@@ -121,6 +121,7 @@ RUN http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
         Pillow \
         bcolz \
         cython \
+        futures==3.1.1 \
         gensim \
         graphviz \
         gym \
@@ -161,12 +162,12 @@ RUN set -x && \
 
 # PyTorch
 RUN set -x && \
-    pip install --no-cache-dir http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl && \
+    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.4.1
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.2
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.5.0
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.3
 
 # horovod
 RUN set -x && \
