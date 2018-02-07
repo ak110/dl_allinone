@@ -56,10 +56,12 @@ RUN set -x && \
         libgflags-dev \
         libgoogle-glog-dev \
         libhdf5-serial-dev \
+        libjpeg-dev \
         libleveldb-dev \
         liblmdb-dev \
         libnccl-dev \
         libopencv-dev \
+        libpng-dev \
         libprotobuf-dev \
         libsnappy-dev \
         man-db \
@@ -90,17 +92,23 @@ RUN set -x && \
     git lfs install
 
 # OpenMPI
+# 参考：https://github.com/uber/horovod/blob/master/Dockerfile
 RUN set -x && \
     wget -q https://www.open-mpi.org/software/ompi/v3.0/downloads/openmpi-3.0.0.tar.bz2 -O /opt/openmpi.tar.bz2 && \
     echo "757d51719efec08f9f1a7f32d58b3305 */opt/openmpi.tar.bz2" | md5sum -c - && \
     cd /opt && \
     tar xfj openmpi.tar.bz2 && \
     cd openmpi-3.0.0 && \
-    ./configure --prefix=/usr/local --with-cuda --disable-mpi-fortran --disable-java && \
+    ./configure --prefix=/usr/local --with-cuda --disable-mpi-fortran --disable-java --enable-orterun-prefix-by-default && \
     make -j$(nproc) all && \
     make -j$(nproc) install && \
     ldconfig && \
-    rm /opt/openmpi.tar.bz2
+    rm /opt/openmpi.tar.bz2 && \
+    echo "hwloc_base_binding_policy = none" >> /usr/local/etc/openmpi-mca-params.conf && \
+    echo "rmaps_base_mapping_policy = slot" >> /usr/local/etc/openmpi-mca-params.conf && \
+    echo "btl_tcp_if_exclude = lo,docker0" >> /usr/local/etc/openmpi-mca-params.conf && \
+    echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
+    echo NCCL_SOCKET_IFNAME=^docker0 >> /etc/nccl.conf
 
 # devpi-server用
 ARG PIP_PROXY=$http_proxy
@@ -171,9 +179,9 @@ RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.3
 
 # horovod
 RUN set -x && \
-    ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1 && \
-    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda/lib64/stubs" http_proxy=$PIP_PROXY pip install --no-cache-dir horovod && \
-    rm -f /usr/local/cuda/lib64/stubs/libcuda.so.1
+    ldconfig /usr/local/cuda/lib64/stubs && \
+    http_proxy=$PIP_PROXY pip install --no-cache-dir horovod && \
+    ldconfig
 
 # その他pythonライブラリ色々
 RUN set -x && \
