@@ -13,17 +13,16 @@ RUN set -x && \
     sed -ie 's@http://archive.ubuntu.com/ubuntu/@http://ftp.riken.go.jp/Linux/ubuntu/@g' /etc/apt/sources.list && \
     sed -ie 's@^deb-src@# deb-src@g' /etc/apt/sources.list && \
     http_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends wget software-properties-common && \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends wget curl software-properties-common apt-utils && \
     wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
     http_proxy=$APT_PROXY add-apt-repository ppa:git-core/ppa && \
-    http_proxy=$APT_PROXY apt-get update && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
+    http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
         apt-file \
         apt-transport-https \
-        apt-utils \
         bash-completion \
         bc \
         bsdmainutils \
@@ -33,7 +32,6 @@ RUN set -x && \
         cmake \
         command-not-found \
         cpio \
-        curl \
         debconf-i18n \
         dialog \
         ed \
@@ -47,7 +45,9 @@ RUN set -x && \
         htop \
         iftop \
         imagemagick \
+        inetutils-traceroute \
         iotop \
+        iproute2 \
         iputils-ping \
         language-pack-ja \
         less \
@@ -152,7 +152,7 @@ RUN http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
 
 # Caffe
 RUN set -x && \
-    git clone https://github.com/BVLC/caffe.git /opt/caffe
+    git clone --branch=master --single-branch --depth=1 https://github.com/BVLC/caffe.git /opt/caffe
 COPY Makefile.config /opt/caffe/
 RUN set -x && \
     ln -s /dev/null /dev/raw1394 && \
@@ -203,6 +203,7 @@ RUN set -x && \
         janome \
         jupyterlab \
         kaggle-cli \
+        lightgbm \
         opencv-python \
         prospector \
         pytest \
