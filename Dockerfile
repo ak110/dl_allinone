@@ -136,6 +136,7 @@ RUN http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
         h5py \
         matplotlib \
         mkl \
+        mpi4py \
         nose \
         numba \
         numpy \
@@ -165,8 +166,7 @@ RUN set -x && \
 
 # Chainer
 RUN set -x && \
-    LDFLAGS='-L/usr/local/nvidia/lib -L/usr/local/nvidia/lib64' http_proxy=$PIP_PROXY pip install --no-cache-dir chainer chainercv chainerrl && \
-    LDFLAGS='-L/usr/local/cuda/lib64/stubs' C_INCLUDE_PATH='/usr/local/cuda/targets/x86_64-linux/include' http_proxy=$PIP_PROXY pip install --no-cache-dir chainermn
+    http_proxy=$PIP_PROXY pip install --no-cache-dir cupy chainer chainercv chainerrl chainermn
 
 # PyTorch
 RUN set -x && \
