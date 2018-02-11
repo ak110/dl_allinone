@@ -214,14 +214,16 @@ RUN set -x && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
 
 # ・sshd用ディレクトリ作成
-# ・ログイン時にcudaなどのパスが通るようにしておく
-# ・sudoでhttp_proxy / https_proxyが引き継がれるようにしておく
+# ・cuda、python、caffeなどのパスを通す
+# ・matplotlibがエラーにならないようにMPLBACKEND=Aggを設定
+# ・sudoでhttp_proxyなどが引き継がれるようにしておく
 # ・sudoで/opt/conda/binにパスが通っているようにしておく
 RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
-    echo 'export PATH=/opt/caffe/build/tools:/opt/conda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
+    echo 'export PATH=$PATH:/usr/local/nvidia/bin:/usr/local/cuda/bin:/opt/conda/bin:/opt/caffe/build/tools' > /etc/profile.d/docker.sh && \
     echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker.sh && \
     echo 'export PYTHONPATH=/opt/caffe/python' >> /etc/profile.d/docker.sh && \
+    echo 'export MPLBACKEND=Agg' >> /etc/profile.d/docker.sh && \
     echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/docker && \
     echo 'Defaults secure_path = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/conda/bin"' >> /etc/sudoers.d/docker && \
     echo 'Defaults always_set_home' >> /etc/sudoers.d/docker && \
