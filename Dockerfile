@@ -79,6 +79,7 @@ RUN set -x && \
         swig \
         telnet \
         tmux \
+        tmuxinator \
         unzip \
         valgrind \
         vim \
@@ -207,6 +208,7 @@ RUN set -x && \
         opencv-python \
         prospector \
         pytest \
+        pytest-timeout \
         pytest-xdist \
         tqdm \
         xgboost \
