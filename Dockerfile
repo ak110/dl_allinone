@@ -220,7 +220,7 @@ RUN set -x && \
 # ・sudoで/opt/conda/binにパスが通っているようにしておく
 RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
-    echo 'export PATH=$PATH:/usr/local/nvidia/bin:/usr/local/cuda/bin:/opt/conda/bin:/opt/caffe/build/tools' > /etc/profile.d/docker.sh && \
+    echo 'export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/opt/conda/bin:/opt/caffe/build/tools:$PATH' > /etc/profile.d/docker.sh && \
     echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker.sh && \
     echo 'export PYTHONPATH=/opt/caffe/python' >> /etc/profile.d/docker.sh && \
     echo 'export MPLBACKEND=Agg' >> /etc/profile.d/docker.sh && \
