@@ -12,15 +12,15 @@ ARG APT_PROXY=$http_proxy
 RUN set -x && \
     sed -ie 's@http://archive.ubuntu.com/ubuntu/@http://ftp.riken.go.jp/Linux/ubuntu/@g' /etc/apt/sources.list && \
     sed -ie 's@^deb-src@# deb-src@g' /etc/apt/sources.list && \
-    http_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends wget curl software-properties-common apt-utils && \
+    http_proxy=$APT_PROXY https_proxy=$APT_PROXY apt-get update && \
+    http_proxy=$APT_PROXY https_proxy=$APT_PROXY apt-get install --yes --no-install-recommends wget curl software-properties-common apt-utils && \
     wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
-    http_proxy=$APT_PROXY add-apt-repository ppa:git-core/ppa && \
+    http_proxy=$APT_PROXY https_proxy=$APT_PROXY add-apt-repository ppa:git-core/ppa && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
-    http_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
+    http_proxy=$APT_PROXY https_proxy=$APT_PROXY apt-get update && \
+    http_proxy=$APT_PROXY https_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
         apt-file \
         apt-transport-https \
         bash-completion \
@@ -125,8 +125,8 @@ RUN set -x && \
     conda install --yes libgcc && \
     conda clean --all --yes && \
     rm conda.sh
-RUN http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir \
+RUN http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
+    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir \
         Pillow \
         bcolz \
         cython \
@@ -167,26 +167,26 @@ RUN set -x && \
 
 # Chainer
 RUN set -x && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir cupy chainer chainercv chainerrl chainermn
+    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir cupy chainer chainercv chainerrl chainermn
 
 # PyTorch
 RUN set -x && \
     pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
+    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.5.0
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.3
+RUN http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.5.0
+RUN http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.3
 
 # horovod
 RUN set -x && \
     ldconfig /usr/local/cuda/lib64/stubs && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir horovod && \
+    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir horovod && \
     ldconfig
 
 # その他pythonライブラリ色々
 RUN set -x && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir \
+    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir \
         git+https://www.github.com/farizrahman4u/keras-contrib.git \
         augmentor \
         better_exceptions \
