@@ -12,15 +12,15 @@ ARG APT_PROXY=$http_proxy
 RUN set -x && \
     sed -ie 's@http://archive.ubuntu.com/ubuntu/@http://ftp.riken.go.jp/Linux/ubuntu/@g' /etc/apt/sources.list && \
     sed -ie 's@^deb-src@# deb-src@g' /etc/apt/sources.list && \
-    http_proxy=$APT_PROXY https_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY https_proxy=$APT_PROXY apt-get install --yes --no-install-recommends wget curl software-properties-common apt-utils && \
+    http_proxy=$APT_PROXY apt-get update && \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends wget curl software-properties-common apt-utils && \
     wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
     add-apt-repository ppa:git-core/ppa && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
-    http_proxy=$APT_PROXY https_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY https_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
+    http_proxy=$APT_PROXY apt-get update && \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
         apt-file \
         apt-transport-https \
         bash-completion \
