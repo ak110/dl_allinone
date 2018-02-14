@@ -125,8 +125,8 @@ RUN set -x && \
     conda install --yes libgcc && \
     conda clean --all --yes && \
     rm conda.sh
-RUN http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
-    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir \
+RUN http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
+    http_proxy=$PIP_PROXY pip install --no-cache-dir \
         Pillow \
         bcolz \
         cython \
@@ -167,26 +167,26 @@ RUN set -x && \
 
 # Chainer
 RUN set -x && \
-    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir cupy chainer chainercv chainerrl chainermn
+    http_proxy=$PIP_PROXY pip install --no-cache-dir cupy chainer chainercv chainerrl chainermn
 
 # PyTorch
 RUN set -x && \
     pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl && \
-    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
+    http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
-RUN http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.5.0
-RUN http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.3
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.5.0
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.3
 
 # horovod
 RUN set -x && \
     ldconfig /usr/local/cuda/lib64/stubs && \
-    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir horovod && \
+    http_proxy=$PIP_PROXY pip install --no-cache-dir horovod && \
     ldconfig
 
 # その他pythonライブラリ色々
 RUN set -x && \
-    http_proxy=$PIP_PROXY https_proxy=$PIP_PROXY pip install --no-cache-dir \
+    http_proxy=$PIP_PROXY pip install --no-cache-dir \
         git+https://www.github.com/farizrahman4u/keras-contrib.git \
         augmentor \
         better_exceptions \
