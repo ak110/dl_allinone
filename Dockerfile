@@ -205,7 +205,9 @@ RUN set -x && \
         jupyterlab \
         kaggle-cli \
         lightgbm \
+        nltk \
         opencv-python \
+        pip-tools \
         prospector \
         pytest \
         pytest-timeout \
