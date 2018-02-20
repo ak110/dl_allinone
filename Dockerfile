@@ -217,6 +217,9 @@ RUN set -x && \
         && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
 
+# monkey patch
+COPY sitecustomize.py /opt/conda/lib/python3.6/site-packages/
+
 # ・sshd用ディレクトリ作成
 # ・cuda、python、caffeなどのパスを通す
 # ・matplotlibがエラーにならないようにMPLBACKEND=Aggを設定
@@ -224,7 +227,7 @@ RUN set -x && \
 # ・sudoで/opt/conda/binにパスが通っているようにしておく
 RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
-    echo 'export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/opt/conda/bin:/opt/caffe/build/tools:$PATH' > /etc/profile.d/docker.sh && \
+    echo 'export PATH=/opt/conda/bin:/opt/caffe/build/tools:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
     echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker.sh && \
     echo 'export PYTHONPATH=/opt/caffe/python' >> /etc/profile.d/docker.sh && \
     echo 'export MPLBACKEND=Agg' >> /etc/profile.d/docker.sh && \
@@ -235,8 +238,11 @@ RUN set -x && \
     visudo --check && \
     ldconfig
 
-# monkey patch
-COPY sitecustomize.py /opt/conda/lib/python3.6/site-packages/
+# sshd以外の使い方をするとき用
+ENV PATH="/opt/caffe/build/tools:$PATH" \
+    CAFFE_ROOT="/opt/caffe" \
+    PYTHONPATH="/opt/caffe/python" \
+    MPLBACKEND="Agg"
 
 COPY start_sshd.sh /root/
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
