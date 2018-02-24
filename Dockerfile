@@ -119,10 +119,10 @@ ARG PIP_INDEX_URL=""
 # python
 RUN set -x && \
     mkdir -p /opt/conda && \
-    wget -q https://repo.continuum.io/miniconda/Miniconda3-4.3.30-Linux-x86_64.sh -O conda.sh && \
-    echo "0b80a152332a4ce5250f3c09589c7a81 *conda.sh" | md5sum -c - && \
+    wget -q https://repo.continuum.io/miniconda/Miniconda3-4.3.31-Linux-x86_64.sh -O conda.sh && \
+    echo "7fe70b214bee1143e3e3f0467b71453c *conda.sh" | md5sum -c - && \
     /bin/bash /conda.sh -f -b -p /opt/conda && \
-    conda install --yes libgcc && \
+    conda update --all --yes && \
     conda clean --all --yes && \
     rm conda.sh
 RUN http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
