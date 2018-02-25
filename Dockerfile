@@ -40,10 +40,12 @@ RUN set -x && \
         cpio \
         debconf-i18n \
         dialog \
+        dpkg-dev \
         ed \
         emacs \
         file \
         fonts-liberation \
+        g++ \
         gdb \
         git \
         git-lfs \
@@ -59,17 +61,24 @@ RUN set -x && \
         less \
         libatlas-base-dev \
         libboost-all-dev \
+        libbz2-dev \
+        libgdbm-dev \
         libgflags-dev \
         libgoogle-glog-dev \
         libhdf5-serial-dev \
         libjpeg-dev \
         libleveldb-dev \
         liblmdb-dev \
+        liblzma-dev \
         libnccl-dev \
+        libncurses5-dev \
         libopencv-dev \
         libpng-dev \
         libprotobuf-dev \
+        libreadline-dev \
         libsnappy-dev \
+        libsqlite3-dev \
+        libssl-dev \
         man-db \
         net-tools \
         openssh-client \
@@ -77,14 +86,15 @@ RUN set -x && \
         p7zip-full \
         protobuf-compiler \
         psmisc \
-        python3-dev \
         rsync \
         screen \
         sl \
         smbclient \
         sudo \
         swig \
+        tcl-dev \
         telnet \
+        tk-dev \
         tmux \
         tmuxinator \
         unzip \
@@ -96,8 +106,6 @@ RUN set -x && \
         && \
     apt-get clean && \
     update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2 && \
     cd /tmp && \
     git lfs install
 
@@ -120,22 +128,68 @@ RUN set -x && \
     echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
     echo NCCL_SOCKET_IFNAME=^docker0 >> /etc/nccl.conf
 
+# python
+# https://github.com/docker-library/python/blob/master/3.6/stretch/Dockerfile
+ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
+ARG PYTHON_VERSION="3.6.4"
+RUN set -ex \
+    && wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
+    && wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
+    && export GNUPGHOME="$(mktemp -d)" \
+    && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
+    && gpg --batch --verify python.tar.xz.asc python.tar.xz \
+    && rm -rf "$GNUPGHOME" python.tar.xz.asc \
+    && mkdir -p /usr/src/python \
+    && tar -xJC /usr/src/python --strip-components=1 -f python.tar.xz \
+    && rm python.tar.xz \
+    \
+    && cd /usr/src/python \
+    && gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
+    && ./configure \
+        --build="$gnuArch" \
+        --enable-loadable-sqlite-extensions \
+        --enable-shared \
+        --with-system-expat \
+        --with-system-ffi \
+        --without-ensurepip \
+    && make -j "$(nproc)" \
+    && make install \
+    && ldconfig \
+    \
+    && find /usr/local -depth \
+        \( \
+            \( -type d -a \( -name test -o -name tests \) \) \
+            -o \
+            \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+        \) -exec rm -rf '{}' + \
+    && rm -rf /usr/src/python \
+    && cd /usr/local/bin \
+    && ln -s idle3 idle \
+    && ln -s pydoc3 pydoc \
+    && ln -s python3 python \
+    && ln -s python3-config python-config
+
 # devpi-server用
 ARG PIP_PROXY=$http_proxy
 ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
-# python
+# pip
 RUN set -x && \
-    http_proxy=$PIP_PROXY wget 'https://bootstrap.pypa.io/get-pip.py' -O /get-pip.py && \
-    python /get-pip.py --no-cache-dir && \
-    rm -f /get-pip.py
+    wget 'https://bootstrap.pypa.io/get-pip.py' -O get-pip.py && \
+    python get-pip.py --no-cache-dir && \
+    rm -f get-pip.py
 RUN set -x && \
     http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
+        cython \
+        setuptools_scm \
+        numpy \
+        && \
+    http_proxy=$PIP_PROXY pip install --no-cache-dir \
         Pillow \
         bcolz \
-        cython \
+        fastrlock \
         futures==3.1.1 \
         gensim \
         graphviz \
@@ -146,8 +200,8 @@ RUN set -x && \
         mpi4py \
         nose \
         numba \
-        numpy \
         pandas \
+        pbr \
         pydot_ng \
         pyyaml \
         scikit-image \
@@ -177,7 +231,7 @@ RUN set -x && \
 
 # PyTorch
 RUN set -x && \
-    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl && \
+    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
@@ -224,7 +278,7 @@ RUN set -x && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
 
 # monkey patch
-COPY sitecustomize.py /usr/lib/python3.5/usercustomize.py
+COPY sitecustomize.py /usr/local/lib/python3.6/
 
 # ・sshd用ディレクトリ作成
 # ・cuda、python、caffeなどのパスを通す
