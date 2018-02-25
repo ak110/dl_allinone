@@ -1,7 +1,5 @@
 FROM nvidia/cuda:9.0-cudnn7-devel
 
-ENV PATH=/opt/conda/bin:$PATH
-
 # 実行時に残さないようにENVではなくARGでnoninteractive
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -13,7 +11,15 @@ RUN set -x && \
     sed -ie 's@http://archive.ubuntu.com/ubuntu/@http://ftp.riken.go.jp/Linux/ubuntu/@g' /etc/apt/sources.list && \
     sed -ie 's@^deb-src@# deb-src@g' /etc/apt/sources.list && \
     http_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends wget curl software-properties-common apt-utils && \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
+        apt-transport-https \
+        apt-utils \
+        build-essential \
+        ca-certificates \
+        curl \
+        software-properties-common \
+        wget \
+        && \
     wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
@@ -25,12 +31,9 @@ RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
         apt-file \
-        apt-transport-https \
         bash-completion \
         bc \
         bsdmainutils \
-        build-essential \
-        ca-certificates \
         cifs-utils \
         cmake \
         command-not-found \
@@ -74,6 +77,7 @@ RUN set -x && \
         p7zip-full \
         protobuf-compiler \
         psmisc \
+        python3-dev \
         rsync \
         screen \
         sl \
@@ -92,6 +96,8 @@ RUN set -x && \
         && \
     apt-get clean && \
     update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.5 2 && \
     cd /tmp && \
     git lfs install
 
@@ -121,13 +127,11 @@ ARG PIP_INDEX_URL=""
 
 # python
 RUN set -x && \
-    mkdir -p /opt/conda && \
-    wget -q https://repo.continuum.io/miniconda/Miniconda3-4.3.31-Linux-x86_64.sh -O /conda.sh && \
-    echo "7fe70b214bee1143e3e3f0467b71453c *conda.sh" | md5sum -c - && \
-    /bin/bash /conda.sh -f -b -p /opt/conda && \
-    conda clean --all --yes && \
-    rm /conda.sh
-RUN http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
+    http_proxy=$PIP_PROXY wget 'https://bootstrap.pypa.io/get-pip.py' -O /get-pip.py && \
+    python /get-pip.py --no-cache-dir && \
+    rm -f /get-pip.py
+RUN set -x && \
+    http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
         Pillow \
         bcolz \
@@ -173,7 +177,7 @@ RUN set -x && \
 
 # PyTorch
 RUN set -x && \
-    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl && \
+    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.3.0.post4-cp35-cp35m-linux_x86_64.whl && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
@@ -186,7 +190,7 @@ RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir horovod && \
     ldconfig
 
-# その他pythonライブラリ色々
+# その他3ythonライブラリ色々
 RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
         git+https://www.github.com/farizrahman4u/keras-contrib.git \
@@ -220,21 +224,19 @@ RUN set -x && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
 
 # monkey patch
-COPY sitecustomize.py /opt/conda/lib/python3.6/site-packages/
+COPY sitecustomize.py /usr/lib/python3.5/usercustomize.py
 
 # ・sshd用ディレクトリ作成
 # ・cuda、python、caffeなどのパスを通す
 # ・matplotlibがエラーにならないようにMPLBACKEND=Aggを設定
 # ・sudoでhttp_proxyなどが引き継がれるようにしておく
-# ・sudoで/opt/conda/binにパスが通っているようにしておく
 RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
-    echo 'export PATH=/opt/conda/bin:/opt/caffe/build/tools:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
+    echo 'export PATH=/opt/caffe/build/tools:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
     echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker.sh && \
     echo 'export PYTHONPATH=/opt/caffe/python' >> /etc/profile.d/docker.sh && \
     echo 'export MPLBACKEND=Agg' >> /etc/profile.d/docker.sh && \
     echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/docker && \
-    echo 'Defaults secure_path = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/opt/conda/bin"' >> /etc/sudoers.d/docker && \
     echo 'Defaults always_set_home' >> /etc/sudoers.d/docker && \
     chmod 0440 /etc/sudoers.d/* && \
     visudo --check && \
