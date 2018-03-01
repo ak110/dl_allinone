@@ -241,7 +241,7 @@ RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.4
 # horovod
 RUN set -x && \
     ldconfig /usr/local/cuda/lib64/stubs && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir horovod && \
+    http_proxy=$PIP_PROXY HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod && \
     ldconfig
 
 # その他3ythonライブラリ色々
