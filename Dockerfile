@@ -70,7 +70,8 @@ RUN set -x && \
         libleveldb-dev \
         liblmdb-dev \
         liblzma-dev \
-        libnccl-dev \
+        libnccl-dev=2.1.4-1+cuda9.0 \
+        libnccl2=2.1.4-1+cuda9.0 \
         libncurses5-dev \
         libopencv-dev \
         libpng-dev \
