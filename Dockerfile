@@ -112,14 +112,13 @@ RUN set -x && \
 
 # OpenMPI
 # 参考：https://github.com/uber/horovod/blob/master/Dockerfile
-# --with-cudaしない方がよい？: https://github.com/uber/horovod/issues/153
 RUN set -x && \
     wget -q https://www.open-mpi.org/software/ompi/v3.0/downloads/openmpi-3.0.0.tar.bz2 -O /opt/openmpi.tar.bz2 && \
     echo "757d51719efec08f9f1a7f32d58b3305 */opt/openmpi.tar.bz2" | md5sum -c - && \
     cd /opt && \
     tar xfj openmpi.tar.bz2 && \
     cd openmpi-3.0.0 && \
-    ./configure --enable-orterun-prefix-by-default && \
+    ./configure --prefix=/usr/local --with-cuda --disable-mpi-fortran --disable-java --enable-orterun-prefix-by-default && \
     make -j$(nproc) all && \
     make -j$(nproc) install && \
     ldconfig && \
