@@ -237,7 +237,7 @@ RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.5.0
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.6.0
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.4
 
 # horovod
