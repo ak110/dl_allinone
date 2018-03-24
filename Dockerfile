@@ -44,6 +44,7 @@ RUN set -x && \
         ed \
         emacs \
         file \
+        fonts-ipafont \
         fonts-liberation \
         g++ \
         gdb \
