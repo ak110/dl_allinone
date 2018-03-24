@@ -123,12 +123,7 @@ RUN set -x && \
     make -j$(nproc) all && \
     make -j$(nproc) install && \
     ldconfig && \
-    rm /opt/openmpi.tar.bz2 && \
-    echo "hwloc_base_binding_policy = none" >> /usr/local/etc/openmpi-mca-params.conf && \
-    echo "rmaps_base_mapping_policy = slot" >> /usr/local/etc/openmpi-mca-params.conf && \
-    echo "btl_tcp_if_exclude = lo,docker0" >> /usr/local/etc/openmpi-mca-params.conf && \
-    echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
-    echo NCCL_SOCKET_IFNAME=^docker0 >> /etc/nccl.conf
+    rm /opt/openmpi.tar.bz2
 
 # python
 # https://github.com/docker-library/python/blob/master/3.6/stretch/Dockerfile
@@ -283,11 +278,18 @@ RUN set -x && \
 COPY sitecustomize.py /usr/local/lib/python3.6/
 
 # ・sshd用ディレクトリ作成
+# ・horovod用のNCCL / OpenMPI設定
 # ・cuda、python、caffeなどのパスを通す
 # ・matplotlibがエラーにならないようにMPLBACKEND=Aggを設定
 # ・sudoでhttp_proxyなどが引き継がれるようにしておく
+# ・最後にldconfigしておく
 RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
+    echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
+    echo NCCL_SOCKET_IFNAME=^docker0 >> /etc/nccl.conf && \
+    echo "hwloc_base_binding_policy = none" >> /usr/local/etc/openmpi-mca-params.conf && \
+    echo "rmaps_base_mapping_policy = slot" >> /usr/local/etc/openmpi-mca-params.conf && \
+    echo "btl_tcp_if_exclude = lo,docker0" >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'export PATH=/opt/caffe/build/tools:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
     echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker.sh && \
     echo 'export PYTHONPATH=/opt/caffe/python' >> /etc/profile.d/docker.sh && \
@@ -306,4 +308,4 @@ ENV PATH="/opt/caffe/build/tools:$PATH" \
 
 COPY start_sshd.sh /root/
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
-CMD ["/bin/bash", "/root/start_sshd.sh"]
+CMD ["/root/start_sshd.sh"]
