@@ -27,6 +27,12 @@ RUN set -x && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# https://github.com/uber/horovod/blob/master/Dockerfile
+ENV CUDNN_VERSION=7.0.5.15-1+cuda9.0
+ENV NCCL_VERSION=2.1.15-1+cuda9.0
+
+# aptその2
 RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
@@ -63,6 +69,7 @@ RUN set -x && \
         libatlas-base-dev \
         libboost-all-dev \
         libbz2-dev \
+        libcudnn7=$CUDNN_VERSION \
         libgdbm-dev \
         libgflags-dev \
         libgoogle-glog-dev \
@@ -71,8 +78,8 @@ RUN set -x && \
         libleveldb-dev \
         liblmdb-dev \
         liblzma-dev \
-        libnccl-dev=2.1.4-1+cuda9.0 \
-        libnccl2=2.1.4-1+cuda9.0 \
+        libnccl-dev=$NCCL_VERSION \
+        libnccl2=$NCCL_VERSION \
         libncurses5-dev \
         libopencv-dev \
         libpng-dev \
@@ -232,7 +239,9 @@ RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==1.6.0
+# https://github.com/uber/horovod/blob/master/Dockerfile
+ARG TENSORFLOW_VERSION=1.6.0
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.5
 
 # horovod
@@ -241,7 +250,7 @@ RUN set -x && \
     http_proxy=$PIP_PROXY HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod && \
     ldconfig
 
-# その他3ythonライブラリ色々
+# その他Pythonライブラリ色々
 RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
         git+https://www.github.com/farizrahman4u/keras-contrib.git \
@@ -250,11 +259,13 @@ RUN set -x && \
         catboost \
         diskcache \
         fasteners \
+        fire \
         flake8 \
         flake8-docstrings \
         flake8-pep257 \
         flask \
         flask_sqlalchemy \
+        gunicorn \
         hacking \
         hyperopt \
         imageio \
