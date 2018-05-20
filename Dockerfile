@@ -30,7 +30,7 @@ RUN set -x && \
 
 # https://github.com/uber/horovod/blob/master/Dockerfile
 ENV CUDNN_VERSION=7.0.5.15-1+cuda9.0
-ENV NCCL_VERSION=2.1.15-1+cuda9.0
+ENV NCCL_VERSION=2.2.12-1+cuda9.0
 
 # aptその2
 RUN set -x && \
@@ -231,18 +231,18 @@ RUN set -x && \
 
 # Chainer
 RUN set -x && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir cupy chainer chainercv chainerrl chainermn
+    http_proxy=$PIP_PROXY pip install --no-cache-dir cupy-cuda90 chainer chainercv chainerrl chainermn
 
 # PyTorch
 RUN set -x && \
-    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl && \
+    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.4.0-cp36-cp36m-linux_x86_64.whl && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
 # https://github.com/uber/horovod/blob/master/Dockerfile
-ARG TENSORFLOW_VERSION=1.6.0
+ARG TENSORFLOW_VERSION=1.8.0
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.5
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.6
 
 # horovod
 RUN set -x && \
@@ -255,6 +255,7 @@ RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
         git+https://www.github.com/farizrahman4u/keras-contrib.git \
         augmentor \
+        autopep8 \
         better_exceptions \
         catboost \
         diskcache \
@@ -266,9 +267,9 @@ RUN set -x && \
         flask \
         flask_sqlalchemy \
         gunicorn \
-        hacking \
         hyperopt \
         imageio \
+        imbalanced-learn \
         janome \
         jupyterlab \
         kaggle-cli \
@@ -276,10 +277,11 @@ RUN set -x && \
         nltk \
         opencv-python \
         pip-tools \
-        prospector \
         pytest \
         pytest-timeout \
         pytest-xdist \
+        python-dotenv \
+        tabulate \
         tqdm \
         xgboost \
         && \
