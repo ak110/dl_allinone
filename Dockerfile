@@ -242,7 +242,7 @@ RUN set -x && \
 # https://github.com/uber/horovod/blob/master/Dockerfile
 ARG TENSORFLOW_VERSION=1.8.0
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.1.6
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.2.0
 
 # horovod
 RUN set -x && \
