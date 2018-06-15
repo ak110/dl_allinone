@@ -247,13 +247,13 @@ RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.2.0
 # horovod
 RUN set -x && \
     ldconfig /usr/local/cuda/lib64/stubs && \
-    http_proxy=$PIP_PROXY HOROVOD_GPU_ALLREDUCE=NCCL pip install --no-cache-dir horovod && \
+    http_proxy=$PIP_PROXY HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 pip install --no-cache-dir horovod && \
     ldconfig
 
 # その他Pythonライブラリ色々
 RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
-        git+https://www.github.com/farizrahman4u/keras-contrib.git \
+        git+https://www.github.com/keras-team/keras-contrib.git \
         augmentor \
         autopep8 \
         better_exceptions \
@@ -276,7 +276,9 @@ RUN set -x && \
         lightgbm \
         nltk \
         opencv-python \
+        pandas-profiling \
         pip-tools \
+        pylint \
         pytest \
         pytest-timeout \
         pytest-xdist \
