@@ -206,6 +206,7 @@ RUN set -x && \
         numba \
         pandas \
         pbr \
+        pydot \
         pydot_ng \
         pyyaml \
         scikit-image \
