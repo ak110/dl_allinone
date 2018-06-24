@@ -111,6 +111,7 @@ RUN set -x && \
         vim \
         whiptail \
         zip \
+        zlib1g-dev \
         zsh \
         && \
     apt-get clean && \
@@ -254,7 +255,8 @@ RUN set -x && \
 # その他Pythonライブラリ色々
 RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
-        git+https://www.github.com/keras-team/keras-contrib.git \
+        'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
+        'git+https://www.github.com/keras-team/keras-contrib.git' \
         augmentor \
         autopep8 \
         better_exceptions \
@@ -286,6 +288,7 @@ RUN set -x && \
         python-dotenv \
         tabulate \
         tqdm \
+        tslearn \
         xgboost \
         && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
