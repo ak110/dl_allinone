@@ -37,6 +37,7 @@ RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
         apt-file \
+        automake \
         bash-completion \
         bc \
         bsdmainutils \
@@ -88,6 +89,7 @@ RUN set -x && \
         libsnappy-dev \
         libsqlite3-dev \
         libssl-dev \
+        libtool \
         man-db \
         net-tools \
         openssh-client \
@@ -99,6 +101,7 @@ RUN set -x && \
         screen \
         sl \
         smbclient \
+        subversion \
         sudo \
         swig \
         tcl-dev \
@@ -136,7 +139,7 @@ RUN set -x && \
 # python
 # https://github.com/docker-library/python/blob/master/3.6/stretch/Dockerfile
 ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
-ARG PYTHON_VERSION="3.6.5"
+ARG PYTHON_VERSION="3.6.6"
 RUN set -ex \
     && wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
     && wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
@@ -236,13 +239,14 @@ RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir cupy-cuda90 chainer chainercv chainerrl chainermn
 
 # PyTorch
+ARG PYTORCH_VERSION=0.4.0
 RUN set -x && \
-    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.4.0-cp36-cp36m-linux_x86_64.whl && \
+    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
 
 # Keras+TensorFlow
 # https://github.com/uber/horovod/blob/master/Dockerfile
-ARG TENSORFLOW_VERSION=1.8.0
+ARG TENSORFLOW_VERSION=1.9.0
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.2.0
 
@@ -257,7 +261,12 @@ RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
         'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
-        augmentor \
+        'scikit-optimize[plots]' \
+        Augmentor \
+        Flask \
+        Flask-Migrate \
+        Flask-SQLAlchemy \
+        albumentations \
         autopep8 \
         better_exceptions \
         catboost \
@@ -267,20 +276,21 @@ RUN set -x && \
         flake8 \
         flake8-docstrings \
         flake8-pep257 \
-        flask \
-        flask_sqlalchemy \
         gunicorn \
         hyperopt \
         imageio \
         imbalanced-learn \
         janome \
         jupyterlab \
+        kaggle \
         kaggle-cli \
+        keras-rl \
         lightgbm \
         nltk \
         opencv-python \
         pandas-profiling \
         pip-tools \
+        pycodestyle==2.3.1 \
         pylint \
         pytest \
         pytest-timeout \
@@ -306,9 +316,9 @@ RUN set -x && \
     mkdir -pm 744 /var/run/sshd && \
     echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
     echo NCCL_SOCKET_IFNAME=^docker0 >> /etc/nccl.conf && \
-    echo "hwloc_base_binding_policy = none" >> /usr/local/etc/openmpi-mca-params.conf && \
-    echo "rmaps_base_mapping_policy = slot" >> /usr/local/etc/openmpi-mca-params.conf && \
-    echo "btl_tcp_if_exclude = lo,docker0" >> /usr/local/etc/openmpi-mca-params.conf && \
+    echo 'hwloc_base_binding_policy = none' >> /usr/local/etc/openmpi-mca-params.conf && \
+    echo 'rmaps_base_mapping_policy = slot' >> /usr/local/etc/openmpi-mca-params.conf && \
+    echo 'btl_tcp_if_exclude = lo,docker0' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'export PATH=/opt/caffe/build/tools:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
     echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker.sh && \
     echo 'export PYTHONPATH=/opt/caffe/python' >> /etc/profile.d/docker.sh && \
