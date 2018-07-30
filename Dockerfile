@@ -35,7 +35,7 @@ ENV NCCL_VERSION=2.2.12-1+cuda9.0
 # aptその2
 RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends --allow-downgrades \
         apt-file \
         automake \
         bash-completion \
