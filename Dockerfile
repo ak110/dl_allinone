@@ -28,10 +28,6 @@ RUN set -x && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# https://github.com/uber/horovod/blob/master/Dockerfile
-ENV CUDNN_VERSION=7.0.5.15-1+cuda9.0
-ENV NCCL_VERSION=2.2.12-1+cuda9.0
-
 # aptその2
 RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
@@ -70,7 +66,8 @@ RUN set -x && \
         libatlas-base-dev \
         libboost-all-dev \
         libbz2-dev \
-        libcudnn7=$CUDNN_VERSION \
+        libcudnn7=$CUDNN_VERSION-1+cuda9.0 \
+        libcudnn7-dev=$CUDNN_VERSION-1+cuda9.0 \
         libgdbm-dev \
         libgflags-dev \
         libgoogle-glog-dev \
@@ -79,8 +76,8 @@ RUN set -x && \
         libleveldb-dev \
         liblmdb-dev \
         liblzma-dev \
-        libnccl-dev=$NCCL_VERSION \
-        libnccl2=$NCCL_VERSION \
+        libnccl-dev=$NCCL_VERSION-1+cuda9.0 \
+        libnccl2=$NCCL_VERSION-1+cuda9.0 \
         libncurses5-dev \
         libopencv-dev \
         libpng-dev \
