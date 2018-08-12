@@ -29,6 +29,10 @@ RUN set -x && \
     rm -rf /var/lib/apt/lists/*
 
 # aptその2
+# https://gitlab.com/nvidia/cuda/blob/ubuntu16.04/9.0/runtime/cudnn7/Dockerfile
+# https://gitlab.com/nvidia/cuda/blob/ubuntu16.04/9.0/runtime/Dockerfile
+ARG CUDNN_VERSION=7.2.1.38
+ARG NCCL_VERSION=2.2.13
 RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends --allow-downgrades \
@@ -54,6 +58,7 @@ RUN set -x && \
         git \
         git-lfs \
         graphviz \
+        hdf5-tools \
         htop \
         iftop \
         imagemagick \
@@ -244,9 +249,10 @@ RUN set -x && \
 
 # Keras+TensorFlow
 # https://github.com/uber/horovod/blob/master/Dockerfile
-ARG TENSORFLOW_VERSION=1.9.0
+ARG TENSORFLOW_VERSION=1.10.0
+ARG KERAS_VERSION=2.2.2
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==2.2.2
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==$KERAS_VERSION
 
 # horovod
 RUN set -x && \
@@ -264,6 +270,7 @@ RUN set -x && \
         Flask \
         Flask-Migrate \
         Flask-SQLAlchemy \
+        GPyOpt \
         albumentations \
         autopep8 \
         better_exceptions \

@@ -38,7 +38,7 @@ if [ ! -e /root/.docker-initialized ] ; then
     fi
 
     # ライブラリパス更新
-    ldconfig --verbose
+    ldconfig
 
     touch /root/.docker-initialized
 fi
