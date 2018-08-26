@@ -285,6 +285,7 @@ RUN set -x && \
         hyperopt \
         imageio \
         imbalanced-learn \
+        imgaug \
         janome \
         jupyterlab \
         kaggle \
@@ -302,6 +303,7 @@ RUN set -x && \
         pytest-xdist \
         python-dotenv \
         tabulate \
+        tensorflow-hub \
         tqdm \
         tslearn \
         xgboost \
