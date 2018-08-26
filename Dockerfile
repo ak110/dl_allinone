@@ -224,19 +224,6 @@ RUN set -x && \
         && \
     echo .
 
-# Caffe
-RUN set -x && \
-    git clone --branch=master --single-branch --depth=1 https://github.com/BVLC/caffe.git /opt/caffe
-COPY Makefile.config /opt/caffe/
-RUN set -x && \
-    ln -s /dev/null /dev/raw1394 && \
-    cd /opt/caffe && \
-    ldconfig && \
-    make -j$(nproc) all pycaffe && \
-    echo "/opt/caffe/build/lib" >> /etc/ld.so.conf.d/caffe.conf && \
-    ldconfig && \
-    rm /dev/raw1394
-
 # Chainer
 RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir cupy-cuda90 chainer chainercv chainerrl chainermn
@@ -315,7 +302,7 @@ COPY sitecustomize.py /usr/local/lib/python3.6/
 
 # ・sshd用ディレクトリ作成
 # ・horovod用のNCCL / OpenMPI設定
-# ・cuda、python、caffeなどのパスを通す
+# ・cuda、pythonなどのパスを通す
 # ・matplotlibがエラーにならないようにMPLBACKEND=Aggを設定
 # ・sudoでhttp_proxyなどが引き継がれるようにしておく
 # ・最後にldconfigしておく
@@ -326,9 +313,7 @@ RUN set -x && \
     echo 'hwloc_base_binding_policy = none' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'rmaps_base_mapping_policy = slot' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'btl_tcp_if_exclude = lo,docker0' >> /usr/local/etc/openmpi-mca-params.conf && \
-    echo 'export PATH=/opt/caffe/build/tools:/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
-    echo 'export CAFFE_ROOT=/opt/caffe' >> /etc/profile.d/docker.sh && \
-    echo 'export PYTHONPATH=/opt/caffe/python' >> /etc/profile.d/docker.sh && \
+    echo 'export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
     echo 'export MPLBACKEND=Agg' >> /etc/profile.d/docker.sh && \
     echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/docker && \
     echo 'Defaults always_set_home' >> /etc/sudoers.d/docker && \
@@ -337,10 +322,7 @@ RUN set -x && \
     ldconfig
 
 # sshd以外の使い方をするとき用
-ENV PATH="/opt/caffe/build/tools:$PATH" \
-    CAFFE_ROOT="/opt/caffe" \
-    PYTHONPATH="/opt/caffe/python" \
-    MPLBACKEND="Agg"
+ENV MPLBACKEND="Agg"
 
 COPY start_sshd.sh /root/
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
