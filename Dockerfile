@@ -281,6 +281,7 @@ RUN set -x && \
         lightgbm \
         nltk \
         opencv-python \
+        openpyxl \
         pandas-profiling \
         pip-tools \
         pycodestyle==2.3.1 \
@@ -294,6 +295,8 @@ RUN set -x && \
         tqdm \
         tslearn \
         xgboost \
+        xlrd \
+        xlwt \
         && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
 
