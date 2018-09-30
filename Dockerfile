@@ -29,10 +29,6 @@ RUN set -x && \
     rm -rf /var/lib/apt/lists/*
 
 # aptその2
-# https://gitlab.com/nvidia/cuda/blob/ubuntu16.04/9.0/runtime/cudnn7/Dockerfile
-# https://gitlab.com/nvidia/cuda/blob/ubuntu16.04/9.0/runtime/Dockerfile
-ARG CUDNN_VERSION=7.2.1.38
-ARG NCCL_VERSION=2.2.13
 RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends --allow-downgrades \
@@ -71,8 +67,6 @@ RUN set -x && \
         libatlas-base-dev \
         libboost-all-dev \
         libbz2-dev \
-        libcudnn7=$CUDNN_VERSION-1+cuda9.0 \
-        libcudnn7-dev=$CUDNN_VERSION-1+cuda9.0 \
         libgdbm-dev \
         libgflags-dev \
         libgoogle-glog-dev \
@@ -81,8 +75,6 @@ RUN set -x && \
         libleveldb-dev \
         liblmdb-dev \
         liblzma-dev \
-        libnccl-dev=$NCCL_VERSION-1+cuda9.0 \
-        libnccl2=$NCCL_VERSION-1+cuda9.0 \
         libncurses5-dev \
         libopencv-dev \
         libpng-dev \
@@ -119,10 +111,9 @@ RUN set -x && \
         zlib1g-dev \
         zsh \
         && \
+    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' \
     apt-get clean && \
-    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
-    cd /tmp && \
-    git lfs install
+    rm -rf /var/lib/apt/lists/*
 
 # OpenMPI
 # 参考：https://github.com/uber/horovod/blob/master/Dockerfile
@@ -226,20 +217,25 @@ RUN set -x && \
 
 # Chainer
 RUN set -x && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir cupy-cuda90 chainer chainercv chainerrl chainermn
+    http_proxy=$PIP_PROXY pip install --no-cache-dir cupy-cuda90 chainer chainercv chainerrl
 
 # PyTorch
-ARG PYTORCH_VERSION=0.4.0
+ARG PYTORCH_VERSION=0.4.1
 RUN set -x && \
-    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir torchvision
+    http_proxy=$PIP_PROXY pip install --no-cache-dir \
+        http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl \
+        torchvision \
+        cnn_finetune \
+        pretrainedmodels \
+        fastai \
+        ;
 
 # Keras+TensorFlow
 # https://github.com/uber/horovod/blob/master/Dockerfile
 ARG TENSORFLOW_VERSION=1.10.0
 ARG KERAS_VERSION=2.2.2
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir keras==$KERAS_VERSION
+RUN http_proxy=$PIP_PROXY pip install --no-cache-dir Keras==$KERAS_VERSION
 
 # horovod
 RUN set -x && \
