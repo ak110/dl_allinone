@@ -111,9 +111,13 @@ RUN set -x && \
         zlib1g-dev \
         zsh \
         && \
-    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install --yes --no-install-recommends nodejs npm && \
+    npm cache clean && \
+    npm install n -g && \
+    n stable && \
+    apt-get purge --yes nodejs npm && \
+    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
+    apt-get clean
 
 # OpenMPI
 # 参考：https://github.com/uber/horovod/blob/master/Dockerfile
@@ -269,6 +273,7 @@ RUN set -x && \
         imageio \
         imbalanced-learn \
         imgaug \
+        ipywidgets \
         janome \
         jupyterlab \
         kaggle \
@@ -294,7 +299,9 @@ RUN set -x && \
         xlrd \
         xlwt \
         && \
-    jupyter serverextension enable --py jupyterlab --sys-prefix
+    jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
+    jupyter serverextension enable --py jupyterlab --sys-prefix && \
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 # monkey patch
 COPY sitecustomize.py /usr/local/lib/python3.6/
