@@ -236,8 +236,8 @@ RUN set -x && \
 
 # Keras+TensorFlow
 # https://github.com/uber/horovod/blob/master/Dockerfile
-ARG TENSORFLOW_VERSION=1.10.0
-ARG KERAS_VERSION=2.2.2
+ARG TENSORFLOW_VERSION=1.11.0
+ARG KERAS_VERSION=2.2.4
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
 RUN http_proxy=$PIP_PROXY pip install --no-cache-dir Keras==$KERAS_VERSION
 
