@@ -226,8 +226,8 @@ RUN set -x && \
 # PyTorch
 ARG PYTORCH_VERSION=0.4.1
 RUN set -x && \
+    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
-        http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl \
         torchvision \
         cnn_finetune \
         pretrainedmodels \
