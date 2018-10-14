@@ -327,8 +327,12 @@ RUN set -x && \
     visudo --check && \
     ldconfig
 
-# sshd以外の使い方をするとき用
-ENV MPLBACKEND="Agg"
+# sshd以外の使い方をするとき用環境変数色々
+ENV TZ='Asia/Tokyo' \
+    LANG='ja_JP.UTF-8' \
+    LC_ALL='ja_JP.UTF-8' \
+    LANGUAGE='ja_JP:ja' \
+    MPLBACKEND='Agg'
 
 COPY start_sshd.sh /root/
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
