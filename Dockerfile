@@ -32,6 +32,7 @@ RUN set -x && \
 RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends --allow-downgrades \
+        ack-grep \
         apt-file \
         automake \
         bash-completion \
@@ -46,6 +47,7 @@ RUN set -x && \
         dpkg-dev \
         ed \
         emacs \
+        entr \
         file \
         fonts-ipafont \
         fonts-liberation \
@@ -62,6 +64,7 @@ RUN set -x && \
         iotop \
         iproute2 \
         iputils-ping \
+        jq \
         language-pack-ja \
         less \
         libatlas-base-dev \
@@ -273,6 +276,7 @@ RUN set -x && \
         imageio \
         imbalanced-learn \
         imgaug \
+        imgcrop \
         ipywidgets \
         janome \
         jupyterlab \
