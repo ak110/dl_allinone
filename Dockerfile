@@ -289,7 +289,7 @@ RUN set -x && \
         openpyxl \
         pandas-profiling \
         pip-tools \
-        pycodestyle==2.3.1 \
+        pycodestyle \
         pylint \
         pytest \
         pytest-timeout \
