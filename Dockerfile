@@ -302,6 +302,7 @@ RUN set -x && \
         xgboost \
         xlrd \
         xlwt \
+        yapf \
         && \
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
     jupyter serverextension enable --py jupyterlab --sys-prefix && \
