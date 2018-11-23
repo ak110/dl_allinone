@@ -78,6 +78,7 @@ RUN set -x && \
         libleveldb-dev \
         liblmdb-dev \
         liblzma-dev \
+        libmecab-dev \
         libncurses5-dev \
         libopencv-dev \
         libpng-dev \
@@ -88,10 +89,13 @@ RUN set -x && \
         libssl-dev \
         libtool \
         man-db \
+        mecab \
+        mecab-ipadic-utf8 \
         net-tools \
         openssh-client \
         openssh-server \
         p7zip-full \
+        pandoc \
         protobuf-compiler \
         psmisc \
         rsync \
@@ -191,13 +195,9 @@ RUN set -x && \
 RUN set -x && \
     http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
-        cython \
-        setuptools_scm \
-        numpy \
-        && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir \
         Pillow-SIMD \
         bcolz \
+        cython \
         fastrlock \
         futures==3.1.1 \
         gensim \
@@ -209,18 +209,21 @@ RUN set -x && \
         mpi4py \
         nose \
         numba \
+        numpy \
         pandas \
         pbr \
         pydot \
         pydot_ng \
+        pypandoc \
         pyyaml \
         scikit-image \
         scikit-learn \
         scipy \
+        setuptools_scm \
         six \
         sklearn_pandas \
-        && \
-    echo .
+        spacy \
+        ;
 
 # Chainer
 RUN set -x && \
@@ -263,6 +266,7 @@ RUN set -x && \
         GPyOpt \
         albumentations \
         autopep8 \
+        bandit \
         better_exceptions \
         catboost \
         diskcache \
@@ -284,16 +288,19 @@ RUN set -x && \
         kaggle-cli \
         keras-rl \
         lightgbm \
+        mecab-python3 \
+        nagisa \
         nltk \
         opencv-python \
         openpyxl \
         pandas-profiling \
         pip-tools \
+        pipdeptree \
         pycodestyle \
         pylint \
-        pytest==3.9.3 \
         pytest-timeout \
         pytest-xdist \
+        pytest==3.9.3 \
         python-dotenv \
         tabulate \
         tensorflow-hub \
