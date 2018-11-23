@@ -196,7 +196,7 @@ RUN set -x && \
         numpy \
         && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
-        Pillow \
+        Pillow-SIMD \
         bcolz \
         fastrlock \
         futures==3.1.1 \
