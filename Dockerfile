@@ -291,7 +291,7 @@ RUN set -x && \
         pip-tools \
         pycodestyle \
         pylint \
-        pytest \
+        pytest==3.9.3 \
         pytest-timeout \
         pytest-xdist \
         python-dotenv \
@@ -318,7 +318,7 @@ COPY sitecustomize.py /usr/local/lib/python3.6/
 # ・sudoでhttp_proxyなどが引き継がれるようにしておく
 # ・最後にldconfigしておく
 RUN set -x && \
-    mkdir -pm 744 /var/run/sshd && \
+    mkdir --mode=744 /var/run/sshd && \
     echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
     echo NCCL_SOCKET_IFNAME=^docker0 >> /etc/nccl.conf && \
     echo 'hwloc_base_binding_policy = none' >> /usr/local/etc/openmpi-mca-params.conf && \
