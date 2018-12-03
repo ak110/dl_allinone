@@ -293,6 +293,7 @@ RUN set -x && \
         nltk \
         opencv-python \
         openpyxl \
+        optuna \
         pandas-profiling \
         pip-tools \
         pipdeptree \
