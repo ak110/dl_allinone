@@ -8,7 +8,7 @@
 
 apt-cacher-ngを使う場合： `--build-arg APT_PROXY=http://xxxx:3142`
 
-devpi-serverを使う場合： `--build-arg PIP_PROXY="" --build-arg PIP_TRUSTED_HOST=xxxx --build-arg PIP_INDEX_URL=http://xxxx:3141/root/pypi/`
+devpi-serverを使う場合： `--build-arg PIP_TRUSTED_HOST=xxxx --build-arg PIP_INDEX_URL=http://xxxx:3141/root/pypi/`
 
 ## run
 

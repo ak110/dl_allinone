@@ -183,7 +183,6 @@ RUN set -ex \
     && ln -s python3-config python-config
 
 # devpi-server用
-ARG PIP_PROXY=$http_proxy
 ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
@@ -193,8 +192,8 @@ RUN set -x && \
     python get-pip.py --no-cache-dir && \
     rm -f get-pip.py
 RUN set -x && \
-    http_proxy=$PIP_PROXY pip install --upgrade --no-cache-dir pip && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir \
+    pip install --upgrade --no-cache-dir pip && \
+    pip install --no-cache-dir \
         Pillow-SIMD \
         bcolz \
         cython \
@@ -227,13 +226,13 @@ RUN set -x && \
 
 # Chainer
 RUN set -x && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir cupy-cuda90 chainer chainercv chainerrl
+    pip install --no-cache-dir cupy-cuda90 chainer chainercv chainerrl
 
 # PyTorch
 ARG PYTORCH_VERSION=1.0.0
 RUN set -x && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir \
-        "http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl" && \
+    pip install --no-cache-dir \
+        "http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl" \
         cnn_finetune \
         fastai \
         pretrainedmodels \
@@ -244,18 +243,18 @@ RUN set -x && \
 # https://github.com/uber/horovod/blob/master/Dockerfile
 ARG TENSORFLOW_VERSION=1.10.0
 ARG KERAS_VERSION=2.2.4
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
-RUN http_proxy=$PIP_PROXY pip install --no-cache-dir Keras==$KERAS_VERSION
+RUN pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
+RUN pip install --no-cache-dir Keras==$KERAS_VERSION
 
 # horovod
 RUN set -x && \
     ldconfig /usr/local/cuda/lib64/stubs && \
-    http_proxy=$PIP_PROXY HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 pip install --no-cache-dir horovod && \
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 pip install --no-cache-dir horovod && \
     ldconfig
 
 # その他Pythonライブラリ色々
 RUN set -x && \
-    http_proxy=$PIP_PROXY pip install --no-cache-dir \
+    pip install --no-cache-dir \
         'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
         'scikit-optimize[plots]' \
