@@ -191,14 +191,17 @@ RUN set -x && \
     wget 'https://bootstrap.pypa.io/get-pip.py' -O get-pip.py && \
     python get-pip.py --no-cache-dir && \
     rm -f get-pip.py
+
+# https://github.com/tensorflow/tensorflow/blob/v1.10.0/tensorflow/tools/pip_package/setup.py : numpy >= 1.13.3, <= 1.14.5
+# https://github.com/explosion/spaCy/blob/v2.0.13/requirements.txt : numpy>=1.15.0
+# https://github.com/explosion/spaCy/blob/v2.0.12/requirements.txt : numpy>=1.7
+
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
         Pillow-SIMD \
-        bcolz \
         cython \
         fastrlock \
-        futures==3.1.1 \
         gensim \
         graphviz \
         gym \
@@ -208,20 +211,18 @@ RUN set -x && \
         mpi4py \
         nose \
         numba \
-        numpy \
+        numpy==1.14.5 \
         pandas \
         pbr \
         pydot \
-        pydot_ng \
         pypandoc \
         pyyaml \
         scikit-image \
         scikit-learn \
         scipy \
-        setuptools_scm \
         six \
         sklearn_pandas \
-        spacy \
+        spacy==2.0.12 \
         ;
 
 # Chainer
