@@ -334,7 +334,6 @@ COPY sitecustomize.py /usr/local/lib/python3.6/
 RUN set -x && \
     mkdir --mode=744 /var/run/sshd && \
     echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
-    echo NCCL_SOCKET_IFNAME=^docker0 >> /etc/nccl.conf && \
     echo 'hwloc_base_binding_policy = none' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'rmaps_base_mapping_policy = slot' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'btl_tcp_if_exclude = lo,docker0' >> /usr/local/etc/openmpi-mca-params.conf && \
