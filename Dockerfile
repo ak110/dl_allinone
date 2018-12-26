@@ -230,14 +230,14 @@ RUN set -x && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir cupy-cuda90 chainer chainercv chainerrl
 
 # PyTorch
-ARG PYTORCH_VERSION=0.4.1
+ARG PYTORCH_VERSION=1.0.0
 RUN set -x && \
-    pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl && \
     http_proxy=$PIP_PROXY pip install --no-cache-dir \
-        torchvision \
+        "http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl" && \
         cnn_finetune \
-        pretrainedmodels \
         fastai \
+        pretrainedmodels \
+        torchvision \
         ;
 
 # Keras+TensorFlow
