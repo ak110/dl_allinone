@@ -261,16 +261,19 @@ RUN set -x && \
         'scikit-optimize[plots]' \
         Augmentor \
         Flask \
+        Flask-Login \
         Flask-Migrate \
         Flask-SQLAlchemy \
         GPyOpt \
         albumentations \
         autopep8 \
         bandit \
+        bcrypt \
         better_exceptions \
         catboost \
         diskcache \
         fasteners \
+        fastprogress \
         fire \
         flake8 \
         flake8-docstrings \
@@ -303,6 +306,8 @@ RUN set -x && \
         pytest-xdist \
         pytest==3.9.3 \
         python-dotenv \
+        segmentation-models \
+        sphinx \
         tabulate \
         tensorflow-hub \
         tqdm \
@@ -310,6 +315,7 @@ RUN set -x && \
         xgboost \
         xlrd \
         xlwt \
+        xonsh \
         yapf \
         && \
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
