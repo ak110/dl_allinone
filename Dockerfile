@@ -25,6 +25,7 @@ RUN set -x && \
     wget -q https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
     add-apt-repository ppa:git-core/ppa && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends git git-lfs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -58,8 +59,6 @@ RUN set -x && \
         fonts-liberation \
         g++ \
         gdb \
-        git \
-        git-lfs \
         graphviz \
         hdf5-tools \
         htop \
