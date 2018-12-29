@@ -28,8 +28,13 @@ RUN set -x && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# https://github.com/uber/horovod/blob/master/Dockerfile
+ENV CUDNN_VERSION=7.4.1.5-1+cuda9.0
+ENV NCCL_VERSION=2.3.5-2+cuda9.0
+
 # aptその2
 RUN set -x && \
+    apt-mark unhold libcudnn7 libnccl2 && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends --allow-downgrades \
         ack-grep \
@@ -70,6 +75,7 @@ RUN set -x && \
         libatlas-base-dev \
         libboost-all-dev \
         libbz2-dev \
+        libcudnn7=${CUDNN_VERSION} \
         libgdbm-dev \
         libgflags-dev \
         libgoogle-glog-dev \
@@ -79,6 +85,8 @@ RUN set -x && \
         liblmdb-dev \
         liblzma-dev \
         libmecab-dev \
+        libnccl-dev=${NCCL_VERSION} \
+        libnccl2=${NCCL_VERSION} \
         libncurses5-dev \
         libopencv-dev \
         libpng-dev \
@@ -118,6 +126,7 @@ RUN set -x && \
         zlib1g-dev \
         zsh \
         && \
+    apt-mark hold libcudnn7 libnccl2 && \
     apt-get install --yes --no-install-recommends nodejs npm && \
     npm cache clean && \
     npm install n -g && \
