@@ -127,12 +127,12 @@ RUN set -x && \
         zsh \
         && \
     apt-mark hold libcudnn7 libnccl2 && \
+    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
     apt-get install --yes --no-install-recommends nodejs npm && \
     npm cache clean && \
     npm install n -g && \
     n stable && \
-    apt-get purge --yes nodejs npm && \
-    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
+    apt-get autoremove --purge --yes nodejs npm && \
     apt-get clean
 
 # OpenMPI
