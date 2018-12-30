@@ -275,6 +275,7 @@ RUN set -x && \
         GPyOpt \
         albumentations \
         autopep8 \
+        backtrace \
         bandit \
         bcrypt \
         better_exceptions \
@@ -288,6 +289,7 @@ RUN set -x && \
         flake8-pep257 \
         gunicorn \
         hyperopt \
+        image-classifiers \
         imageio \
         imbalanced-learn \
         imgaug \
@@ -308,7 +310,9 @@ RUN set -x && \
         pandas-profiling \
         pip-tools \
         pipdeptree \
+        ptk \
         pycodestyle \
+        pygments \
         pylint \
         pytest-timeout \
         pytest-xdist \
