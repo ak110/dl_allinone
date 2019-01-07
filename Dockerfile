@@ -271,6 +271,7 @@ RUN set -x && \
         Flask \
         Flask-Login \
         Flask-Migrate \
+        Flask-Restless \
         Flask-SQLAlchemy \
         GPyOpt \
         albumentations \
@@ -314,12 +315,15 @@ RUN set -x && \
         pycodestyle \
         pygments \
         pylint \
+        pytest \
         pytest-timeout \
         pytest-xdist \
-        pytest==3.9.3 \
         python-dotenv \
+        recommonmark \
         segmentation-models \
         sphinx \
+        sphinx-autobuild \
+        sphinx_rtd_theme \
         tabulate \
         tensorflow-hub \
         tqdm \
