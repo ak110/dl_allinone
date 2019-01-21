@@ -313,6 +313,7 @@ RUN set -x && \
         pipdeptree \
         ptk \
         pycodestyle \
+        pydensecrf \
         pygments \
         pylint \
         pytest \
