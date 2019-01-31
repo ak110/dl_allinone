@@ -207,7 +207,7 @@ RUN set -x && \
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
-        Pillow-SIMD \
+        Pillow \
         cython \
         fastrlock \
         gensim \
@@ -338,6 +338,11 @@ RUN set -x && \
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
     jupyter serverextension enable --py jupyterlab --sys-prefix && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager
+
+# 最後にPillow-SIMD
+RUN set -x && \
+    pip uninstall --no-cache-dir --yes Pillow && \
+    pip install --no-cache-dir Pillow-SIMD
 
 # monkey patch
 COPY sitecustomize.py /usr/local/lib/python3.6/
