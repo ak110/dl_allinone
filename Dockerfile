@@ -287,7 +287,6 @@ RUN set -x && \
         fire \
         flake8 \
         flake8-docstrings \
-        flake8-pep257 \
         gunicorn \
         hyperopt \
         image-classifiers \
@@ -309,6 +308,7 @@ RUN set -x && \
         openpyxl \
         optuna \
         pandas-profiling \
+        pep8 \
         pip-tools \
         pipdeptree \
         ptk \
