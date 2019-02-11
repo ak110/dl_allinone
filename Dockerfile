@@ -280,6 +280,7 @@ RUN set -x && \
         bandit \
         bcrypt \
         better_exceptions \
+        bokeh \
         catboost \
         diskcache \
         fasteners \
@@ -316,6 +317,7 @@ RUN set -x && \
         pydensecrf \
         pygments \
         pylint \
+        pyod \
         pytest \
         pytest-timeout \
         pytest-xdist \
