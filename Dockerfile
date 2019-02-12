@@ -151,7 +151,7 @@ RUN set -x && \
 # python
 # https://github.com/docker-library/python/blob/master/3.6/stretch/Dockerfile
 ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
-ARG PYTHON_VERSION="3.6.7"
+ARG PYTHON_VERSION="3.6.8"
 RUN set -ex \
 	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
 	&& wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
@@ -195,9 +195,10 @@ ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
 # pip
+ARG PYTHON_PIP_VERSION="19.0.2"
 RUN set -x && \
     wget 'https://bootstrap.pypa.io/get-pip.py' -O get-pip.py && \
-    python get-pip.py --no-cache-dir && \
+    python3 get-pip.py --no-cache-dir --disable-pip-version-check "pip==$PYTHON_PIP_VERSION" && \
     rm -f get-pip.py
 
 # https://github.com/tensorflow/tensorflow/blob/v1.10.0/tensorflow/tools/pip_package/setup.py : numpy >= 1.13.3, <= 1.14.5
