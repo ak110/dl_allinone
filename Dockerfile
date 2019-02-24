@@ -1,4 +1,4 @@
-FROM nvidia/cuda:9.0-cudnn7-devel
+FROM nvidia/cuda:10.0-cudnn7-devel
 
 # 実行時に残さないようにENVではなくARGでnoninteractive
 ARG DEBIAN_FRONTEND=noninteractive
@@ -29,13 +29,8 @@ RUN set -x && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# https://github.com/uber/horovod/blob/master/Dockerfile
-ENV CUDNN_VERSION=7.4.1.5-1+cuda9.0
-ENV NCCL_VERSION=2.3.5-2+cuda9.0
-
 # aptその2
 RUN set -x && \
-    apt-mark unhold libcudnn7 libnccl2 && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends --allow-downgrades \
         ack-grep \
@@ -74,7 +69,7 @@ RUN set -x && \
         libatlas-base-dev \
         libboost-all-dev \
         libbz2-dev \
-        libcudnn7=${CUDNN_VERSION} \
+        libffi-dev \
         libgdbm-dev \
         libgflags-dev \
         libgoogle-glog-dev \
@@ -84,8 +79,6 @@ RUN set -x && \
         liblmdb-dev \
         liblzma-dev \
         libmecab-dev \
-        libnccl-dev=${NCCL_VERSION} \
-        libnccl2=${NCCL_VERSION} \
         libncurses5-dev \
         libopencv-dev \
         libpng-dev \
@@ -118,6 +111,7 @@ RUN set -x && \
         tmux \
         tmuxinator \
         unzip \
+        uuid-dev \
         valgrind \
         vim \
         whiptail \
@@ -125,7 +119,6 @@ RUN set -x && \
         zlib1g-dev \
         zsh \
         && \
-    apt-mark hold libcudnn7 libnccl2 && \
     update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
     apt-get install --yes --no-install-recommends nodejs npm && \
     npm cache clean && \
@@ -133,6 +126,9 @@ RUN set -x && \
     n stable && \
     apt-get autoremove --purge --yes nodejs npm && \
     apt-get clean
+# workaround
+RUN set -x && \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends libssl-dev
 
 # OpenMPI
 # 参考：https://github.com/uber/horovod/blob/master/Dockerfile
@@ -149,10 +145,11 @@ RUN set -x && \
     rm /opt/openmpi.tar.bz2
 
 # python
-# https://github.com/docker-library/python/blob/master/3.6/stretch/Dockerfile
+# https://github.com/docker-library/python/blob/master/3.7/stretch/Dockerfile
 ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
 ARG PYTHON_VERSION="3.6.8"
 RUN set -ex \
+	\
 	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
 	&& wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
@@ -195,11 +192,26 @@ ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
 # pip
-ARG PYTHON_PIP_VERSION="19.0.2"
-RUN set -x && \
-    wget 'https://bootstrap.pypa.io/get-pip.py' -O get-pip.py && \
-    python3 get-pip.py --no-cache-dir --disable-pip-version-check "pip==$PYTHON_PIP_VERSION" && \
-    rm -f get-pip.py
+ARG PYTHON_PIP_VERSION="19.0.3"
+RUN set -ex; \
+	\
+	wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
+	\
+	python get-pip.py \
+		--disable-pip-version-check \
+		--no-cache-dir \
+		"pip==$PYTHON_PIP_VERSION" \
+	; \
+	pip --version; \
+	\
+	find /usr/local -depth \
+		\( \
+			\( -type d -a \( -name test -o -name tests \) \) \
+			-o \
+			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+		\) -exec rm -rf '{}' +; \
+	rm -f get-pip.py
+
 
 # https://github.com/tensorflow/tensorflow/blob/v1.10.0/tensorflow/tools/pip_package/setup.py : numpy >= 1.13.3, <= 1.14.5
 # https://github.com/explosion/spaCy/blob/v2.0.13/requirements.txt : numpy>=1.15.0
@@ -236,13 +248,13 @@ RUN set -x && \
 
 # Chainer
 RUN set -x && \
-    pip install --no-cache-dir cupy-cuda90 chainer chainercv chainerrl
+    pip install --no-cache-dir cupy-cuda100 chainer chainercv chainerrl
 
 # PyTorch
-ARG PYTORCH_VERSION=1.0.0
+ARG PYTORCH_VERSION=1.0.1
 RUN set -x && \
     pip install --no-cache-dir \
-        "http://download.pytorch.org/whl/cu90/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl" \
+        "http://download.pytorch.org/whl/cu100/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl" \
         cnn_finetune \
         fastai \
         pretrainedmodels \
@@ -251,7 +263,7 @@ RUN set -x && \
 
 # Keras+TensorFlow
 # https://github.com/uber/horovod/blob/master/Dockerfile
-ARG TENSORFLOW_VERSION=1.12.0
+ARG TENSORFLOW_VERSION=1.13.1
 ARG KERAS_VERSION=2.2.4
 RUN pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
 RUN pip install --no-cache-dir Keras==$KERAS_VERSION
