@@ -279,6 +279,7 @@ RUN set -x && \
         Flask-Restless \
         Flask-SQLAlchemy \
         albumentations \
+        allennlp \
         autopep8 \
         backtrace \
         bandit \
@@ -323,6 +324,7 @@ RUN set -x && \
         pytest \
         pytest-timeout \
         pytest-xdist \
+        pytext-nlp \
         python-dotenv \
         recommonmark \
         segmentation-models \
