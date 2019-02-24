@@ -133,11 +133,11 @@ RUN set -x && \
 # OpenMPI
 # 参考：https://github.com/uber/horovod/blob/master/Dockerfile
 RUN set -x && \
-    wget -q https://download.open-mpi.org/release/open-mpi/v3.1/openmpi-3.1.2.tar.bz2 -O /opt/openmpi.tar.bz2 && \
-    echo "210df69fafd964158527e7f37e333239 */opt/openmpi.tar.bz2" | md5sum -c - && \
+    wget -q https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.0.tar.bz2 -O /opt/openmpi.tar.bz2 && \
+    echo "e3da67df1e968c8798827e0e5fe9a510 */opt/openmpi.tar.bz2" | md5sum -c - && \
     cd /opt && \
     tar xfj openmpi.tar.bz2 && \
-    cd openmpi-3.1.2 && \
+    cd openmpi-4.0.0 && \
     ./configure --with-cuda --disable-mpi-fortran --disable-java --enable-orterun-prefix-by-default && \
     make -j$(nproc) all && \
     make -j$(nproc) install && \
