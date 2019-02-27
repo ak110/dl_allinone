@@ -32,7 +32,7 @@ RUN set -x && \
 # aptその2
 RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends --allow-downgrades \
+    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
         ack-grep \
         apt-file \
         automake \
@@ -67,24 +67,16 @@ RUN set -x && \
         language-pack-ja \
         less \
         libatlas-base-dev \
-        libboost-all-dev \
         libbz2-dev \
         libffi-dev \
         libgdbm-dev \
-        libgflags-dev \
-        libgoogle-glog-dev \
-        libhdf5-serial-dev \
         libjpeg-dev \
-        libleveldb-dev \
-        liblmdb-dev \
         liblzma-dev \
         libmecab-dev \
         libncurses5-dev \
         libopencv-dev \
         libpng-dev \
-        libprotobuf-dev \
         libreadline-dev \
-        libsnappy-dev \
         libsqlite3-dev \
         libssl-dev \
         libtool \
