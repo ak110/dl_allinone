@@ -278,7 +278,6 @@ RUN set -x && \
         Flask-Migrate \
         Flask-Restless \
         Flask-SQLAlchemy \
-        GPyOpt \
         albumentations \
         autopep8 \
         backtrace \
@@ -304,7 +303,6 @@ RUN set -x && \
         janome \
         jupyterlab \
         kaggle \
-        kaggle-cli \
         keras-rl \
         lightgbm \
         mecab-python3 \
@@ -319,7 +317,6 @@ RUN set -x && \
         pipdeptree \
         ptk \
         pycodestyle \
-        pydensecrf \
         pygments \
         pylint \
         pyod \
