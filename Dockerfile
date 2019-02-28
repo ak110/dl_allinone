@@ -204,68 +204,15 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
-
 # https://github.com/tensorflow/tensorflow/blob/v1.13.1/tensorflow/tools/pip_package/setup.py : numpy >= 1.14.5, <= 2
-
-RUN set -x && \
-    pip install --upgrade --no-cache-dir pip && \
-    pip install --no-cache-dir \
-        Pillow \
-        cython \
-        fastrlock \
-        gensim \
-        h5py \
-        matplotlib \
-        mkl \
-        mpi4py \
-        nose \
-        numba \
-        numpy==1.16.1 \
-        pandas \
-        pbr \
-        pydot \
-        pypandoc \
-        pyyaml \
-        scikit-image \
-        scikit-learn \
-        six \
-        sklearn_pandas \
-        ;
-
-# Chainer
-RUN set -x && \
-    pip install --no-cache-dir cupy-cuda100 chainer chainercv chainerrl
-
-# PyTorch
-ARG PYTORCH_VERSION=1.0.1
-RUN set -x && \
-    pip install --no-cache-dir \
-        "http://download.pytorch.org/whl/cu100/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl" \
-        cnn_finetune \
-        fastai \
-        pretrainedmodels \
-        pytext-nlp \
-        spacy \
-        torchvision \
-        ;
-
-# Keras+TensorFlow
 # https://github.com/uber/horovod/blob/master/Dockerfile
 ARG TENSORFLOW_VERSION=1.13.1
 ARG KERAS_VERSION=2.2.4
-RUN pip install --no-cache-dir tensorflow-gpu==$TENSORFLOW_VERSION
-RUN pip install --no-cache-dir Keras==$KERAS_VERSION
-
-# horovod
+ARG PYTORCH_VERSION=1.0.1
 RUN set -x && \
-    ldconfig /usr/local/cuda/lib64/stubs && \
-    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 pip install --no-cache-dir horovod && \
-    ldconfig
-
-# その他Pythonライブラリ色々
-RUN set -x && \
+    pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
-        'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
+        "http://download.pytorch.org/whl/cu100/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl" \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
         'scikit-optimize[plots]' \
         Augmentor \
@@ -274,6 +221,8 @@ RUN set -x && \
         Flask-Migrate \
         Flask-Restless \
         Flask-SQLAlchemy \
+        Keras==$KERAS_VERSION \
+        Pillow \
         albumentations \
         allennlp \
         autopep8 \
@@ -283,13 +232,23 @@ RUN set -x && \
         better_exceptions \
         bokeh \
         catboost \
+        chainer \
+        chainercv \
+        chainerrl \
+        cnn_finetune \
+        cupy-cuda100 \
+        cython \
         diskcache \
+        fastai \
         fasteners \
         fastprogress \
+        fastrlock \
         fire \
         flake8 \
         flake8-docstrings \
+        gensim \
         gunicorn \
+        h5py \
         hyperopt \
         image-classifiers \
         imageio \
@@ -302,32 +261,50 @@ RUN set -x && \
         kaggle \
         keras-rl \
         lightgbm \
+        matplotlib \
         mecab-python3 \
-        nagisa \
+        mkl \
+        mpi4py \
         nltk \
+        nose \
+        numba \
+        numpy==1.16.1 \
         opencv-python \
         openpyxl \
         optuna \
+        pandas \
         pandas-profiling \
         pep8 \
         pip-tools \
         pipdeptree \
-        ptk \
+        pretrainedmodels \
         pycodestyle \
+        pydot \
         pygments \
         pylint \
         pyod \
+        pypandoc \
         pytest \
         pytest-timeout \
         pytest-xdist \
+        pytext-nlp \
         python-dotenv \
+        pyyaml \
         recommonmark \
+        requests \
+        scikit-image \
+        scikit-learn \
         segmentation-models \
+        six \
+        sklearn_pandas \
+        spacy \
         sphinx \
         sphinx-autobuild \
         sphinx_rtd_theme \
         tabulate \
+        tensorflow-gpu==$TENSORFLOW_VERSION \
         tensorflow-hub \
+        torchvision \
         tqdm \
         tslearn \
         xgboost \
@@ -339,6 +316,20 @@ RUN set -x && \
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
     jupyter serverextension enable --py jupyterlab --sys-prefix && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager
+
+# 依存関係の問題があって後回しなやつ
+RUN set -x && \
+    pip install --no-cache-dir \
+        'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
+        nagisa \
+        ptk \
+        ;
+
+# horovod
+RUN set -x && \
+    ldconfig /usr/local/cuda/lib64/stubs && \
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 pip install --no-cache-dir horovod && \
+    ldconfig
 
 # 最後にPillow-SIMD
 RUN set -x && \
