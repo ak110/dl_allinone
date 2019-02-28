@@ -205,9 +205,7 @@ RUN set -ex; \
 	rm -f get-pip.py
 
 
-# https://github.com/tensorflow/tensorflow/blob/v1.10.0/tensorflow/tools/pip_package/setup.py : numpy >= 1.13.3, <= 1.14.5
-# https://github.com/explosion/spaCy/blob/v2.0.13/requirements.txt : numpy>=1.15.0
-# https://github.com/explosion/spaCy/blob/v2.0.12/requirements.txt : numpy>=1.7
+# https://github.com/tensorflow/tensorflow/blob/v1.13.1/tensorflow/tools/pip_package/setup.py : numpy >= 1.14.5, <= 2
 
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
@@ -216,15 +214,13 @@ RUN set -x && \
         cython \
         fastrlock \
         gensim \
-        graphviz \
-        gym \
         h5py \
         matplotlib \
         mkl \
         mpi4py \
         nose \
         numba \
-        numpy==1.14.5 \
+        numpy==1.16.1 \
         pandas \
         pbr \
         pydot \
@@ -232,10 +228,8 @@ RUN set -x && \
         pyyaml \
         scikit-image \
         scikit-learn \
-        scipy \
         six \
         sklearn_pandas \
-        spacy==2.0.12 \
         ;
 
 # Chainer
@@ -250,6 +244,8 @@ RUN set -x && \
         cnn_finetune \
         fastai \
         pretrainedmodels \
+        pytext-nlp \
+        spacy \
         torchvision \
         ;
 
@@ -324,7 +320,6 @@ RUN set -x && \
         pytest \
         pytest-timeout \
         pytest-xdist \
-        pytext-nlp \
         python-dotenv \
         recommonmark \
         segmentation-models \
