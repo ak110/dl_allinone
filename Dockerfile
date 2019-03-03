@@ -204,8 +204,12 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
+# 参考: https://github.com/uber/horovod/blob/master/Dockerfile
+
 # https://github.com/tensorflow/tensorflow/blob/v1.13.1/tensorflow/tools/pip_package/setup.py : numpy >= 1.14.5, <= 2
-# https://github.com/uber/horovod/blob/master/Dockerfile
+
+# albumentations 0.1.12 : imgaug<0.2.7,>=0.2.5
+
 ARG TENSORFLOW_VERSION=1.13.1
 ARG KERAS_VERSION=2.2.4
 ARG PYTORCH_VERSION=1.0.1
@@ -253,7 +257,7 @@ RUN set -x && \
         image-classifiers \
         imageio \
         imbalanced-learn \
-        imgaug \
+        imgaug==0.2.6 \
         imgcrop \
         ipywidgets \
         janome \
