@@ -143,7 +143,7 @@ RUN set -x && \
 # python
 # https://github.com/docker-library/python/blob/master/3.7/stretch/Dockerfile
 ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
-ARG PYTHON_VERSION="3.6.8"
+ARG PYTHON_VERSION="3.7.2"
 RUN set -ex \
 	\
 	&& export GNUPGHOME="$(mktemp -d)" \
@@ -225,7 +225,7 @@ ARG PYTORCH_VERSION=1.0.1
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
-        "http://download.pytorch.org/whl/cu100/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl" \
+        "http://download.pytorch.org/whl/cu100/torch-${PYTORCH_VERSION}-cp37-cp37m-linux_x86_64.whl" \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
         'numpy<1.17' \
         'scikit-optimize[plots]' \
