@@ -308,6 +308,7 @@ RUN set -x && \
         tabulate \
         tensorflow-gpu==$TENSORFLOW_VERSION \
         tensorflow-hub \
+        tensorpack \
         torchvision \
         tqdm \
         tslearn \
