@@ -281,6 +281,7 @@ RUN set -x && \
         pep8 \
         pip-tools \
         pipdeptree \
+        pipenv \
         pretrainedmodels \
         pycodestyle \
         pydot \
@@ -296,9 +297,11 @@ RUN set -x && \
         pyyaml \
         recommonmark \
         requests \
+        rgf_python \
         scikit-image \
         scikit-learn \
         segmentation-models \
+        signate \
         six \
         sklearn_pandas \
         spacy \
