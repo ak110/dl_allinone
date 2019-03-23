@@ -1,11 +1,16 @@
+"""monkey patch。
+
+■TensorFlowで強制的にconfig.gpu_options.allow_growth = Trueをする
+https://qiita.com/ak11/items/875c0f520ff1e231ee0c
+
+"""
 import importlib.machinery
 import warnings
 import sys
 
-# TensorFlowで強制的にconfig.gpu_options.allow_growth = Trueをする
-# https://qiita.com/ak11/items/875c0f520ff1e231ee0c
 
 class CustomFinder(importlib.machinery.PathFinder):
+    """tf.Sessionのimport時にCustomLoaderを使用するFinder。"""
 
     def find_spec(self, fullname, path=None, target=None):
         if fullname == 'tensorflow.python.client.session':
@@ -16,6 +21,7 @@ class CustomFinder(importlib.machinery.PathFinder):
 
 
 class CustomLoader(importlib.machinery.SourceFileLoader):
+    """tf.Session.__init__に`config.gpu_options.allow_growth`を強制的にTrueにする処理を入れ込むLoader。"""
 
     def exec_module(self, module):
         r = super().exec_module(module)

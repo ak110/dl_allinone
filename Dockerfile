@@ -278,6 +278,7 @@ RUN set -x && \
         optuna \
         pandas \
         pandas-profiling \
+        passlib \
         pep8 \
         pip-tools \
         pipdeptree \
