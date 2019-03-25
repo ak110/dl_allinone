@@ -1,4 +1,5 @@
 FROM nvidia/cuda:10.0-cudnn7-devel
+ARG DISTRIB_CODENAME=bionic
 
 # 実行時に残さないようにENVではなくARGでnoninteractive
 ARG DEBIAN_FRONTEND=noninteractive
@@ -22,7 +23,7 @@ RUN set -x && \
         && \
     wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - && \
     wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - && \
-    wget -q https://www.ubuntulinux.jp/sources.list.d/xenial.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
+    wget -q https://www.ubuntulinux.jp/sources.list.d/$DISTRIB_CODENAME.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
     add-apt-repository ppa:git-core/ppa && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends git git-lfs && \
@@ -123,7 +124,8 @@ RUN set -x && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends libssl-dev
 
 # OpenMPI
-# 参考：https://github.com/uber/horovod/blob/master/Dockerfile
+# https://github.com/uber/horovod/blob/master/Dockerfile
+# https://www.open-mpi.org/software/
 RUN set -x && \
     wget -q https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.0.tar.bz2 -O /opt/openmpi.tar.bz2 && \
     echo "e3da67df1e968c8798827e0e5fe9a510 */opt/openmpi.tar.bz2" | md5sum -c - && \
@@ -145,11 +147,12 @@ RUN set -ex \
 	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
 	&& wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
-	&& echo ========================= \
+	&& echo "==================================================" \
 	&& echo workaround of: gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
-	&& wget -qO "$GNUHOME/key.asc" "http://ha.pool.sks-keyservers.net/pks/lookup?op=get&search=0x$GPG_KEY" \
-	&& gpg --import "$GNUHOME/key.asc" \
-	&& echo ========================= \
+	&& echo "--------------------------------------------------" \
+	&& wget -O "$GNUPGHOME/key.asc" "http://ha.pool.sks-keyservers.net/pks/lookup?op=get&search=0x2D347EA6AA65421D" \
+	&& gpg --import "$GNUPGHOME/key.asc" \
+	&& echo "==================================================" \
 	&& gpg --batch --verify python.tar.xz.asc python.tar.xz \
 	&& { command -v gpgconf > /dev/null && gpgconf --kill all || :; } \
 	&& rm -rf "$GNUPGHOME" python.tar.xz.asc \
@@ -222,6 +225,7 @@ RUN set -x && \
     pip install --no-cache-dir \
         "http://download.pytorch.org/whl/cu100/torch-${PYTORCH_VERSION}-cp36-cp36m-linux_x86_64.whl" \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
+        'numpy<1.17' \
         'scikit-optimize[plots]' \
         Augmentor \
         Flask \
@@ -276,7 +280,6 @@ RUN set -x && \
         nltk \
         nose \
         numba \
-        numpy==1.16.1 \
         opencv-python \
         openpyxl \
         optuna \
