@@ -56,6 +56,8 @@ RUN set -x && \
         fonts-liberation \
         g++-$GPP_VERSION \
         gdb \
+        # for building scipy
+        gfortran \
         graphviz \
         hdf5-tools \
         htop \
@@ -135,6 +137,21 @@ RUN set -x && \
 # workaround
 RUN set -x && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends libssl-dev
+
+# MKL, IPP
+# https://software.intel.com/en-us/articles/installing-intel-free-libs-and-python-apt-repo
+RUN set -x && \
+    wget -q https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB -O- | apt-key add - && \
+    wget -q https://apt.repos.intel.com/setup/intelproducts.list -O /etc/apt/sources.list.d/intelproducts.list && \
+    echo deb https://apt.repos.intel.com/mkl all main > /etc/apt/sources.list.d/intel-mkl.list && \
+    echo deb https://apt.repos.intel.com/ipp all main > /etc/apt/sources.list.d/intel-ipp.list && \
+    http_proxy=$APT_PROXY apt-get update && \
+    http_proxy=$APT_PROXY apt-get install --yes intel-mkl-64bit-2020.0-088 intel-ipp-64bit-2020.0-088 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo "/opt/intel/mkl/lib/intel64" >> /etc/ld.so.conf.d/intel.conf && \
+    ldconfig && \
+    echo ". /opt/intel/bin/compilervars.sh intel64" > /etc/profile.d/intel.sh
 
 # OpenMPI
 # https://github.com/uber/horovod/blob/master/Dockerfile
@@ -235,6 +252,15 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
+# numpy/scipy with MKL
+RUN set -x && \
+    echo '[mkl]' > /root/.numpy-site.cfg && \
+    echo 'library_dirs = /opt/intel/mkl/lib/intel64' >> /root/.numpy-site.cfg && \
+    echo 'include_dirs = /opt/intel/mkl/include' >> /root/.numpy-site.cfg && \
+    echo 'mkl_libs = mkl_rt' >> /root/.numpy-site.cfg && \
+    echo 'lapack_libs =' >> /root/.numpy-site.cfg && \
+    pip install --no-binary :all: numpy\<1.18 scipy
+
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
@@ -304,8 +330,6 @@ RUN set -x && \
         noise \
         nose \
         numba \
-        # https://github.com/cocodataset/cocoapi/issues/356
-        numpy\<1.18 \
         onnxmltools \
         opencv-python-headless \
         openpyxl \
