@@ -100,6 +100,7 @@ RUN set -x && \
         swig \
         tcl-dev \
         telnet \
+        tesseract-ocr-jpn \
         tk-dev \
         tmux \
         tmuxinator \
@@ -269,6 +270,7 @@ RUN set -x && \
         imgcrop \
         ipywidgets \
         janome \
+        japanize-matplotlib \
         jupyterlab \
         kaggle \
         keras-rl \
@@ -297,6 +299,7 @@ RUN set -x && \
         pylint \
         pyod \
         pypandoc \
+        pytesseract \
         pytest \
         pytest-timeout \
         pytest-xdist \
@@ -322,7 +325,7 @@ RUN set -x && \
         tensorpack \
         torchvision \
         tqdm \
-        tslearn \
+        tsfresh \
         xgboost \
         xlrd \
         xlwt \
@@ -339,6 +342,7 @@ RUN set -x && \
         'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
         nagisa \
         ptk \
+        tslearn \
         ;
 
 # horovod
