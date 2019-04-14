@@ -145,15 +145,15 @@ ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
 ARG PYTHON_VERSION="3.6.8"
 RUN set -ex \
 	\
-	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
-	&& wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& echo "==================================================" \
 	&& echo workaround of: gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
 	&& echo "--------------------------------------------------" \
-	&& wget -O "$GNUPGHOME/key.asc" "http://ha.pool.sks-keyservers.net/pks/lookup?op=get&search=0x2D347EA6AA65421D" \
+	&& wget --no-cache -O "$GNUPGHOME/key.asc" "http://ha.pool.sks-keyservers.net/pks/lookup?op=get&search=0x2D347EA6AA65421D" \
 	&& gpg --import "$GNUPGHOME/key.asc" \
 	&& echo "==================================================" \
+	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
+	&& wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
 	&& gpg --batch --verify python.tar.xz.asc python.tar.xz \
 	&& { command -v gpgconf > /dev/null && gpgconf --kill all || :; } \
 	&& rm -rf "$GNUPGHOME" python.tar.xz.asc \
