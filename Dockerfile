@@ -136,6 +136,7 @@ RUN set -x && \
     ./configure --with-cuda --disable-mpi-fortran --disable-java --enable-orterun-prefix-by-default && \
     make -j$(nproc) all && \
     make -j$(nproc) install && \
+    make -j$(nproc) distclean && \
     ldconfig && \
     rm /opt/openmpi.tar.bz2
 
