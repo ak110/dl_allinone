@@ -77,6 +77,7 @@ RUN set -x && \
         libncurses5-dev \
         libopencv-dev \
         libpng-dev \
+        libprotobuf-dev \
         libreadline-dev \
         libsqlite3-dev \
         libssl-dev \
