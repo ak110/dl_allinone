@@ -336,12 +336,15 @@ RUN set -x && \
         && \
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
     jupyter serverextension enable --py jupyterlab --sys-prefix && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
+    mkdir /usr/share/nltk_data && \
+    python3 -m nltk.downloader -d /usr/local/share/nltk_data popular
 
 # 依存関係の問題があって後回しなやつ
 RUN set -x && \
     pip install --no-cache-dir \
         'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
+        'git+https://github.com/facebookresearch/fastText.git' \
         nagisa \
         ptk \
         tslearn \
