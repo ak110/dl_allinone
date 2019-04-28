@@ -129,7 +129,7 @@ RUN set -x && \
 # https://github.com/uber/horovod/blob/master/Dockerfile
 # https://www.open-mpi.org/software/
 RUN set -x && \
-    wget -q https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.0.tar.bz2 -O /opt/openmpi.tar.bz2 && \
+    wget -q "https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.0.tar.bz2" -O /opt/openmpi.tar.bz2 && \
     echo "e3da67df1e968c8798827e0e5fe9a510 */opt/openmpi.tar.bz2" | md5sum -c - && \
     cd /opt && \
     tar xfj openmpi.tar.bz2 && \
@@ -372,7 +372,7 @@ COPY sitecustomize.py /usr/local/lib/python3.6/
 # ・最後にldconfigしておく
 RUN set -x && \
     mkdir --mode=744 /var/run/sshd && \
-    echo NCCL_DEBUG=INFO >> /etc/nccl.conf && \
+    echo 'NCCL_DEBUG=INFO' >> /etc/nccl.conf && \
     echo 'hwloc_base_binding_policy = none' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'rmaps_base_mapping_policy = slot' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'btl_tcp_if_exclude = lo,docker0' >> /usr/local/etc/openmpi-mca-params.conf && \
@@ -389,7 +389,8 @@ ENV TZ='Asia/Tokyo' \
     LANG='ja_JP.UTF-8' \
     LC_ALL='ja_JP.UTF-8' \
     LANGUAGE='ja_JP:ja' \
-    MPLBACKEND='Agg'
+    MPLBACKEND='Agg' \
+    PYTHONDONTWRITEBYTECODE=1
 
 COPY start_sshd.sh /root/
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version

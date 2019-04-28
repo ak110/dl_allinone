@@ -1,2 +1,5 @@
 .git
+.env
+.env-example
+Makefile
 README.md
