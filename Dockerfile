@@ -307,6 +307,7 @@ RUN set -x && \
         pytest-xdist \
         pytext-nlp \
         python-dotenv \
+        pytorch-ignite \
         pyyaml \
         recommonmark \
         requests \
