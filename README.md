@@ -1,14 +1,15 @@
-# dl_allinone
+# `dl_allinone`
 
 良い子は真似してはいけない(?)全部入りDockerイメージ。
 
+## 準備
+
+    cp .env-example .env
+    vim .env
+
 ## build
 
-    docker build --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy --tag=dl_allinone .
-
-apt-cacher-ngを使う場合： `--build-arg APT_PROXY=http://xxxx:3142`
-
-devpi-serverを使う場合： `--build-arg PIP_TRUSTED_HOST=xxxx --build-arg PIP_INDEX_URL=http://xxxx:3141/root/pypi/`
+    make build
 
 ## run
 

@@ -2,7 +2,6 @@
 def test_xgboost():
     import sklearn.datasets
     import lightgbm as lgb
-
     data = sklearn.datasets.load_boston()
     X, y = data.data, data.target
 
