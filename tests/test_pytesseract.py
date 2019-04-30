@@ -1,0 +1,7 @@
+
+def test_pytesseract(data_dir):
+    import PIL.Image
+    import pytesseract
+    with PIL.Image.open(data_dir / 'data.jpg') as img:
+        text = pytesseract.image_to_string(img)
+        assert isinstance(text, str)

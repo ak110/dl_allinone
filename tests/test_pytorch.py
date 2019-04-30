@@ -52,7 +52,7 @@ def test_pytorch():
         )
 
     @trainer.on(ignite.engine.Events.EPOCH_COMPLETED)
-    def log_validation_results(engine):
+    def _log_validation_results(engine):
         evaluator.run(val_loader)
         avg_accuracy = evaluator.state.metrics['accuracy']
         avg_nll = evaluator.state.metrics['nll']
