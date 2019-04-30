@@ -253,6 +253,7 @@ RUN set -x && \
         chainerrl \
         cnn_finetune \
         cupy-cuda100 \
+        cysignals \
         cython \
         diskcache \
         fastai \
@@ -295,6 +296,7 @@ RUN set -x && \
         pip-tools \
         pipdeptree \
         pipenv \
+        plotly \
         pretrainedmodels \
         pycodestyle \
         pydot \
@@ -349,6 +351,7 @@ RUN set -x && \
         'git+https://github.com/facebookresearch/fastText.git' \
         nagisa \
         ptk \
+        pyfasttext \
         tslearn \
         ;
 

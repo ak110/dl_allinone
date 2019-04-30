@@ -1,3 +1,4 @@
+import pathlib
 
 import pytest
 
@@ -15,3 +16,8 @@ def keras():
         yield keras_
     finally:
         keras_.backend.clear_session()
+
+
+@pytest.fixture
+def data_dir():
+    yield pathlib.Path(__file__).parent / 'data'
