@@ -101,6 +101,7 @@ RUN set -x && \
         swig \
         tcl-dev \
         telnet \
+        tesseract-ocr \
         tesseract-ocr-jpn \
         tk-dev \
         tmux \
