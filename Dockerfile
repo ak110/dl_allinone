@@ -273,6 +273,7 @@ RUN set -x && \
         imgaug==0.2.6 \
         imgcrop \
         ipywidgets \
+        iterative-stratification \
         janome \
         japanize-matplotlib \
         jupyterlab \
