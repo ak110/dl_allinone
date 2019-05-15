@@ -1,5 +1,5 @@
 
-def test_pytesseract(data_dir):
+def test_run(data_dir):
     import PIL.Image
     import pytesseract
     with PIL.Image.open(data_dir / 'data.jpg') as img:

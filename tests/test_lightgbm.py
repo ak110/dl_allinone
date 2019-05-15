@@ -1,5 +1,5 @@
 
-def test_xgboost():
+def test_run():
     import sklearn.datasets
     import lightgbm as lgb
     data = sklearn.datasets.load_boston()

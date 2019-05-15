@@ -2,7 +2,7 @@
 import numpy as np
 
 
-def test_keras(tmpdir, keras):
+def test_run(tmpdir, keras):
     X_train = np.random.rand(10, 28, 28, 3)
     y_train = np.random.rand(10)
 

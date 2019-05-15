@@ -247,6 +247,7 @@ RUN set -x && \
         bcrypt \
         better_exceptions \
         bokeh \
+        cairocffi \
         catboost \
         chainer \
         chainercv \
@@ -256,6 +257,7 @@ RUN set -x && \
         cysignals \
         cython \
         diskcache \
+        editdistance \
         fastai \
         fasteners \
         fastprogress \
@@ -276,6 +278,7 @@ RUN set -x && \
         iterative-stratification \
         janome \
         japanize-matplotlib \
+        joblib \
         jupyterlab \
         kaggle \
         keras-rl \

@@ -1,5 +1,5 @@
 
-def test_rgf():
+def test_run():
     import sklearn.datasets
     import rgf.sklearn
     data = sklearn.datasets.load_iris()

@@ -1,5 +1,5 @@
 
-def test_pytext(data_dir):
+def test_run(data_dir):
     import pytext
     featurizer = pytext.data.featurizer.SimpleFeaturizer.from_config(
         pytext.data.featurizer.SimpleFeaturizer.Config(),

@@ -1,5 +1,5 @@
 
-def test_pytorch():
+def test_run():
     import torch
     import torch.utils.data
     import torch.nn.functional as F

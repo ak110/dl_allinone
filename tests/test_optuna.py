@@ -1,5 +1,5 @@
 
-def test_optuna():
+def test_run():
     import optuna
 
     def objective(trial):
