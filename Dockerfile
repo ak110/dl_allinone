@@ -145,7 +145,7 @@ RUN set -x && \
 # python
 # https://github.com/docker-library/python/blob/master/3.7/stretch/Dockerfile
 ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
-ARG PYTHON_VERSION="3.7.2"
+ARG PYTHON_VERSION="3.7.3"
 RUN set -ex \
 	\
 	&& export GNUPGHOME="$(mktemp -d)" \
@@ -195,7 +195,7 @@ ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
 # pip
-ARG PYTHON_PIP_VERSION="19.0.3"
+ARG PYTHON_PIP_VERSION="19.1.1"
 RUN set -ex; \
 	\
 	wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
