@@ -279,7 +279,10 @@ RUN set -x && \
         janome \
         japanize-matplotlib \
         joblib \
+        jupyter-tensorboard \
         jupyterlab \
+        jupyterlab-git \
+        jupyterlab_code_formatter \
         kaggle \
         keras-rl \
         lightgbm \
@@ -330,6 +333,7 @@ RUN set -x && \
         sphinx-autobuild \
         sphinx_rtd_theme \
         tabulate \
+        tensorflow-datasets \
         tensorflow-gpu==$TENSORFLOW_VERSION \
         tensorflow-hub \
         tensorpack \
@@ -342,11 +346,25 @@ RUN set -x && \
         xonsh \
         yapf \
         && \
-    jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
-    jupyter serverextension enable --py jupyterlab --sys-prefix && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
     mkdir /usr/share/nltk_data && \
     python3 -m nltk.downloader -d /usr/local/share/nltk_data popular
+
+# jupyter関連
+RUN set -x && \
+    jupyter labextension install \
+        @jupyter-widgets/jupyterlab-manager \
+        @jupyterlab/git \
+        @jupyterlab/toc \
+        @lckr/jupyterlab_variableinspector \
+        @ryantam626/jupyterlab_code_formatter \
+        jupyterlab_tensorboard \
+        && \
+    jupyter serverextension enable --sys-prefix --py \
+        jupyterlab \
+        jupyterlab_code_formatter \
+        jupyterlab_git \
+        && \
+    jupyter nbextension enable --sys-prefix --py widgetsnbextension
 
 # 依存関係の問題があって後回しなやつ
 RUN set -x && \
