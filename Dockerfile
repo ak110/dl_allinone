@@ -221,6 +221,9 @@ RUN set -ex; \
 
 # albumentations 0.1.12 : imgaug<0.2.7,>=0.2.5
 
+# numpy 1.16.3でkeras.datasets.imdb.load_data()がエラーになるためnumpy<1.16.3としておく
+# https://github.com/keras-team/keras/issues/12729
+
 ARG TENSORFLOW_VERSION=1.13.1
 ARG KERAS_VERSION=2.2.4
 ARG PYTORCH_VERSION=1.0.1
@@ -229,7 +232,7 @@ RUN set -x && \
     pip install --no-cache-dir \
         "http://download.pytorch.org/whl/cu100/torch-${PYTORCH_VERSION}-cp37-cp37m-linux_x86_64.whl" \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
-        'numpy<1.17' \
+        'numpy<1.16.3' \
         'scikit-optimize[plots]' \
         Augmentor \
         Flask \
