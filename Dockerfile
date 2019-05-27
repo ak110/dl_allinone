@@ -422,6 +422,7 @@ ENV TZ='Asia/Tokyo' \
     MPLBACKEND='Agg' \
     PYTHONDONTWRITEBYTECODE=1
 
+COPY --chown=root:root .ssh_host_keys/ssh_host_* /etc/ssh/
 COPY start_sshd.sh /root/
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
 CMD ["/root/start_sshd.sh"]
