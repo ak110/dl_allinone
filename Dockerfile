@@ -287,7 +287,6 @@ RUN set -x && \
         jupyterlab-git \
         jupyterlab_code_formatter \
         kaggle \
-        keras-rl \
         lightgbm \
         matplotlib \
         mecab-python3 \
