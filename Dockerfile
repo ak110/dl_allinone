@@ -352,7 +352,8 @@ RUN set -x && \
         yapf \
         && \
     mkdir /usr/share/nltk_data && \
-    python3 -m nltk.downloader -d /usr/local/share/nltk_data popular
+    python3 -m nltk.downloader -d /usr/local/share/nltk_data popular && \
+    python3 -m spacy download en --no-cache
 
 # jupyter関連
 RUN set -x && \
