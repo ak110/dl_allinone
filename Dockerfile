@@ -226,11 +226,13 @@ RUN set -ex; \
 
 ARG TENSORFLOW_VERSION=1.13.1
 ARG KERAS_VERSION=2.2.4
-ARG PYTORCH_VERSION=1.0.1
+ARG PYTORCH_VERSION=1.1.0
+ARG TORCHVISION_VERSION=0.3.0
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
         "http://download.pytorch.org/whl/cu100/torch-${PYTORCH_VERSION}-cp37-cp37m-linux_x86_64.whl" \
+        "https://download.pytorch.org/whl/cu100/torchvision-${TORCHVISION_VERSION}-cp37-cp37m-linux_x86_64.whl" \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
         'numpy<1.16.3' \
         'scikit-optimize[plots]' \
@@ -342,7 +344,6 @@ RUN set -x && \
         tensorflow-gpu==$TENSORFLOW_VERSION \
         tensorflow-hub \
         tensorpack \
-        torchvision \
         tqdm \
         tsfresh \
         xgboost \
