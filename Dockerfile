@@ -269,6 +269,8 @@ RUN set -x && \
         flake8 \
         flake8-docstrings \
         gensim \
+        gluoncv \
+        gluonnlp \
         gunicorn \
         h5py \
         hyperopt \
@@ -292,6 +294,7 @@ RUN set -x && \
         mecab-python3 \
         mkl \
         mpi4py \
+        mxnet-cu100mkl \
         nltk \
         nose \
         numba \
