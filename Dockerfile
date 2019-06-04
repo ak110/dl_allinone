@@ -394,6 +394,7 @@ RUN set -x && \
 COPY sitecustomize.py /usr/local/lib/python3.6/
 
 # ・sshd用ディレクトリ作成
+# ・sshdでPermitUserEnvironment yes
 # ・horovod用のNCCL / OpenMPI設定
 # ・cuda、pythonなどのパスを通す
 # ・matplotlibがエラーにならないようにMPLBACKEND=Aggを設定
@@ -401,6 +402,7 @@ COPY sitecustomize.py /usr/local/lib/python3.6/
 # ・最後にldconfigしておく
 RUN set -x && \
     mkdir --mode=744 /var/run/sshd && \
+    sed -i 's/#PermitUserEnvironment no/PermitUserEnvironment yes/' /etc/ssh/sshd_config && \
     echo 'NCCL_DEBUG=INFO' >> /etc/nccl.conf && \
     echo 'hwloc_base_binding_policy = none' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'rmaps_base_mapping_policy = slot' >> /usr/local/etc/openmpi-mca-params.conf && \
