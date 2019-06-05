@@ -378,7 +378,6 @@ RUN set -x && \
     pip install --no-cache-dir \
         'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
         'git+https://github.com/facebookresearch/fastText.git' \
-        nagisa \
         ptk \
         pyfasttext \
         tslearn \
