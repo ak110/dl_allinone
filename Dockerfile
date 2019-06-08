@@ -298,8 +298,10 @@ RUN set -x && \
         mpi4py \
         mxnet-cu100mkl \
         nltk \
+        noise \
         nose \
         numba \
+        onnxmltools \
         opencv-python \
         openpyxl \
         optuna \
