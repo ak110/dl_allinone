@@ -314,6 +314,7 @@ RUN set -x && \
         pipenv \
         plotly \
         pretrainedmodels \
+        progressbar2 \
         pycodestyle \
         pydot \
         pygments \
@@ -326,6 +327,7 @@ RUN set -x && \
         pytest-xdist \
         pytext-nlp \
         python-dotenv \
+        python-utils \
         pytorch-ignite \
         pyyaml \
         recommonmark \
