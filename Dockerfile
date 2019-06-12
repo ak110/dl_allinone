@@ -309,7 +309,6 @@ RUN set -x && \
         pandas \
         pandas-profiling \
         passlib \
-        pep8 \
         pip-tools \
         pipdeptree \
         pipenv \
