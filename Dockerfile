@@ -348,6 +348,7 @@ RUN set -x && \
         tensorflow-gpu==$TENSORFLOW_VERSION \
         tensorflow-hub \
         tensorpack \
+        tf2onnx \
         tqdm \
         tsfresh \
         xgboost \
