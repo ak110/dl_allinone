@@ -251,6 +251,7 @@ RUN set -x && \
         bandit \
         bcrypt \
         better_exceptions \
+        black \
         bokeh \
         cairocffi \
         catboost \
