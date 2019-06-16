@@ -255,6 +255,7 @@ RUN set -x && \
         bokeh \
         cairocffi \
         catboost \
+        category_encoders \
         chainer \
         chainercv \
         chainerrl \
@@ -264,10 +265,12 @@ RUN set -x && \
         cython \
         diskcache \
         editdistance \
+        eli5 \
         fastai \
         fasteners \
         fastprogress \
         fastrlock \
+        featuretools \
         fire \
         flake8 \
         flake8-docstrings \
