@@ -224,7 +224,7 @@ RUN set -ex; \
 # numpy 1.16.3でkeras.datasets.imdb.load_data()がエラーになるためnumpy<1.16.3としておく
 # https://github.com/keras-team/keras/issues/12729
 
-ARG TENSORFLOW_VERSION=1.13.1
+ARG TENSORFLOW_VERSION=1.14.0
 ARG KERAS_VERSION=2.2.4
 ARG PYTORCH_VERSION=1.1.0
 ARG TORCHVISION_VERSION=0.3.0
