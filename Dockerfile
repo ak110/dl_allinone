@@ -338,6 +338,7 @@ RUN set -x && \
         rgf_python \
         scikit-image \
         scikit-learn \
+        seaborn \
         segmentation-models \
         signate \
         six \
