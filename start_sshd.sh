@@ -7,7 +7,7 @@
 #
 set -ux
 
-if [ ! -e /root/.docker-initialized ] ; then
+if [ ! -e /root/.docker-initialized -a -v SSH_USER ] ; then
     # ユーザ作成
     useradd --create-home --shell=/bin/bash --uid=$SSH_UID $SSH_USER
     cp -rn /etc/skel/. /home/$SSH_USER
