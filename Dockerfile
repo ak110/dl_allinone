@@ -336,6 +336,7 @@ RUN set -x && \
         recommonmark \
         requests \
         rgf_python \
+        rope \
         scikit-image \
         scikit-learn \
         seaborn \
