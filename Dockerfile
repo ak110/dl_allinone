@@ -68,6 +68,9 @@ RUN set -x && \
         language-pack-ja \
         less \
         libatlas-base-dev \
+        libboost-dev \
+        libboost-filesystem-dev \
+        libboost-system-dev \
         libbz2-dev \
         libffi-dev \
         libgdbm-dev \
@@ -86,6 +89,7 @@ RUN set -x && \
         mecab \
         mecab-ipadic-utf8 \
         net-tools \
+        nvidia-opencl-dev \
         openssh-client \
         openssh-server \
         p7zip-full \
@@ -295,7 +299,6 @@ RUN set -x && \
         jupyterlab-git \
         jupyterlab_code_formatter \
         kaggle \
-        lightgbm \
         matplotlib \
         mecab-python3 \
         mkl \
@@ -391,6 +394,10 @@ RUN set -x && \
         pyfasttext \
         tslearn \
         ;
+
+# LightGBM
+RUN set -x && \
+    pip install --no-cache-dir --install-option=--gpu lightgbm
 
 # horovod
 RUN set -x && \
