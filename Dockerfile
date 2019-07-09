@@ -374,13 +374,10 @@ RUN set -x && \
         @jupyter-widgets/jupyterlab-manager \
         @jupyterlab/git \
         @jupyterlab/toc \
-        @lckr/jupyterlab_variableinspector \
-        @ryantam626/jupyterlab_code_formatter \
         jupyterlab_tensorboard \
         && \
     jupyter serverextension enable --sys-prefix --py \
         jupyterlab \
-        jupyterlab_code_formatter \
         jupyterlab_git \
         && \
     jupyter nbextension enable --sys-prefix --py widgetsnbextension
