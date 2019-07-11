@@ -18,17 +18,21 @@ RUN set -x && \
         build-essential \
         ca-certificates \
         curl \
+        locales \
         software-properties-common \
         wget \
         && \
-    wget -q https://www.ubuntulinux.jp/ubuntu-ja-archive-keyring.gpg -O- | apt-key add - && \
-    wget -q https://www.ubuntulinux.jp/ubuntu-jp-ppa-keyring.gpg -O- | apt-key add - && \
-    wget -q https://www.ubuntulinux.jp/sources.list.d/$DISTRIB_CODENAME.list -O /etc/apt/sources.list.d/ubuntu-ja.list && \
+    locale-gen ja_JP.UTF-8 && \
+    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
     add-apt-repository ppa:git-core/ppa && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends git git-lfs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+ENV LANG='ja_JP.UTF-8' \
+    LC_ALL='ja_JP.UTF-8' \
+    LANGUAGE='ja_JP:ja'
 
 # aptその2
 RUN set -x && \
@@ -119,7 +123,6 @@ RUN set -x && \
         zlib1g-dev \
         zsh \
         && \
-    update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
     apt-get install --yes --no-install-recommends nodejs npm && \
     npm cache clean && \
     npm install n -g && \
@@ -434,9 +437,6 @@ RUN set -x && \
 
 # sshd以外の使い方をするとき用環境変数色々
 ENV TZ='Asia/Tokyo' \
-    LANG='ja_JP.UTF-8' \
-    LC_ALL='ja_JP.UTF-8' \
-    LANGUAGE='ja_JP:ja' \
     MPLBACKEND='Agg' \
     PYTHONDONTWRITEBYTECODE=1
 
