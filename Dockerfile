@@ -280,7 +280,6 @@ RUN set -x && \
         featuretools \
         fire \
         flake8 \
-        flake8-docstrings \
         gensim \
         gluoncv \
         gluonnlp \
