@@ -291,7 +291,6 @@ RUN set -x && \
         albumentations \
         allennlp \
         autopep8 \
-        backtrace \
         bandit \
         bcrypt \
         better_exceptions \
