@@ -44,4 +44,6 @@ if [ ! -e /root/.docker-initialized -a -v SSH_USER ] ; then
 fi
 
 # sshd
-exec /usr/sbin/sshd -D
+# -D: デタッチしない
+# -e: ログを標準エラーへ
+exec /usr/sbin/sshd -D -e
