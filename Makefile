@@ -33,18 +33,16 @@ build: .ssh_host_keys
 	docker images $(IMAGE_TAG)
 
 test:
-	docker run --runtime=nvidia --rm --interactive --tty \
+	docker run --gpus="$(GPU)" --rm --interactive --tty \
 		--volume="$(CURDIR)/tests:/tests:ro" \
-		--env="NVIDIA_VISIBLE_DEVICES=$(GPU)" \
 		$(IMAGE_TAG) pytest /tests
 
 test2:
-	docker run --runtime=nvidia --rm --interactive --tty \
-		--env="NVIDIA_VISIBLE_DEVICES=$(GPU)" \
+	docker run --gpus="$(GPU)" --rm --interactive --tty \
 		$(IMAGE_TAG) bash -c "https_proxy=$(https_proxy) git clone --recursive https://github.com/ak110/pytoolkit.git && cd pytoolkit && pytest"
 
 shell:
-	docker run --runtime=nvidia --rm --interactive --tty $(IMAGE_TAG) bash
+	docker run --gpus=all --rm --interactive --tty $(IMAGE_TAG) bash
 
 lint:
 	docker pull hadolint/hadolint
