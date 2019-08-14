@@ -89,6 +89,7 @@ RUN set -x && \
         libsqlite3-dev \
         libssl-dev \
         libtool \
+        libyaml-dev \
         man-db \
         mecab \
         mecab-ipadic-utf8 \
@@ -279,8 +280,6 @@ ARG TORCHVISION_VERSION=0.3.0
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
-        "http://download.pytorch.org/whl/cu100/torch-${PYTORCH_VERSION}-cp37-cp37m-linux_x86_64.whl" \
-        "https://download.pytorch.org/whl/cu100/torchvision-${TORCHVISION_VERSION}-cp37-cp37m-linux_x86_64.whl" \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
         'numpy<1.16.3' \
         'scikit-optimize[plots]' \
@@ -317,6 +316,7 @@ RUN set -x && \
         fasteners \
         fastprogress \
         fastrlock \
+        feather-format \
         featuretools \
         fire \
         flake8 \
@@ -331,6 +331,7 @@ RUN set -x && \
         imbalanced-learn \
         imgaug==0.2.6 \
         imgcrop \
+        imgdup \
         ipywidgets \
         iterative-stratification \
         janome \
@@ -377,6 +378,7 @@ RUN set -x && \
         python-dotenv \
         python-utils \
         pytorch-ignite \
+        pytorch-lightning \
         pyyaml \
         recommonmark \
         requests \
@@ -399,6 +401,10 @@ RUN set -x && \
         tensorflow-hub \
         tensorpack \
         tf2onnx \
+        torch \
+        torchaudio \
+        torchtext \
+        torchvision \
         tqdm \
         tsfresh \
         xgboost \
