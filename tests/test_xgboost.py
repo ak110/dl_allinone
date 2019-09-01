@@ -1,7 +1,7 @@
-
 def test_run():
     import sklearn.datasets
     import xgboost
+
     data = sklearn.datasets.load_boston()
     X, y = data.data, data.target
 

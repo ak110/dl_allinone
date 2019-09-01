@@ -7,6 +7,7 @@ import pytest
 def keras():
     import tensorflow as tf
     import keras as keras_
+
     config = tf.ConfigProto()
     config.allow_soft_placement = True
     config.gpu_options.allow_growth = True
@@ -20,4 +21,4 @@ def keras():
 
 @pytest.fixture
 def data_dir():
-    yield pathlib.Path(__file__).parent / 'data'
+    yield pathlib.Path(__file__).parent / "data"

@@ -1,4 +1,3 @@
-
 def test_run():
     import cairocffi as cairo
     import numpy as np
@@ -7,11 +6,13 @@ def test_run():
     with cairo.Context(surface) as context:
         context.set_source_rgb(1, 1, 1)
         context.paint()
-        context.select_font_face('Courier', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+        context.select_font_face(
+            "Courier", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD
+        )
         context.set_font_size(10)
         context.move_to(20, 20)
         context.set_source_rgb(0, 0, 0)
-        context.show_text('abc')
+        context.show_text("abc")
 
     buf = surface.get_data()
     a = np.frombuffer(buf, np.uint8)
