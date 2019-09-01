@@ -13,7 +13,7 @@ def test_run(tmpdir, keras):
     model.compile('adam', 'mse')
 
     model.summary()
-    keras.utils.plot_model(model, str(tmpdir / 'model.svg'))
+    keras.utils.plot_model(model, str(tmpdir / 'model.png'))
 
     model.fit(X_train, y_train, batch_size=10, epochs=2)
     model.save(str(tmpdir / 'model.h5'))
