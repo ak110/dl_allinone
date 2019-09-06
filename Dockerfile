@@ -183,7 +183,7 @@ RUN set -ex \
 		--with-system-ffi \
 		--without-ensurepip \
 	&& make -j "$(nproc)" \
-# https://github.com/docker-library/python/issues/160#issuecomment-509426916
+# setting PROFILE_TASK makes "--enable-optimizations" reasonable: https://bugs.python.org/issue36044 / https://github.com/docker-library/python/issues/160#issuecomment-509426916
 		PROFILE_TASK='-m test.regrtest --pgo \
 			test_array \
 			test_base64 \
@@ -243,11 +243,16 @@ RUN cd /usr/local/bin \
 ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
-# pip
-ARG PYTHON_PIP_VERSION="19.1.1"
+# if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
+ARG PYTHON_PIP_VERSION="19.2.3"
+# https://github.com/pypa/get-pip
+ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/309a56c5fd94bd1134053a541cb4657a4e47e09d/get-pip.py"
+ARG PYTHON_GET_PIP_SHA256="57e3643ff19f018f8a00dfaa6b7e4620e3c1a7a2171fd218425366ec006b3bfe"
+
 RUN set -ex; \
 	\
-	wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
+	wget -O get-pip.py "$PYTHON_GET_PIP_URL"; \
+	echo "$PYTHON_GET_PIP_SHA256 *get-pip.py" | sha256sum --check --strict -; \
 	\
 	python get-pip.py \
 		--disable-pip-version-check \
