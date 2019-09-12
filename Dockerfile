@@ -89,6 +89,7 @@ RUN set -x && \
         libsqlite3-dev \
         libssl-dev \
         libtool \
+        libwebp-dev \
         libyaml-dev \
         man-db \
         mecab \
