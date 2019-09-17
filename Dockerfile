@@ -279,6 +279,8 @@ RUN set -ex; \
 # numpy 1.16.3でkeras.datasets.imdb.load_data()がエラーになるためnumpy<1.16.3としておく
 # https://github.com/keras-team/keras/issues/12729
 
+# 'gast<0.3.0' は1.15で不要になる予定 https://github.com/tensorflow/tensorflow/issues/32319
+
 ARG TENSORFLOW_VERSION=1.14.0
 ARG KERAS_VERSION=2.2.5
 ARG PYTORCH_VERSION=1.1.0
@@ -287,6 +289,7 @@ RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
+        'gast<0.3.0' \
         'numpy<1.16.3' \
         'scikit-optimize[plots]' \
         Augmentor \
