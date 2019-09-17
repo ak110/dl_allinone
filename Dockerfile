@@ -312,6 +312,7 @@ RUN set -x && \
         chainercv \
         chainerrl \
         cnn_finetune \
+        cookiecutter \
         cupy-cuda100 \
         cysignals \
         cython \
