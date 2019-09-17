@@ -379,6 +379,7 @@ RUN set -x && \
         pypandoc \
         pytesseract \
         pytest \
+        pytest-cookies \
         pytest-timeout \
         pytest-xdist \
         pytext-nlp \
