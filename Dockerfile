@@ -405,6 +405,7 @@ RUN set -x && \
         spacy \
         sphinx \
         sphinx-autobuild \
+        sphinx-autodoc-typehints \
         sphinx_rtd_theme \
         tabulate \
         tensorflow-datasets \
