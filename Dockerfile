@@ -282,7 +282,6 @@ RUN set -ex; \
 # 'gast<0.3.0' は1.15で不要になる予定 https://github.com/tensorflow/tensorflow/issues/32319
 
 ARG TENSORFLOW_VERSION=1.14.0
-ARG KERAS_VERSION=2.2.5
 ARG PYTORCH_VERSION=1.1.0
 ARG TORCHVISION_VERSION=0.3.0
 RUN set -x && \
@@ -298,7 +297,7 @@ RUN set -x && \
         Flask-Migrate \
         Flask-Restless \
         Flask-SQLAlchemy \
-        Keras==$KERAS_VERSION \
+        Keras \
         Pillow \
         albumentations \
         allennlp \
