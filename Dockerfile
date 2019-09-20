@@ -470,6 +470,10 @@ RUN set -x && \
     pip uninstall --no-cache-dir --yes Pillow && \
     pip install --no-cache-dir Pillow-SIMD
 
+# pyright
+RUN set -x && \
+    npm install -g pyright
+
 # monkey patch
 COPY sitecustomize.py /usr/local/lib/python3.6/
 
