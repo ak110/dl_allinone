@@ -281,6 +281,8 @@ RUN set -ex; \
 
 # 'gast<0.3.0' は1.15で不要になる予定 https://github.com/tensorflow/tensorflow/issues/32319
 
+# 'typing-extensions>=3.7.4' は mypy 用。なぜかchainerのPython2用の依存関係に従ってしまう？
+
 ARG TENSORFLOW_VERSION=1.14.0
 ARG PYTORCH_VERSION=1.1.0
 ARG TORCHVISION_VERSION=0.3.0
@@ -291,6 +293,7 @@ RUN set -x && \
         'gast<0.3.0' \
         'numpy<1.16.3' \
         'scikit-optimize[plots]' \
+        'typing-extensions>=3.7.4' \
         Augmentor \
         Flask \
         Flask-Login \
