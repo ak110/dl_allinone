@@ -14,13 +14,12 @@
 ## run
 
     docker run \
-        --runtime=nvidia \
+        --gpus=all \
         --detach \
         --restart=always \
         --volume="/etc/localtime:/etc/localtime:ro" \
         --volume="/お好みのパス:/home/user" \
         --volume="/お好みのパス:/data" \
-        --env="NVIDIA_VISIBLE_DEVICES=0,1,2,3" \
         --env="SSH_USER=user" \
         --env="SSH_UID=1000" \
         --env="SSH_KEY=SSHキー" \
