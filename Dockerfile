@@ -276,22 +276,15 @@ RUN set -ex; \
 
 # albumentations 0.1.12 : imgaug<0.2.7,>=0.2.5
 
-# numpy 1.16.3でkeras.datasets.imdb.load_data()がエラーになるためnumpy<1.16.3としておく
-# https://github.com/keras-team/keras/issues/12729
-
-# 'gast<0.3.0' は1.15で不要になる予定 https://github.com/tensorflow/tensorflow/issues/32319
-
 # 'typing-extensions>=3.7.4' は mypy 用。なぜかchainerのPython2用の依存関係に従ってしまう？
 
-ARG TENSORFLOW_VERSION=1.14.0
+ARG TENSORFLOW_VERSION=2.0.0
 ARG PYTORCH_VERSION=1.1.0
 ARG TORCHVISION_VERSION=0.3.0
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
-        'gast<0.3.0' \
-        'numpy<1.16.3' \
         'scikit-optimize[plots]' \
         'typing-extensions>=3.7.4' \
         Augmentor \
@@ -413,6 +406,7 @@ RUN set -x && \
         sphinx-autodoc-typehints \
         sphinx_rtd_theme \
         tabulate \
+        tensorflow-addons \
         tensorflow-datasets \
         tensorflow-gpu==$TENSORFLOW_VERSION \
         tensorflow-hub \
@@ -476,9 +470,6 @@ RUN set -x && \
 RUN set -x && \
     npm install -g pyright
 
-# monkey patch
-COPY sitecustomize.py /usr/local/lib/python3.6/
-
 # ・sshd用ディレクトリ作成
 # ・sshdでPermitUserEnvironment yes
 # ・horovod用のNCCL / OpenMPI設定
@@ -495,6 +486,7 @@ RUN set -x && \
     echo 'btl_tcp_if_exclude = lo,docker0' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
     echo 'export MPLBACKEND=Agg' >> /etc/profile.d/docker.sh && \
+    echo 'export TF_FORCE_GPU_ALLOW_GROWTH=true' >> /etc/profile.d/docker.sh && \
     echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/docker && \
     echo 'Defaults always_set_home' >> /etc/sudoers.d/docker && \
     chmod 0440 /etc/sudoers.d/* && \
@@ -504,6 +496,7 @@ RUN set -x && \
 # sshd以外の使い方をするとき用環境変数色々
 ENV TZ='Asia/Tokyo' \
     MPLBACKEND='Agg' \
+    TF_FORCE_GPU_ALLOW_GROWTH='true' \
     PYTHONDONTWRITEBYTECODE=1
 
 COPY --chown=root:root .ssh_host_keys/ssh_host_* /etc/ssh/

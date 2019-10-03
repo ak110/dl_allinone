@@ -17,6 +17,8 @@ ifdef PIP_INDEX_URL
 BUILD_ARGS += --build-arg="PIP_INDEX_URL=$(PIP_INDEX_URL)"
 endif
 
+GPU := none
+
 help:
 	@cat Makefile
 
@@ -33,12 +35,12 @@ build: .ssh_host_keys
 	docker images $(IMAGE_TAG)
 
 test:
-	docker run --gpus="$(GPU)" --rm --interactive --tty \
+	docker run --gpus='"device=$(GPU)"' --rm --interactive --tty \
 		--volume="$(CURDIR)/tests:/tests:ro" \
 		$(IMAGE_TAG) pytest /tests
 
 test2:
-	docker run --gpus="$(GPU)" --rm --interactive --tty \
+	docker run --gpus='"device=$(GPU)"' --rm --interactive --tty \
 		$(IMAGE_TAG) bash -c "https_proxy=$(https_proxy) git clone --recursive https://github.com/ak110/pytoolkit.git && cd pytoolkit && pytest"
 
 shell:

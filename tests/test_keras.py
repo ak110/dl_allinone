@@ -1,7 +1,9 @@
 import numpy as np
 
 
-def test_run(tmpdir, keras):
+def test_run(tmpdir):
+    import keras
+
     X_train = np.random.rand(10, 28, 28, 3)
     y_train = np.random.rand(10)
 
@@ -19,3 +21,10 @@ def test_run(tmpdir, keras):
 
     model = keras.models.load_model(str(tmpdir / "model.h5"))
     assert model.predict(X_train).shape == (len(X_train), 1)
+
+
+def test_load_data():
+    """<https://github.com/keras-team/keras/issues/12729>"""
+    import keras
+
+    keras.datasets.imdb.load_data()
