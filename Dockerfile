@@ -270,14 +270,6 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
-# 参考: https://github.com/uber/horovod/blob/master/Dockerfile
-
-# https://github.com/tensorflow/tensorflow/blob/v1.13.1/tensorflow/tools/pip_package/setup.py : numpy >= 1.14.5, <= 2
-
-# albumentations 0.1.12 : imgaug<0.2.7,>=0.2.5
-
-# 'typing-extensions>=3.7.4' は mypy 用。なぜかchainerのPython2用の依存関係に従ってしまう？
-
 ARG TENSORFLOW_VERSION=2.0.0
 ARG PYTORCH_VERSION=1.3.0
 ARG TORCHVISION_VERSION=0.4.0
@@ -286,6 +278,7 @@ RUN set -x && \
     pip install --no-cache-dir \
         'git+https://www.github.com/keras-team/keras-contrib.git' \
         'scikit-optimize[plots]' \
+        # mypy用バージョン指定。なぜかchainerのPython2用の依存関係に従ってしまう？
         'typing-extensions>=3.7.4' \
         Augmentor \
         Flask \
@@ -307,7 +300,6 @@ RUN set -x && \
         catboost \
         category_encoders \
         chainer \
-        chainercv \
         chainerrl \
         cnn_finetune \
         cookiecutter \
@@ -336,6 +328,7 @@ RUN set -x && \
         image-classifiers \
         imageio \
         imbalanced-learn \
+        # albumentations : imgaug<0.2.7,>=0.2.5  <https://github.com/albu/albumentations/blob/master/setup.py>
         imgaug==0.2.6 \
         imgcrop \
         imgdup \
@@ -344,11 +337,11 @@ RUN set -x && \
         janome \
         japanize-matplotlib \
         joblib \
-        jupyter-tensorboard \
         jupyterlab \
         jupyterlab-git \
         jupyterlab_code_formatter \
         kaggle \
+        keras2onnx \
         matplotlib \
         mecab-python3 \
         mkl \
@@ -423,9 +416,22 @@ RUN set -x && \
         xlwt \
         xonsh \
         yapf \
+        # 依存関係に注意
+        chainercv \
+        jupyter-tensorboard \
         && \
     python3 -m nltk.downloader -d /usr/local/share/nltk_data popular && \
     python3 -m spacy download en --no-cache
+
+# 依存関係の問題があって後回しなやつ
+RUN set -x && \
+    pip install --no-cache-dir \
+        'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
+        'git+https://github.com/facebookresearch/fastText.git' \
+        ptk \
+        pyfasttext \
+        tslearn \
+        ;
 
 # jupyter関連
 RUN set -x && \
@@ -441,21 +447,12 @@ RUN set -x && \
         && \
     jupyter nbextension enable --sys-prefix --py widgetsnbextension
 
-# 依存関係の問題があって後回しなやつ
-RUN set -x && \
-    pip install --no-cache-dir \
-        'git+https://github.com/cocodataset/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI' \
-        'git+https://github.com/facebookresearch/fastText.git' \
-        ptk \
-        pyfasttext \
-        tslearn \
-        ;
-
 # LightGBM
 RUN set -x && \
     pip install --no-cache-dir --install-option=--gpu lightgbm
 
 # horovod
+# 参考: https://github.com/uber/horovod/blob/master/Dockerfile
 RUN set -x && \
     ldconfig /usr/local/cuda/lib64/stubs && \
     HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 pip install --no-cache-dir horovod && \
