@@ -279,8 +279,8 @@ RUN set -ex; \
 # 'typing-extensions>=3.7.4' は mypy 用。なぜかchainerのPython2用の依存関係に従ってしまう？
 
 ARG TENSORFLOW_VERSION=2.0.0
-ARG PYTORCH_VERSION=1.1.0
-ARG TORCHVISION_VERSION=0.3.0
+ARG PYTORCH_VERSION=1.3.0
+ARG TORCHVISION_VERSION=0.4.0
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
