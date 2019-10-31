@@ -34,6 +34,9 @@ ENV LANG='ja_JP.UTF-8' \
     LC_ALL='ja_JP.UTF-8' \
     LANGUAGE='ja_JP:ja'
 
+# https://horovod.readthedocs.io/en/latest/index.html
+# > If you've installed TensorFlow from PyPI, make sure that the g++-4.8.5 or g++-4.9 is installed.
+ARG GPP_VERSION=4.8
 # aptその2
 RUN set -x && \
     http_proxy=$APT_PROXY apt-get update && \
@@ -57,7 +60,7 @@ RUN set -x && \
         file \
         fonts-ipafont \
         fonts-liberation \
-        g++ \
+        g++-$GPP_VERSION \
         gdb \
         graphviz \
         hdf5-tools \
