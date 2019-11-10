@@ -274,8 +274,8 @@ RUN set -ex; \
 	rm -f get-pip.py
 
 ARG TENSORFLOW_VERSION=2.0.0
-ARG PYTORCH_VERSION=1.3.0
-ARG TORCHVISION_VERSION=0.4.0
+ARG PYTORCH_VERSION=1.3.1
+ARG TORCHVISION_VERSION=0.4.2
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
