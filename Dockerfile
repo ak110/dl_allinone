@@ -248,10 +248,10 @@ ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ARG PYTHON_PIP_VERSION="19.2.3"
+ARG PYTHON_PIP_VERSION="19.3.1"
 # https://github.com/pypa/get-pip
-ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/309a56c5fd94bd1134053a541cb4657a4e47e09d/get-pip.py"
-ARG PYTHON_GET_PIP_SHA256="57e3643ff19f018f8a00dfaa6b7e4620e3c1a7a2171fd218425366ec006b3bfe"
+ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/ffe826207a010164265d9cc807978e3604d18ca0/get-pip.py"
+ARG PYTHON_GET_PIP_SHA256="b86f36cc4345ae87bfd4f10ef6b2dbfa7a872fbff70608a1e43944d283fd0eee"
 
 RUN set -ex; \
 	\
@@ -267,7 +267,7 @@ RUN set -ex; \
 	\
 	find /usr/local -depth \
 		\( \
-			\( -type d -a \( -name test -o -name tests \) \) \
+			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
 			-o \
 			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
 		\) -exec rm -rf '{}' +; \
