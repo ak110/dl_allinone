@@ -400,6 +400,7 @@ RUN set -x && \
         sphinx-autobuild \
         sphinx-autodoc-typehints \
         sphinx_rtd_theme \
+        stickytape \
         tabulate \
         tensorflow-addons \
         tensorflow-datasets \
@@ -437,11 +438,15 @@ RUN set -x && \
 
 # jupyter関連
 RUN set -x && \
+    export NODE_OPTIONS=--max-old-space-size=4096 &&\
     jupyter labextension install \
         @jupyter-widgets/jupyterlab-manager \
         @jupyterlab/git \
         @jupyterlab/toc \
+        jupyterlab-chart-editor \
+        jupyterlab-plotly \
         jupyterlab_tensorboard \
+        plotlywidget \
         && \
     jupyter serverextension enable --sys-prefix --py \
         jupyterlab \
