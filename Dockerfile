@@ -321,7 +321,6 @@ RUN set -x && \
         fire \
         flake8 \
         flake8-bugbear \
-        flake8-comprehensions \
         gensim \
         gluoncv \
         gluonnlp \
