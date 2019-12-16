@@ -283,6 +283,8 @@ RUN set -x && \
         'scikit-optimize[plots]' \
         # mypy用バージョン指定。なぜかchainerのPython2用の依存関係に従ってしまう？
         'typing-extensions>=3.7.4' \
+        # 何故かpipenvのリリースが滞っているのでGitHubから。2019/11/10 20:09 JST版。
+        'git+https://github.com/pypa/pipenv.git@3e63f07' \
         Augmentor \
         Flask \
         Flask-Login \
@@ -363,8 +365,8 @@ RUN set -x && \
         passlib \
         pip-tools \
         pipdeptree \
-        pipenv \
         plotly \
+        poetry \
         pretrainedmodels \
         progressbar2 \
         pycodestyle \
