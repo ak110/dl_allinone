@@ -356,6 +356,9 @@ RUN set -x && \
         noise \
         nose \
         numba \
+        # https://github.com/tensorflow/tensorflow/issues/30120
+        # https://github.com/tensorflow/tensorflow/issues/31249
+        'numpy<1.17' \
         onnxmltools \
         opencv-python \
         openpyxl \
