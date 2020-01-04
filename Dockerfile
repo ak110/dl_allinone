@@ -105,6 +105,8 @@ RUN set -x && \
         pandoc \
         protobuf-compiler \
         psmisc \
+        # for venv
+        python3-distutils \
         rsync \
         screen \
         sl \
