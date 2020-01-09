@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.0-cudnn7-devel
+FROM nvidia/cuda:10.1-cudnn7-devel
 ARG DISTRIB_CODENAME=bionic
 
 # 実行時に残さないようにENVではなくARGでnoninteractive
@@ -85,6 +85,9 @@ RUN set -x && \
         liblzma-dev \
         libmecab-dev \
         libncurses5-dev \
+        # TensorRT6 (TensorFlow用)
+        libnvinfer-plugin6=6.0.1-1+cuda10.1 \
+        libnvinfer6=6.0.1-1+cuda10.1 \
         libopencv-dev \
         libpng-dev \
         libprotobuf-dev \
@@ -275,7 +278,7 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
-ARG TENSORFLOW_VERSION=2.0.0
+ARG TENSORFLOW_VERSION=2.1.0
 ARG PYTORCH_VERSION=1.3.1
 ARG TORCHVISION_VERSION=0.4.2
 RUN set -x && \
@@ -310,7 +313,7 @@ RUN set -x && \
         chainerrl \
         cnn_finetune \
         cookiecutter \
-        cupy-cuda100 \
+        cupy-cuda101 \
         cysignals \
         cython \
         diskcache \
@@ -352,7 +355,7 @@ RUN set -x && \
         mecab-python3 \
         mkl \
         mpi4py \
-        mxnet-cu100mkl \
+        mxnet-cu101mkl \
         mypy \
         nltk \
         noise \
@@ -411,8 +414,8 @@ RUN set -x && \
         tabulate \
         tensorflow-addons \
         tensorflow-datasets \
-        tensorflow-gpu==$TENSORFLOW_VERSION \
         tensorflow-hub \
+        tensorflow==$TENSORFLOW_VERSION \
         tensorpack \
         tf2onnx \
         torch \
