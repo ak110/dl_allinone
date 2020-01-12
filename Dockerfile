@@ -469,10 +469,11 @@ RUN set -x && \
     pip install --no-cache-dir --install-option=--gpu lightgbm
 
 # horovod
-# 参考: https://github.com/uber/horovod/blob/master/Dockerfile
+# 参考: https://github.com/horovod/horovod/blob/master/Dockerfile.gpu
 RUN set -x && \
     ldconfig /usr/local/cuda/lib64/stubs && \
-    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 pip install --no-cache-dir horovod && \
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=1 \
+        pip install --no-cache-dir horovod && \
     ldconfig
 
 # 最後にPillow-SIMD
