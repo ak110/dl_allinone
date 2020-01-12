@@ -337,7 +337,7 @@ RUN set -x && \
         image-classifiers \
         imageio \
         imbalanced-learn \
-        # albumentations : imgaug<0.2.7,>=0.2.5  <https://github.com/albu/albumentations/blob/master/setup.py>
+        # albumentations : imgaug<0.2.7,>=0.2.5  <https://github.com/albumentations-team/albumentations/blob/master/setup.py#L9>
         imgaug==0.2.6 \
         imgcrop \
         imgdup \
@@ -345,7 +345,6 @@ RUN set -x && \
         iterative-stratification \
         janome \
         japanize-matplotlib \
-        joblib \
         jupyterlab \
         jupyterlab-git \
         jupyterlab_code_formatter \
