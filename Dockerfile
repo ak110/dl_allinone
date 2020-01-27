@@ -279,6 +279,7 @@ RUN set -ex; \
 	rm -f get-pip.py
 
 ARG TENSORFLOW_VERSION=2.1.0
+ARG TFA_VERSION=0.7.1
 ARG PYTORCH_VERSION=1.4.0
 ARG TORCHVISION_VERSION=0.5.0
 RUN set -x && \
@@ -411,7 +412,7 @@ RUN set -x && \
         sphinx_rtd_theme \
         stickytape \
         tabulate \
-        tensorflow-addons \
+        tensorflow-addons==$TFA_VERSION \
         tensorflow-datasets \
         tensorflow-hub \
         tensorflow==$TENSORFLOW_VERSION \
