@@ -75,6 +75,8 @@ RUN set -x && \
         language-pack-ja \
         less \
         libatlas-base-dev \
+        # for python
+        libbluetooth-dev \
         libboost-dev \
         libboost-filesystem-dev \
         libboost-system-dev \
@@ -162,7 +164,7 @@ RUN set -x && \
 # python
 # https://github.com/docker-library/python/blob/master/3.7/stretch/Dockerfile
 ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
-ARG PYTHON_VERSION="3.7.4"
+ARG PYTHON_VERSION="3.7.6"
 RUN set -ex \
 	\
 	&& export GNUPGHOME="$(mktemp -d)" \
@@ -187,6 +189,7 @@ RUN set -ex \
 		--build="$gnuArch" \
 		--enable-loadable-sqlite-extensions \
 		--enable-optimizations \
+		--enable-option-checking=fatal \
 		--enable-shared \
 		--with-system-expat \
 		--with-system-ffi \
@@ -253,10 +256,10 @@ ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ARG PYTHON_PIP_VERSION="19.3.1"
+ARG PYTHON_PIP_VERSION="20.0.2"
 # https://github.com/pypa/get-pip
-ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/ffe826207a010164265d9cc807978e3604d18ca0/get-pip.py"
-ARG PYTHON_GET_PIP_SHA256="b86f36cc4345ae87bfd4f10ef6b2dbfa7a872fbff70608a1e43944d283fd0eee"
+ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/42ad3426cb1ef05863521d7988d5f7fec0c99560/get-pip.py"
+ARG PYTHON_GET_PIP_SHA256="da288fc002d0bb2b90f6fbabc91048c1fa18d567ad067ee713c6e331d3a32b45"
 
 RUN set -ex; \
 	\
