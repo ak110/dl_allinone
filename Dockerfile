@@ -449,15 +449,16 @@ RUN set -x && \
 # jupyter関連
 RUN set -x && \
     export NODE_OPTIONS=--max-old-space-size=4096 &&\
-    jupyter labextension install \
+    jupyter labextension install --no-build \
         @jupyter-widgets/jupyterlab-manager \
         @jupyterlab/git \
         @jupyterlab/toc \
         jupyterlab-chart-editor \
-        jupyterlab-plotly \
+        # jupyterlab-plotly \
         jupyterlab_tensorboard \
-        plotlywidget \
+        # plotlywidget \
         && \
+    jupyter lab build && \
     jupyter serverextension enable --sys-prefix --py \
         jupyterlab \
         jupyterlab_git \
