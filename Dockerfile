@@ -287,7 +287,6 @@ ARG TORCHVISION_VERSION=0.5.0
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
-        'git+https://www.github.com/keras-team/keras-contrib.git' \
         'scikit-optimize[plots]' \
         # mypy用バージョン指定。なぜかchainerのPython2用の依存関係に従ってしまう？
         'typing-extensions>=3.7.4' \
