@@ -488,7 +488,6 @@ RUN set -x && \
 # ・sshdでPermitUserEnvironment yes
 # ・horovod用のNCCL / OpenMPI設定
 # ・cuda、pythonなどのパスを通す
-# ・matplotlibがエラーにならないようにMPLBACKEND=Aggを設定
 # ・sudoでhttp_proxyなどが引き継がれるようにしておく
 # ・最後にldconfigしておく
 RUN set -x && \
@@ -499,7 +498,6 @@ RUN set -x && \
     echo 'rmaps_base_mapping_policy = slot' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'btl_tcp_if_exclude = lo,docker0' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
-    echo 'export MPLBACKEND=Agg' >> /etc/profile.d/docker.sh && \
     echo 'export TF_FORCE_GPU_ALLOW_GROWTH=true' >> /etc/profile.d/docker.sh && \
     echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/docker && \
     echo 'Defaults always_set_home' >> /etc/sudoers.d/docker && \
@@ -509,7 +507,6 @@ RUN set -x && \
 
 # sshd以外の使い方をするとき用環境変数色々
 ENV TZ='Asia/Tokyo' \
-    MPLBACKEND='Agg' \
     TF_FORCE_GPU_ALLOW_GROWTH='true' \
     PYTHONDONTWRITEBYTECODE=1
 
