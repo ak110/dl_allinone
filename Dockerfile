@@ -349,7 +349,6 @@ RUN set -x && \
         japanize-matplotlib \
         jupyterlab \
         jupyterlab-git \
-        jupyterlab_code_formatter \
         kaggle \
         keras2onnx \
         matplotlib \
@@ -448,23 +447,21 @@ RUN set -x && \
         ;
 
 # jupyter関連
+# plotly: https://plot.ly/python/getting-started/#jupyterlab-support-python-35
 RUN set -x && \
     export NODE_OPTIONS=--max-old-space-size=4096 &&\
-    jupyter labextension install --no-build \
+    (jupyter labextension install --debug-log-path=/tmp/jupyterlab-build.log \
         @jupyter-widgets/jupyterlab-manager \
         @jupyterlab/git \
         @jupyterlab/toc \
-        jupyterlab-chart-editor \
+        # jupyterlab-chart-editor \
         # jupyterlab-plotly \
         jupyterlab_tensorboard \
         # plotlywidget \
-        && \
-    jupyter lab build && \
+        || (cat /tmp/jupyterlab-build.log && false)) && \
     jupyter serverextension enable --sys-prefix --py \
         jupyterlab \
-        jupyterlab_git \
-        && \
-    jupyter nbextension enable --sys-prefix --py widgetsnbextension
+        jupyterlab_git
 
 # LightGBM
 RUN set -x && \
