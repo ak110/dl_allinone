@@ -418,6 +418,7 @@ RUN set -x && \
         tensorflow-hub \
         tensorflow==$TENSORFLOW_VERSION \
         tensorpack \
+        tf2cv \
         tf2onnx \
         torch \
         torchaudio \
