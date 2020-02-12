@@ -39,25 +39,19 @@ ENV LANG='ja_JP.UTF-8' \
 ARG GPP_VERSION=4.8
 # aptその2
 RUN set -x && \
+    yes | env http_proxy=$APT_PROXY unminimize && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
         ack-grep \
         apt-file \
         automake \
-        bash-completion \
         bc \
-        bsdmainutils \
         cifs-utils \
         cmake \
-        command-not-found \
-        cpio \
-        debconf-i18n \
         dialog \
         dpkg-dev \
-        ed \
         emacs \
         entr \
-        file \
         fonts-ipafont \
         fonts-liberation \
         g++-$GPP_VERSION \
@@ -69,11 +63,8 @@ RUN set -x && \
         imagemagick \
         inetutils-traceroute \
         iotop \
-        iproute2 \
-        iputils-ping \
         jq \
         language-pack-ja \
-        less \
         libatlas-base-dev \
         # for python
         libbluetooth-dev \
@@ -99,28 +90,22 @@ RUN set -x && \
         libtool \
         libwebp-dev \
         libyaml-dev \
-        man-db \
         mecab \
         mecab-ipadic-utf8 \
         net-tools \
         nvidia-opencl-dev \
-        openssh-client \
         openssh-server \
         p7zip-full \
         pandoc \
         protobuf-compiler \
-        psmisc \
         # for venv
         python3-distutils \
-        rsync \
         screen \
         sl \
         smbclient \
         subversion \
-        sudo \
         swig \
         tcl-dev \
-        telnet \
         tesseract-ocr \
         tesseract-ocr-jpn \
         tk-dev \
