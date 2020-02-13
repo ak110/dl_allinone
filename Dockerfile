@@ -469,33 +469,49 @@ RUN set -x && \
 RUN set -x && \
     npm install -g pyright
 
-# ・sshd用ディレクトリ作成
-# ・sshdでPermitUserEnvironment yes
-# ・horovod用のNCCL / OpenMPI設定
-# ・cuda、pythonなどのパスを通す
-# ・sudoでhttp_proxyなどが引き継がれるようにしておく
-# ・最後にldconfigしておく
+# ユーザー作成
+ARG RUN_USER=user
+ARG RUN_UID=1000
 RUN set -x && \
+    useradd --create-home --shell=/bin/bash --uid=$RUN_UID $RUN_USER
+
+RUN set -x && \
+    # sshd用ディレクトリ作成
     mkdir --mode=744 /var/run/sshd && \
+    # sshdで~/.ssh/environmentがあれば読み込むようにする
     sed -i 's/#PermitUserEnvironment no/PermitUserEnvironment yes/' /etc/ssh/sshd_config && \
+    # horovod用のNCCL設定
     echo 'NCCL_DEBUG=INFO' >> /etc/nccl.conf && \
+    # horovod用のOpenMPI設定
     echo 'hwloc_base_binding_policy = none' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'rmaps_base_mapping_policy = slot' >> /usr/local/etc/openmpi-mca-params.conf && \
     echo 'btl_tcp_if_exclude = lo,docker0' >> /usr/local/etc/openmpi-mca-params.conf && \
+    # 環境変数設定
     echo 'export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH' > /etc/profile.d/docker.sh && \
+    echo 'export BETTER_EXCEPTIONS=1' >> /etc/profile.d/docker.sh && \
     echo 'export TF_FORCE_GPU_ALLOW_GROWTH=true' >> /etc/profile.d/docker.sh && \
+    # sudoでhttp_proxyなどが引き継がれるようにしておく
     echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/docker && \
     echo 'Defaults always_set_home' >> /etc/sudoers.d/docker && \
+    # $RUN_USERをパスワード無しでsudoできるようにしておく
+    echo $RUN_USER ALL=\(ALL\) NOPASSWD:ALL >> /etc/sudoers.d/docker　&&\
     chmod 0440 /etc/sudoers.d/* && \
     visudo --check && \
+    # 最後にldconfigしておく
     ldconfig
 
 # sshd以外の使い方をするとき用環境変数色々
 ENV TZ='Asia/Tokyo' \
-    TF_FORCE_GPU_ALLOW_GROWTH='true' \
-    PYTHONDONTWRITEBYTECODE=1
+    PYTHONIOENCODING='utf-8' \
+    PYTHONDONTWRITEBYTECODE=1 \
+    BETTER_EXCEPTIONS=1 \
+    TF_FORCE_GPU_ALLOW_GROWTH='true'
 
+# SSHホストキーを固定で用意
 COPY --chown=root:root .ssh_host_keys/ssh_host_* /etc/ssh/
-COPY start_sshd.sh /root/
+# 作った日時を記録しておく (一応)
 RUN date '+%Y/%m/%d %H:%M:%S' > /image.version
-CMD ["/root/start_sshd.sh"]
+# sshd
+# -D: デタッチしない
+# -e: ログを標準エラーへ
+CMD ["/usr/sbin/sshd", "-D", "-e"]

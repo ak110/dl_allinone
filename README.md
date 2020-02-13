@@ -11,30 +11,26 @@
 
     make build
 
-## run
+## 動作確認
+
+    make shell
+
+## run (例)
 
     docker run \
         --gpus=all \
         --detach \
         --restart=always \
         --volume="/etc/localtime:/etc/localtime:ro" \
-        --volume="/お好みのパス:/home/user" \
-        --volume="/お好みのパス:/data" \
-        --env="SSH_USER=user" \
-        --env="SSH_UID=1000" \
-        --env="SSH_KEY=SSHキー" \
+        --volume="/お好みのパス1:/home/user" \
+        --volume="/お好みのパス1:/data" \
         --publish="お好みのポート番号:22" \
         --name=dl_allinone dl_allinone
 
-環境変数:
+事前に`/お好みのパス1/.ssh/authorized_keys`を作成しておきSSHログインして使う。
+(もしくは実行したいコマンドを付けてdocker runする。)
 
-- `SSH_USER`: ユーザ名
-- `SSH_UID`: UID
-- `SSH_KEY`: SSHキー (例: ssh-rsa AAAAB3Nza(略)ILALci+4zLDQ0w==)
-- `SSH_PASS`: パスワード
-
-`SSH_KEY` と `SSH_PASS` はどちらか必須。
-
+UIDは(ビルド時に変えていなければ)1000。
 
 ## logs
 
