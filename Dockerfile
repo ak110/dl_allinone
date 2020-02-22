@@ -497,6 +497,8 @@ RUN set -x && \
     echo $RUN_USER ALL=\(ALL\) NOPASSWD:ALL >> /etc/sudoers.d/docker　&&\
     chmod 0440 /etc/sudoers.d/* && \
     visudo --check && \
+    # completion
+    poetry completions bash > /etc/bash_completion.d/poetry.bash-completion && \
     # 最後にldconfigしておく
     ldconfig
 
