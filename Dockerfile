@@ -462,8 +462,7 @@ RUN set -x && \
 
 # 最後にPillow-SIMD
 RUN set -x && \
-    pip uninstall --no-cache-dir --yes Pillow && \
-    pip install --no-cache-dir Pillow-SIMD
+    CC="cc -mavx2" pip install --no-cache-dir --force-reinstall Pillow-SIMD
 
 # pyright
 RUN set -x && \
