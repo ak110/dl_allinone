@@ -305,6 +305,7 @@ RUN set -x && \
         cython \
         diskcache \
         editdistance \
+        'efficientnet>=1.1.0' \
         eli5 \
         fastai \
         fasteners \
