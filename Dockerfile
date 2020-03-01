@@ -267,16 +267,9 @@ RUN set -ex; \
 	rm -f get-pip.py
 
 ARG TENSORFLOW_VERSION=2.1.0
-ARG PYTORCH_VERSION=1.4.0
-ARG TORCHVISION_VERSION=0.5.0
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
-        'scikit-optimize[plots]' \
-        # mypy用バージョン指定。なぜかchainerのPython2用の依存関係に従ってしまう？
-        'typing-extensions>=3.7.4' \
-        # 何故かpipenvのリリースが滞っているのでGitHubから。2019/11/10 20:09 JST版。
-        'git+https://github.com/pypa/pipenv.git@3e63f07' \
         Augmentor \
         Flask \
         Flask-Login \
@@ -305,7 +298,7 @@ RUN set -x && \
         cython \
         diskcache \
         editdistance \
-        'efficientnet>=1.1.0' \
+        efficientnet\>=1.1.0 \
         eli5 \
         fastai \
         fasteners \
@@ -349,7 +342,7 @@ RUN set -x && \
         numba \
         # https://github.com/tensorflow/tensorflow/issues/30120
         # https://github.com/tensorflow/tensorflow/issues/31249
-        'numpy<1.17' \
+        numpy\<1.17 \
         onnxmltools \
         opencv-python \
         openpyxl \
@@ -359,6 +352,7 @@ RUN set -x && \
         passlib \
         pip-tools \
         pipdeptree \
+        pipenv \
         plotly \
         poetry \
         pretrainedmodels \
@@ -386,6 +380,7 @@ RUN set -x && \
         rope \
         scikit-image \
         scikit-learn \
+        scikit-optimize\[plots\] \
         seaborn \
         segmentation-models \
         signate \
@@ -401,7 +396,7 @@ RUN set -x && \
         tensorflow-addons \
         tensorflow-datasets \
         tensorflow-hub \
-        tensorflow==$TENSORFLOW_VERSION \
+        tensorflow\>=2.1.0 \
         tensorpack \
         tf2cv \
         tf2onnx \
@@ -411,6 +406,8 @@ RUN set -x && \
         torchvision \
         tqdm \
         tsfresh \
+        # mypy用バージョン指定。なぜかchainerのPython2用の依存関係に従ってしまう？
+        typing-extensions\>=3.7.4 \
         xgboost \
         xlrd \
         xlwt \
