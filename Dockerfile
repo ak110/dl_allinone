@@ -326,7 +326,7 @@ RUN set -x && \
         iterative-stratification \
         janome \
         japanize-matplotlib \
-        jupyterlab \
+        jupyterlab\<2.0.0 \
         jupyterlab-git \
         kaggle \
         keras2onnx \
