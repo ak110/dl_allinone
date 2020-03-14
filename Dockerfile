@@ -282,6 +282,7 @@ RUN set -x && \
         allennlp \
         autopep8 \
         bandit \
+        bashplotlib \
         bcrypt \
         better_exceptions \
         black \
