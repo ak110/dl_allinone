@@ -301,6 +301,7 @@ RUN set -x && \
         editdistance \
         efficientnet\>=1.1.0 \
         eli5 \
+        ensemble-boxes \
         fastai \
         fasteners \
         fastprogress \
