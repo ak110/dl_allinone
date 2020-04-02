@@ -346,7 +346,7 @@ RUN set -x && \
         onnxmltools \
         opencv-python \
         openpyxl \
-        optuna \
+        optuna\>=1.3.0 \
         pandas \
         pandas-profiling \
         passlib \
