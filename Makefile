@@ -28,6 +28,9 @@ help:
 	ssh-keygen -t ed25519 -f .ssh_host_keys/ssh_host_ed25519_key -N ''
 	ssh-keygen -t rsa -f .ssh_host_keys/ssh_host_rsa_key -N ''
 
+rebuild:
+	$(MAKE) build BUILD_ARGS="$(BUILD_ARGS) --no-cache"
+
 build: .ssh_host_keys
 	docker build --pull $(BUILD_ARGS) --tag=$(IMAGE_TAG) .
 	$(MAKE) test
