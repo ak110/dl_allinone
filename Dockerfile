@@ -414,10 +414,7 @@ RUN set -x && \
         yapf \
         # 依存関係に注意
         chainercv \
-        jupyter-tensorboard \
-        && \
-    python3 -m nltk.downloader -d /usr/local/share/nltk_data popular && \
-    python3 -m spacy download en --no-cache
+        jupyter-tensorboard
 
 # 依存関係の問題があって後回しなやつ
 RUN set -x && \
@@ -427,6 +424,12 @@ RUN set -x && \
         pycocotools \
         tslearn \
         ;
+
+# 辞書など
+RUN set -x && \
+    python3 -m nltk.downloader -d /usr/local/share/nltk_data popular
+RUN set -x && \
+    python3 -m spacy download en --no-cache
 
 # jupyter関連
 # plotly: https://plot.ly/python/getting-started/#jupyterlab-support-python-35
