@@ -372,11 +372,13 @@ RUN set -x && \
         python-utils \
         pytorch-ignite \
         pytorch-lightning \
+        pyupgrade \
         pyyaml \
         recommonmark \
         requests \
         rgf_python \
         rope \
+        safety \
         scikit-image \
         scikit-learn \
         scikit-optimize\[plots\] \
