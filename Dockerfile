@@ -147,16 +147,17 @@ RUN set -x && \
     rm /opt/openmpi.tar.bz2
 
 # python
-# https://github.com/docker-library/python/blob/master/3.7/stretch/Dockerfile
-ARG GPG_KEY="0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
-ARG PYTHON_VERSION="3.7.7"
+# https://github.com/docker-library/python/blob/master/3.8/buster/Dockerfile
+ARG GPG_KEY="E3FF2839C048B25C084DEBE9B26995E310250568"
+ARG GPG_KEY_ID="0xB26995E310250568"
+ARG PYTHON_VERSION="3.8.3"
 RUN set -ex \
 	\
 	&& export GNUPGHOME="$(mktemp -d)" \
 	&& echo "==================================================" \
 	&& echo workaround of: gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
 	&& echo "--------------------------------------------------" \
-	&& wget --no-cache -O "$GNUPGHOME/key.asc" "http://ha.pool.sks-keyservers.net/pks/lookup?op=get&search=0x2D347EA6AA65421D" \
+	&& wget --no-cache -O "$GNUPGHOME/key.asc" "http://ha.pool.sks-keyservers.net/pks/lookup?op=get&search=$GPG_KEY_ID" \
 	&& gpg --import "$GNUPGHOME/key.asc" \
 	&& echo "==================================================" \
 	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
@@ -180,42 +181,6 @@ RUN set -ex \
 		--with-system-ffi \
 		--without-ensurepip \
 	&& make -j "$(nproc)" \
-# setting PROFILE_TASK makes "--enable-optimizations" reasonable: https://bugs.python.org/issue36044 / https://github.com/docker-library/python/issues/160#issuecomment-509426916
-		PROFILE_TASK='-m test.regrtest --pgo \
-			test_array \
-			test_base64 \
-			test_binascii \
-			test_binhex \
-			test_binop \
-			test_bytes \
-			test_c_locale_coercion \
-			test_class \
-			test_cmath \
-			test_codecs \
-			test_compile \
-			test_complex \
-			test_csv \
-			test_decimal \
-			test_dict \
-			test_float \
-			test_fstring \
-			test_hashlib \
-			test_io \
-			test_iter \
-			test_json \
-			test_long \
-			test_math \
-			test_memoryview \
-			test_pickle \
-			test_re \
-			test_set \
-			test_slice \
-			test_struct \
-			test_threading \
-			test_time \
-			test_traceback \
-			test_unicode \
-		' \
 	&& make install \
 	&& ldconfig \
 	\
@@ -241,10 +206,10 @@ ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ARG PYTHON_PIP_VERSION="20.0.2"
+ARG PYTHON_PIP_VERSION="20.1"
 # https://github.com/pypa/get-pip
-ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/d59197a3c169cef378a22428a3fa99d33e080a5d/get-pip.py"
-ARG PYTHON_GET_PIP_SHA256="421ac1d44c0cf9730a088e337867d974b91bdce4ea2636099275071878cc189e"
+ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/1fe530e9e3d800be94e04f6428460fc4fb94f5a9/get-pip.py"
+ARG PYTHON_GET_PIP_SHA256="ce486cddac44e99496a702aa5c06c5028414ef48fdfd5242cd2fe559b13d4348"
 
 RUN set -ex; \
 	\
