@@ -266,7 +266,6 @@ RUN set -ex; \
 		\) -exec rm -rf '{}' +; \
 	rm -f get-pip.py
 
-ARG TENSORFLOW_VERSION=2.1.0
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
     pip install --no-cache-dir \
@@ -397,7 +396,7 @@ RUN set -x && \
         tensorflow-addons\>=0.9.0 \
         tensorflow-datasets \
         tensorflow-hub \
-        tensorflow\>=2.1.0 \
+        tensorflow\>=2.2.0 \
         tensorpack \
         tf2cv \
         tf2onnx \
