@@ -438,7 +438,7 @@ RUN set -x && \
     export NODE_OPTIONS=--max-old-space-size=4096 &&\
     (jupyter labextension install --debug-log-path=/tmp/jupyterlab-build.log \
         @jupyter-widgets/jupyterlab-manager \
-        @jupyterlab/git \
+        # @jupyterlab/git \
         @jupyterlab/toc \
         # jupyterlab-chart-editor \
         # jupyterlab-plotly \
