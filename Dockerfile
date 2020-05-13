@@ -491,7 +491,7 @@ RUN set -x && \
     echo 'export BETTER_EXCEPTIONS=1' >> /etc/profile.d/docker.sh && \
     echo 'export TF_FORCE_GPU_ALLOW_GROWTH=true' >> /etc/profile.d/docker.sh && \
     # sudoでhttp_proxyなどが引き継がれるようにしておく
-    echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy"' > /etc/sudoers.d/docker && \
+    echo 'Defaults env_keep += "http_proxy https_proxy ftp_proxy no_proxy PIP_TRUSTED_HOST PIP_INDEX_URL"' > /etc/sudoers.d/docker && \
     echo 'Defaults always_set_home' >> /etc/sudoers.d/docker && \
     # $RUN_USERをパスワード無しでsudoできるようにしておく
     echo $RUN_USER ALL=\(ALL\) NOPASSWD:ALL >> /etc/sudoers.d/docker　&&\
