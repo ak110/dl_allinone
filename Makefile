@@ -3,9 +3,11 @@ include .env
 
 ifdef http_proxy
 BUILD_ARGS += --build-arg="http_proxy=$(http_proxy)"
+RUN_ARGS += --env="http_proxy=$(http_proxy)"
 endif
 ifdef https_proxy
 BUILD_ARGS += --build-arg="https_proxy=$(https_proxy)"
+RUN_ARGS += --env="https_proxy=$(https_proxy)"
 endif
 ifdef APT_PROXY
 BUILD_ARGS += --build-arg="APT_PROXY=$(APT_PROXY)"
@@ -38,16 +40,16 @@ build: .ssh_host_keys
 	docker images $(IMAGE_TAG)
 
 test:
-	docker run --gpus='"device=$(GPU)"' --rm --interactive --tty \
+	docker run --gpus='"device=$(GPU)"' --rm --interactive --tty $(RUN_ARGS) \
 		--volume="$(CURDIR)/tests:/tests:ro" \
 		$(IMAGE_TAG) pytest /tests
 
 test2:
-	docker run --gpus='"device=$(GPU)"' --rm --interactive --tty \
-		$(IMAGE_TAG) bash -c "https_proxy=$(https_proxy) git clone --recursive https://github.com/ak110/pytoolkit.git && cd pytoolkit && pytest"
+	docker run --gpus='"device=$(GPU)"' --rm --interactive --tty $(RUN_ARGS) \
+		$(IMAGE_TAG) bash -c "git clone --recursive --depth=1 https://github.com/ak110/pytoolkit.git && cd pytoolkit && pytest"
 
 shell:
-	docker run --gpus=all --rm --interactive --tty $(IMAGE_TAG) bash
+	docker run --gpus=all --rm --interactive --tty $(RUN_ARGS) $(IMAGE_TAG) bash
 
 lint:
 	docker pull hadolint/hadolint
