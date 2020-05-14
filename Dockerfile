@@ -393,7 +393,8 @@ RUN set -x && \
         sphinx_rtd_theme \
         stickytape \
         tabulate \
-        tensorflow-addons\>=0.9.0 \
+        # tensorflow-addons\>=0.9.0
+        tfa-nightly \
         tensorflow-datasets \
         tensorflow-hub \
         tensorflow\>=2.2.0 \
