@@ -291,8 +291,6 @@ RUN set -x && \
         iterative-stratification \
         janome \
         japanize-matplotlib \
-        jupyterlab\<2.0.0 \
-        jupyterlab-git \
         kaggle \
         keras2onnx \
         matplotlib \
@@ -379,8 +377,7 @@ RUN set -x && \
         xonsh \
         yapf \
         # 依存関係に注意
-        chainercv \
-        jupyter-tensorboard
+        chainercv
 
 # 依存関係の問題があって後回しなやつ
 RUN set -x && \
@@ -400,16 +397,21 @@ RUN set -x && \
 # jupyter関連
 # plotly: https://plot.ly/python/getting-started/#jupyterlab-support-python-35
 RUN set -x && \
-    export NODE_OPTIONS=--max-old-space-size=4096 &&\
-    (jupyter labextension install --debug-log-path=/tmp/jupyterlab-build.log \
-        @jupyter-widgets/jupyterlab-manager \
-        # @jupyterlab/git \
-        @jupyterlab/toc \
-        # jupyterlab-chart-editor \
-        # jupyterlab-plotly \
-        jupyterlab_tensorboard \
-        # plotlywidget \
-        || (cat /tmp/jupyterlab-build.log && false)) && \
+    pip install --no-cache-dir \
+        jupyter-tensorboard \
+        jupyterlab \
+        jupyterlab-git \
+        && \
+    # export NODE_OPTIONS=--max-old-space-size=4096 &&\
+    # (jupyter labextension install --debug-log-path=/tmp/jupyterlab-build.log \
+    #     @jupyter-widgets/jupyterlab-manager \
+    #     @jupyterlab/git \
+    #     @jupyterlab/toc \
+    #     jupyterlab-chart-editor \
+    #     jupyterlab-plotly \
+    #     jupyterlab_tensorboard \
+    #     plotlywidget \
+    #     || (cat /tmp/jupyterlab-build.log && false)) && \
     jupyter serverextension enable --sys-prefix --py \
         jupyterlab \
         jupyterlab_git
