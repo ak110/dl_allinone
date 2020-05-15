@@ -3,7 +3,7 @@ def test_run():
     import xgboost
 
     data = sklearn.datasets.load_boston()
-    X, y = data.data, data.target
+    X, y = data.data, data.target  # pylint: disable=no-member
 
     xgb = xgboost.XGBRegressor(n_estimators=3)
     xgb.fit(X[:100], y[:100])

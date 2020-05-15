@@ -3,7 +3,7 @@ def test_run():
     import lightgbm as lgb
 
     data = sklearn.datasets.load_boston()
-    X, y = data.data, data.target
+    X, y = data.data, data.target  # pylint: disable=no-member
 
     lgb_train = lgb.Dataset(X[:100], y[:100])
     lgb_eval = lgb.Dataset(X[100:], y[100:], reference=lgb_train)
