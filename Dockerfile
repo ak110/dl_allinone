@@ -329,7 +329,6 @@ RUN set -x && \
         pytest-cookies \
         pytest-timeout \
         pytest-xdist \
-        pytext-nlp \
         python-dotenv \
         python-utils \
         pytorch-ignite \
