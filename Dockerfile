@@ -186,7 +186,7 @@ RUN set -ex \
 	\
 	&& find /usr/local -depth \
 		\( \
-			\( -type d -a \( -name test -o -name tests \) \) \
+			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
 			-o \
 			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
 		\) -exec rm -rf '{}' + \
@@ -205,11 +205,9 @@ RUN cd /usr/local/bin \
 ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
-# if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ARG PYTHON_PIP_VERSION="20.1"
-# https://github.com/pypa/get-pip
-ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/1fe530e9e3d800be94e04f6428460fc4fb94f5a9/get-pip.py"
-ARG PYTHON_GET_PIP_SHA256="ce486cddac44e99496a702aa5c06c5028414ef48fdfd5242cd2fe559b13d4348"
+ARG PYTHON_PIP_VERSION="20.1.1"
+ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/eff16c878c7fd6b688b9b4c4267695cf1a0bf01b/get-pip.py"
+ARG PYTHON_GET_PIP_SHA256="b3153ec0cf7b7bbf9556932aa37e4981c35dc2a2c501d70d91d2795aa532be79"
 
 RUN set -ex; \
 	\
