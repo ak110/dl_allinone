@@ -317,6 +317,7 @@ RUN set -x && \
         pipenv \
         plotly \
         poetry \
+        pre-commit \
         pretrainedmodels \
         progressbar2 \
         pydot \
@@ -345,6 +346,7 @@ RUN set -x && \
         scikit-optimize\[plots\] \
         seaborn \
         segmentation-models \
+        setup-cfg-fmt \
         signate \
         six \
         sklearn_pandas \
