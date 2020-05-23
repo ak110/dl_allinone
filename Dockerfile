@@ -367,6 +367,7 @@ RUN set -x && \
         torchtext \
         torchvision \
         tqdm \
+        transformers \
         tsfresh \
         # mypy用バージョン指定。なぜかchainerのPython2用の依存関係に従ってしまう？
         typing-extensions\>=3.7.4 \
