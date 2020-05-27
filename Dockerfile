@@ -283,7 +283,6 @@ RUN set -x && \
         imbalanced-learn \
         # albumentations : imgaug<0.2.7,>=0.2.5  <https://github.com/albumentations-team/albumentations/blob/master/setup.py#L9>
         imgaug==0.2.6 \
-        imgcrop \
         imgdup \
         ipywidgets \
         iterative-stratification \
@@ -300,11 +299,10 @@ RUN set -x && \
         noise \
         nose \
         numba \
-        # https://github.com/tensorflow/tensorflow/issues/30120
-        # https://github.com/tensorflow/tensorflow/issues/31249
-        numpy\<1.17 \
+        # https://github.com/cocodataset/cocoapi/issues/356
+        numpy\<1.18 \
         onnxmltools \
-        opencv-python \
+        opencv-python-headless \
         openpyxl \
         optuna\>=1.3.0 \
         pandas \
