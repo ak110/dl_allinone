@@ -430,9 +430,9 @@ RUN set -x && \
 RUN set -x && \
     CC="cc -mavx2" pip install --no-cache-dir --force-reinstall Pillow-SIMD
 
-# pyright
+# npm
 RUN set -x && \
-    npm install -g pyright
+    npm install -g pyright npm-check-updates
 
 # ユーザー作成
 ARG RUN_USER=user
