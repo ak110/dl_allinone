@@ -295,6 +295,7 @@ RUN set -x && \
         mpi4py \
         mxnet-cu101mkl \
         mypy \
+        nlp \
         nltk \
         noise \
         nose \
