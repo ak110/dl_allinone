@@ -317,6 +317,7 @@ RUN set -x && \
         pre-commit \
         pretrainedmodels \
         progressbar2 \
+        pycryptodome \
         pydot \
         pygments \
         pylint \
