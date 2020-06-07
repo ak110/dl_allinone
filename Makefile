@@ -42,7 +42,7 @@ build: .ssh_host_keys
 test:
 	docker run --gpus='"device=$(GPU)"' --rm --interactive --tty $(RUN_ARGS) \
 		--volume="$(CURDIR)/tests:/tests:ro" \
-		$(IMAGE_TAG) pytest /tests
+		$(IMAGE_TAG) bash -c "pip freeze && pytest /tests"
 
 test2:
 	docker run --gpus='"device=$(GPU)"' --rm --interactive --tty $(RUN_ARGS) \
