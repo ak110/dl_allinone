@@ -361,7 +361,8 @@ RUN set -x && \
         tensorflow\>=2.2.0 \
         tensorpack \
         # https://github.com/explosion/spaCy/issues/2883
-        thinc\<8.0.0 \
+        # https://github.com/explosion/spaCy/blob/master/requirements.txt
+        thinc==7.4.1 \
         tf2cv \
         tf2onnx \
         torch \
