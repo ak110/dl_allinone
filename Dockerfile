@@ -387,6 +387,12 @@ RUN set -x && \
         torchvision==0.6.1+cu101 \
         --find-links=https://download.pytorch.org/whl/torch_stable.html
 
+# apex
+RUN set -x && \
+    git clone --depth=1 https://github.com/NVIDIA/apex.git /opt/apex &&\
+    cd /opt/apex &&\
+    pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
+
 # 依存関係の問題があって後回しなやつ
 RUN set -x && \
     pip install --no-cache-dir \
