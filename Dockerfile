@@ -253,7 +253,6 @@ RUN set -x && \
         category_encoders \
         chainer \
         chainerrl \
-        cnn_finetune \
         cookiecutter \
         cupy-cuda101 \
         cysignals \
@@ -377,6 +376,7 @@ RUN set -x && \
 RUN set -x && \
     pip install --no-cache-dir \
         allennlp \
+        cnn-finetune \
         fastai \
         pretrainedmodels \
         pytorch-ignite \
