@@ -241,7 +241,6 @@ RUN set -x && \
         Keras \
         Pillow \
         albumentations \
-        allennlp \
         autopep8 \
         bandit \
         bashplotlib \
@@ -264,7 +263,6 @@ RUN set -x && \
         efficientnet\>=1.1.0 \
         eli5 \
         ensemble-boxes \
-        fastai \
         fasteners \
         fastprogress \
         fastrlock \
@@ -315,7 +313,6 @@ RUN set -x && \
         plotly \
         poetry \
         pre-commit \
-        pretrainedmodels \
         progressbar2 \
         pycryptodome \
         pydot \
@@ -330,8 +327,6 @@ RUN set -x && \
         pytest-xdist \
         python-dotenv \
         python-utils \
-        pytorch-ignite \
-        pytorch-lightning \
         pyupgrade \
         pyyaml \
         recommonmark \
@@ -365,10 +360,6 @@ RUN set -x && \
         thinc==7.4.1 \
         tf2cv \
         tf2onnx \
-        torch \
-        torchaudio \
-        torchtext \
-        torchvision \
         tqdm \
         transformers \
         tsfresh \
@@ -381,6 +372,20 @@ RUN set -x && \
         yapf \
         # 依存関係に注意
         chainercv
+
+# PyTorch関連
+RUN set -x && \
+    pip install --no-cache-dir \
+        allennlp \
+        fastai \
+        pretrainedmodels \
+        pytorch-ignite \
+        pytorch-lightning \
+        torch==1.5.1+cu101 \
+        torchaudio \
+        torchtext \
+        torchvision==0.6.1+cu101 \
+        --find-links=https://download.pytorch.org/whl/torch_stable.html
 
 # 依存関係の問題があって後回しなやつ
 RUN set -x && \
