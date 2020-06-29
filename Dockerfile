@@ -92,6 +92,7 @@ RUN set -x && \
         libyaml-dev \
         mecab \
         mecab-ipadic-utf8 \
+        mecab-jumandic-utf8 \
         net-tools \
         nvidia-opencl-dev \
         openssh-server \
@@ -120,6 +121,8 @@ RUN set -x && \
         zlib1g-dev \
         zsh \
         && \
+    # MeCabの標準はIPA辞書にしておく
+    update-alternatives --set mecab-dictionary /var/lib/mecab/dic/ipadic-utf8 && \
     apt-get install --yes --no-install-recommends nodejs npm && \
     npm cache clean && \
     npm install n -g && \
