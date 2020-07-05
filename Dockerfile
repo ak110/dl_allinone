@@ -379,6 +379,9 @@ RUN set -x && \
 
 # PyTorch関連
 RUN set -x && \
+    # PyTorchが既にインストールされてしまっていないことの確認
+    test $(pip freeze | grep ^torch== | wc -l) -eq 0 && \
+    # PyTorchとそれに依存するものたちのインストール
     pip install --no-cache-dir \
         allennlp \
         cnn-finetune \
