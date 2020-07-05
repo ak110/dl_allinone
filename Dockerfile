@@ -363,6 +363,7 @@ RUN set -x && \
         thinc==7.4.1 \
         tf2cv \
         tf2onnx \
+        tokenizers \
         tqdm \
         transformers \
         tsfresh \
