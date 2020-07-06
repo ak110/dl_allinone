@@ -320,6 +320,8 @@ RUN set -x && \
         pycryptodome \
         pydot \
         pygments \
+        pylama \
+        pylama_pylint \
         pylint \
         pyod \
         pypandoc \
