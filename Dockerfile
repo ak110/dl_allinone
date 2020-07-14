@@ -109,6 +109,9 @@ RUN set -x && \
         tcl-dev \
         tesseract-ocr \
         tesseract-ocr-jpn \
+        tesseract-ocr-jpn-vert \
+        tesseract-ocr-script-jpan \
+        tesseract-ocr-script-jpan-vert \
         tk-dev \
         tmux \
         tmuxinator \
