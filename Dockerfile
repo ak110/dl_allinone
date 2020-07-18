@@ -357,6 +357,7 @@ RUN set -x && \
         sphinx-autodoc-typehints \
         sphinx_rtd_theme \
         stickytape \
+        sympy \
         tabulate \
         tensorflow-addons\>=0.10.0 \
         tensorflow-datasets \
