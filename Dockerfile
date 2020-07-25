@@ -293,6 +293,7 @@ RUN set -x && \
         japanize-matplotlib \
         kaggle \
         keras2onnx \
+        lycon \
         matplotlib \
         # for transformers
         mecab-python3\<1.0.0 \
