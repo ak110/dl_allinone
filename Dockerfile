@@ -322,6 +322,8 @@ RUN set -x && \
         pre-commit \
         progressbar2 \
         pycryptodome \
+        # nlp
+        pyarrow\>=0.16.0,\<1.0.0 \
         pydot \
         pygments \
         pylama \
