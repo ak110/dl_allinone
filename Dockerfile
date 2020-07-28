@@ -293,7 +293,6 @@ RUN set -x && \
         japanize-matplotlib \
         kaggle \
         keras2onnx \
-        lycon \
         matplotlib \
         # for transformers
         mecab-python3\<1.0.0 \
@@ -414,6 +413,7 @@ RUN set -x && \
 RUN set -x && \
     pip install --no-cache-dir \
         fasttext \
+        lycon \
         ptk \
         pycocotools \
         tslearn \
