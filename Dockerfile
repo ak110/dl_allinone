@@ -388,7 +388,7 @@ RUN set -x && \
         tensorflow-addons\>=0.10.0 \
         tensorflow-datasets \
         tensorflow-hub \
-        tensorflow\>=2.2.0 \
+        tensorflow==2.2.0 \
         tensorpack \
         # https://github.com/explosion/spaCy/issues/2883
         # https://github.com/explosion/spaCy/blob/master/requirements.txt
