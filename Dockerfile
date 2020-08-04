@@ -152,20 +152,21 @@ RUN set -x && \
     echo ". /opt/intel/bin/compilervars.sh intel64" > /etc/profile.d/intel.sh
 
 # OpenMPI
-# https://github.com/uber/horovod/blob/master/Dockerfile
+# https://github.com/horovod/horovod/blob/master/Dockerfile.gpu
 # https://www.open-mpi.org/software/
 RUN set -x && \
-    wget -q "https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.0.tar.bz2" -O /opt/openmpi.tar.bz2 && \
-    echo "e3da67df1e968c8798827e0e5fe9a510 */opt/openmpi.tar.bz2" | md5sum -c - && \
-    cd /opt && \
+    mkdir /tmp/openmpi &&\
+    cd /tmp/openmpi && \
+    wget -q "https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.4.tar.bz2" -O openmpi.tar.bz2 && \
+    echo "4b7e3efd337a614f0e661fc6faa4a1d7 *openmpi.tar.bz2" | md5sum -c - && \
     tar xfj openmpi.tar.bz2 && \
-    cd openmpi-4.0.0 && \
+    cd openmpi-4.0.4 && \
     ./configure --with-cuda --disable-mpi-fortran --disable-java --enable-orterun-prefix-by-default && \
     make -j$(nproc) all && \
     make -j$(nproc) install && \
     make -j$(nproc) distclean && \
     ldconfig && \
-    rm /opt/openmpi.tar.bz2
+    rm -rf /tmp/openmpi
 
 # python
 # https://github.com/docker-library/python/blob/master/3.8/buster/Dockerfile
