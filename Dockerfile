@@ -428,9 +428,10 @@ RUN set -x && \
 
 # apex
 RUN set -x && \
-    git clone --depth=1 https://github.com/NVIDIA/apex.git /opt/apex &&\
-    cd /opt/apex &&\
-    pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
+    git clone --depth=1 https://github.com/NVIDIA/apex.git /tmp/apex &&\
+    cd /tmp/apex &&\
+    pip install --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./ &&\
+    rm -rf /tmp/apex
 
 # 依存関係の問題があって後回しなやつ
 RUN set -x && \
