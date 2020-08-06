@@ -101,8 +101,6 @@ RUN set -x && \
         p7zip-full \
         pandoc \
         protobuf-compiler \
-        # for venv
-        python3-distutils \
         screen \
         sl \
         smbclient \
