@@ -418,7 +418,7 @@ RUN set -x && \
         pretrainedmodels \
         pytorch-ignite \
         pytorch-lightning \
-        torch==1.5.1+cu101 \
+        torch==1.6.0+cu101 \
         torchaudio \
         torchtext \
         torchvision==0.6.1+cu101 \
