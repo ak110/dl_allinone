@@ -317,8 +317,7 @@ RUN set -x && \
         kaggle \
         keras2onnx \
         matplotlib \
-        # for transformers
-        mecab-python3\<1.0.0 \
+        mecab-python3 \
         mpi4py \
         mxnet-cu101mkl \
         mypy \
