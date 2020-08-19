@@ -310,6 +310,7 @@ RUN set -x && \
         # albumentations : imgaug<0.2.7,>=0.2.5  <https://github.com/albumentations-team/albumentations/blob/master/setup.py#L9>
         imgaug==0.2.6 \
         imgdup \
+        ipadic \
         ipywidgets \
         iterative-stratification \
         janome \
@@ -397,6 +398,7 @@ RUN set -x && \
         tsfresh \
         # mypy用バージョン指定。なぜかchainerのPython2用の依存関係に従ってしまう？
         typing-extensions\>=3.7.4 \
+        unidic-lite \
         xgboost \
         xlrd \
         xlwt \
