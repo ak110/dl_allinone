@@ -38,37 +38,86 @@ ENV LANG='ja_JP.UTF-8' \
 # > If you've installed TensorFlow from PyPI, make sure that the g++-4.8.5 or g++-4.9 is installed.
 ARG GPP_VERSION=4.8
 # aptその2
+# python用: libbluetooth-dev
+# scipyビルド用: gfortran
+# TensorRT6: libnvinfer6, libnvinfer-plugin6
 RUN set -x && \
-    yes | env http_proxy=$APT_PROXY unminimize && \
     http_proxy=$APT_PROXY apt-get update && \
     http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
+        accountsservice \
         ack-grep \
+        apparmor \
         apt-file \
         automake \
+        bash-completion \
         bc \
+        bind9-host \
+        bsdmainutils \
+        busybox-initramfs \
+        busybox-static \
         cifs-utils \
         cmake \
+        command-not-found \
+        command-not-found-data \
+        console-setup \
+        console-setup-linux \
+        cpio \
+        cron \
+        dbus \
+        debconf-i18n \
         dialog \
-        dpkg-dev \
+        distro-info-data \
+        dmidecode \
+        dmsetup \
+        dnsutils \
+        dosfstools \
+        ed \
+        eject \
         emacs \
         entr \
+        file \
         fonts-ipafont \
         fonts-liberation \
+        friendly-recovery \
+        ftp \
+        fuse \
         g++-$GPP_VERSION \
         gdb \
-        # for building scipy
+        geoip-database \
+        gettext-base \
         gfortran \
         graphviz \
+        groff-base \
         hdf5-tools \
+        hdparm \
         htop \
         iftop \
         imagemagick \
         inetutils-traceroute \
+        info \
+        init \
+        initramfs-tools \
+        initramfs-tools-bin \
+        initramfs-tools-core \
+        install-info \
         iotop \
+        iproute2 \
+        iptables \
+        iputils-ping \
+        iputils-tracepath \
+        irqbalance \
+        isc-dhcp-client \
+        isc-dhcp-common \
         jq \
+        kbd \
+        keyboard-configuration \
+        klibc-utils \
+        kmod \
+        krb5-locales \
         language-pack-ja \
+        language-selector-common \
+        less \
         libatlas-base-dev \
-        # for python
         libbluetooth-dev \
         libboost-dev \
         libboost-filesystem-dev \
@@ -80,7 +129,6 @@ RUN set -x && \
         liblzma-dev \
         libmecab-dev \
         libncurses5-dev \
-        # TensorRT6 (TensorFlow用)
         libnvinfer-plugin6=6.0.1-1+cuda10.1 \
         libnvinfer6=6.0.1-1+cuda10.1 \
         libopencv-dev \
@@ -92,21 +140,58 @@ RUN set -x && \
         libtool \
         libwebp-dev \
         libyaml-dev \
+        linux-base \
+        logrotate \
+        lshw \
+        lsof \
+        ltrace \
+        man-db \
+        manpages \
         mecab \
         mecab-ipadic-utf8 \
         mecab-jumandic-utf8 \
+        mime-support \
+        mlocate \
+        mtr-tiny \
+        multiarch-support \
+        nano \
         net-tools \
+        netbase \
+        netcat-openbsd \
+        netplan.io \
+        networkd-dispatcher \
+        nplan \
+        ntfs-3g \
         nvidia-opencl-dev \
+        openssh-client \
         openssh-server \
+        openssl \
         p7zip-full \
         pandoc \
+        parted \
+        pciutils \
+        plymouth \
+        plymouth-theme-ubuntu-text \
+        popularity-contest \
+        powermgmt-base \
         protobuf-compiler \
+        psmisc \
+        publicsuffix \
+        rsync \
+        rsyslog \
         screen \
+        shared-mime-info \
         sl \
         smbclient \
+        strace \
         subversion \
+        sudo \
         swig \
+        systemd \
+        systemd-sysv \
         tcl-dev \
+        tcpdump \
+        telnet \
         tesseract-ocr \
         tesseract-ocr-jpn \
         tesseract-ocr-jpn-vert \
@@ -115,14 +200,32 @@ RUN set -x && \
         texlive-fonts-recommended \
         texlive-generic-recommended \
         texlive-xetex \
+        time \
         tk-dev \
         tmux \
         tmuxinator \
+        tzdata \
+        ubuntu-advantage-tools \
+        ubuntu-minimal \
+        ubuntu-release-upgrader-core \
+        ubuntu-standard \
+        ucf \
+        udev \
+        ufw \
         unzip \
+        update-manager-core \
+        ureadahead \
+        usbutils \
         uuid-dev \
+        uuid-runtime \
         valgrind \
         vim \
         whiptail \
+        xauth \
+        xdg-user-dirs \
+        xkb-data \
+        xxd \
+        xz-utils \
         zip \
         zlib1g-dev \
         zsh \
