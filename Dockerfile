@@ -158,10 +158,10 @@ RUN set -x && \
 RUN set -x && \
     mkdir /tmp/openmpi &&\
     cd /tmp/openmpi && \
-    wget -q "https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.4.tar.bz2" -O openmpi.tar.bz2 && \
-    echo "4b7e3efd337a614f0e661fc6faa4a1d7 *openmpi.tar.bz2" | md5sum -c - && \
+    wget -q "https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.5.tar.bz2" -O openmpi.tar.bz2 && \
+    echo "d85ad67fb1d5decd78a4bb883874e289 *openmpi.tar.bz2" | md5sum -c - && \
     tar xfj openmpi.tar.bz2 && \
-    cd openmpi-4.0.4 && \
+    cd openmpi-4.0.5 && \
     ./configure --with-cuda --disable-mpi-fortran --disable-java --enable-orterun-prefix-by-default && \
     make -j$(nproc) all && \
     make -j$(nproc) install && \
