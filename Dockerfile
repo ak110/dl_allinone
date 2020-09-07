@@ -129,16 +129,11 @@ RUN set -x && \
         && \
     # MeCabの標準はIPA辞書にしておく
     update-alternatives --set mecab-dictionary /var/lib/mecab/dic/ipadic-utf8 && \
-    apt-get install --yes --no-install-recommends nodejs npm && \
-    npm cache clean && \
-    npm install n -g && \
-    n stable && \
-    apt-get remove --purge --yes nodejs npm node-\* python-pkg-resources libjs-\* gyp libc-ares2 && \
-    apt-get clean
-
-# assert
-RUN set -x && \
-    test -e /usr/include/cublas_v2.h
+    # 後始末
+    apt-get clean && \
+    # assert
+    ls /usr/include/cublas_v2.h > /dev/null && \
+    :
 
 # MKL, IPP
 # https://software.intel.com/en-us/articles/installing-intel-free-libs-and-python-apt-repo
@@ -451,6 +446,17 @@ RUN set -x && \
     python3 -m nltk.downloader -d /usr/local/share/nltk_data popular
 RUN set -x && \
     python3 -m spacy download en --no-cache
+
+# nodejs
+ARG NODEJS_VERSION=v12.18.3
+RUN set -x && \
+    wget -q -O- https://nodejs.org/dist/$NODEJS_VERSION/node-$NODEJS_VERSION-linux-x64.tar.xz | tar xJ -C /tmp/ && \
+    mv /tmp/node-$NODEJS_VERSION-linux-x64/bin/* /usr/local/bin/ && \
+    mv /tmp/node-$NODEJS_VERSION-linux-x64/lib/* /usr/local/lib/ && \
+    mv /tmp/node-$NODEJS_VERSION-linux-x64/include/* /usr/local/include/ && \
+    mv /tmp/node-$NODEJS_VERSION-linux-x64/share/doc/* /usr/local/share/doc/ && \
+    mv /tmp/node-$NODEJS_VERSION-linux-x64/share/man/man1/* /usr/local/share/man/man1 && \
+    rm -rf /tmp/node-$NODEJS_VERSION-linux-x64
 
 # jupyter関連
 # plotly: https://plot.ly/python/getting-started/#jupyterlab-support-python-35
