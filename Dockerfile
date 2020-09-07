@@ -112,6 +112,9 @@ RUN set -x && \
         tesseract-ocr-jpn-vert \
         tesseract-ocr-script-jpan \
         tesseract-ocr-script-jpan-vert \
+        texlive-fonts-recommended \
+        texlive-generic-recommended \
+        texlive-xetex \
         tk-dev \
         tmux \
         tmuxinator \
