@@ -133,11 +133,12 @@ RUN set -x && \
     npm cache clean && \
     npm install n -g && \
     n stable && \
-    apt-get autoremove --purge --yes nodejs npm && \
+    apt-get remove --purge --yes nodejs npm node-\* python-pkg-resources libjs-\* gyp libc-ares2 && \
     apt-get clean
-# workaround
+
+# assert
 RUN set -x && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends libssl-dev
+    test -e /usr/include/cublas_v2.h
 
 # MKL, IPP
 # https://software.intel.com/en-us/articles/installing-intel-free-libs-and-python-apt-repo
