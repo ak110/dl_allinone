@@ -358,7 +358,7 @@ RUN set -x && \
     echo 'include_dirs = /opt/intel/mkl/include' >> /root/.numpy-site.cfg && \
     echo 'mkl_libs = mkl_rt' >> /root/.numpy-site.cfg && \
     echo 'lapack_libs =' >> /root/.numpy-site.cfg && \
-    pip install --no-binary :all: numpy\<1.18 scipy
+    pip install --no-binary :all: numpy\<1.18 scipy\<1.5
 
 RUN set -x && \
     pip install --upgrade --no-cache-dir pip && \
@@ -487,7 +487,7 @@ RUN set -x && \
         tensorflow-addons\>=0.10.0 \
         tensorflow-datasets \
         tensorflow-hub \
-        tensorflow==2.3.0 \
+        tensorflow==2.3.1 \
         tensorpack \
         # https://github.com/explosion/spaCy/issues/2883
         # https://github.com/explosion/spaCy/blob/master/requirements.txt
@@ -524,7 +524,7 @@ RUN set -x && \
         torch==1.6.0+cu101 \
         torchaudio \
         torchtext \
-        torchvision==0.6.1+cu101 \
+        torchvision==0.7.0+cu101 \
         --find-links=https://download.pytorch.org/whl/torch_stable.html
 
 # apex
