@@ -1,8 +1,8 @@
 def test_run():
-    import torch
-    import torch.utils.data
-    import torch.nn.functional as F
     import ignite
+    import torch
+    import torch.nn.functional as F
+    import torch.utils.data
     import tqdm
 
     x = torch.randn(32, 784)

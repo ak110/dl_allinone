@@ -39,6 +39,12 @@ build: .ssh_host_keys
 	$(MAKE) test2
 	docker images $(IMAGE_TAG)
 
+format:
+	docker run --rm --interactive --tty $(RUN_ARGS) \
+		--volume="$(CURDIR)/tests:/tests:rw" \
+		--user=$(shell id -u) \
+		$(IMAGE_TAG) bash -c "isort /tests && black /tests"
+
 test:
 	docker run --gpus='"device=$(GPU)"' --rm --interactive --tty $(RUN_ARGS) \
 		--volume="$(CURDIR)/tests:/tests:ro" \

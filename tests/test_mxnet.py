@@ -7,8 +7,8 @@ def test_run_nlp():
 
 
 def test_run_cv():
-    import mxnet as mx
     import gluoncv
+    import mxnet as mx
 
     img = mx.random.uniform(0, 255, (100, 100, 3)).astype("uint8")
     img = gluoncv.data.transforms.image.imresize(img, 200, 200)

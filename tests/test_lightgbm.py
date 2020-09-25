@@ -1,6 +1,6 @@
 def test_run():
-    import sklearn.datasets
     import lightgbm as lgb
+    import sklearn.datasets
 
     data = sklearn.datasets.load_boston()
     X, y = data.data, data.target  # pylint: disable=no-member

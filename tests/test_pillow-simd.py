@@ -1,6 +1,6 @@
 def test_run():
-    import PIL.Image
     import numpy as np
+    import PIL.Image
 
     # Pillow x.x.x → Pillow-SIMD x.x.x.postx
     assert ".post" in PIL.__version__

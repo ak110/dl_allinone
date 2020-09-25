@@ -1,6 +1,6 @@
 def test_run():
-    import sklearn.datasets
     import rgf.sklearn
+    import sklearn.datasets
 
     data = sklearn.datasets.load_iris()
     X, y = data.data, data.target  # pylint: disable=no-member
