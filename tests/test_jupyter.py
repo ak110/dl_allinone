@@ -4,7 +4,8 @@ def test_run(data_dir):
     r = subprocess.run(
         [
             "jupyter",
-            "nbconvert" "--execute",
+            "nbconvert",
+            "--execute",
             "--to=pdf",
             "--stdout",
             data_dir / "jupyter.ipynb",
