@@ -38,7 +38,7 @@ ENV LANG='ja_JP.UTF-8' \
 # > If you've installed TensorFlow from PyPI, make sure that the g++-4.8.5 or g++-4.9 is installed.
 ARG GPP_VERSION=4.8
 # aptその2
-# python用: libbluetooth-dev
+# python用: libbluetooth-dev, tk-dev, uuid-dev
 # scipyビルド用: gfortran
 # TensorRT6: libnvinfer6, libnvinfer-plugin6
 RUN set -x && \
@@ -268,88 +268,47 @@ RUN set -x && \
     ldconfig && \
     rm -rf /tmp/openmpi
 
-# python
-# https://github.com/docker-library/python/blob/master/3.8/buster/Dockerfile
-ARG GPG_KEY="E3FF2839C048B25C084DEBE9B26995E310250568"
-ARG GPG_KEY_ID="0xB26995E310250568"
-ARG PYTHON_VERSION="3.8.3"
-RUN set -ex \
-	\
-	&& export GNUPGHOME="$(mktemp -d)" \
-	&& echo "==================================================" \
-	&& echo workaround of: gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
-	&& echo "--------------------------------------------------" \
-	&& wget --no-cache -O "$GNUPGHOME/key.asc" "http://ha.pool.sks-keyservers.net/pks/lookup?op=get&search=$GPG_KEY_ID" \
-	&& gpg --import "$GNUPGHOME/key.asc" \
-	&& echo "==================================================" \
-	&& wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
-	&& wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
-	&& gpg --batch --verify python.tar.xz.asc python.tar.xz \
-	&& { command -v gpgconf > /dev/null && gpgconf --kill all || :; } \
-	&& rm -rf "$GNUPGHOME" python.tar.xz.asc \
-	&& mkdir -p /usr/src/python \
-	&& tar -xJC /usr/src/python --strip-components=1 -f python.tar.xz \
-	&& rm python.tar.xz \
-	\
-	&& cd /usr/src/python \
-	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
-	&& ./configure \
-		--build="$gnuArch" \
-		--enable-loadable-sqlite-extensions \
-		--enable-optimizations \
-		--enable-option-checking=fatal \
-		--enable-shared \
-		--with-system-expat \
-		--with-system-ffi \
-		--without-ensurepip \
-	&& make -j "$(nproc)" \
-	&& make install \
-	&& ldconfig \
-	\
-	&& find /usr/local -depth \
-		\( \
-			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
-			-o \
-			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-		\) -exec rm -rf '{}' + \
-	&& rm -rf /usr/src/python \
-	\
-	&& python3 --version
-
-# make some useful symlinks that are expected to exist
-RUN cd /usr/local/bin \
-	&& ln -s idle3 idle \
-	&& ln -s pydoc3 pydoc \
-	&& ln -s python3 python \
-	&& ln -s python3-config python-config
-
 # devpi-server用
 ARG PIP_TRUSTED_HOST=""
 ARG PIP_INDEX_URL=""
 
-ARG PYTHON_PIP_VERSION="20.1.1"
-ARG PYTHON_GET_PIP_URL="https://github.com/pypa/get-pip/raw/eff16c878c7fd6b688b9b4c4267695cf1a0bf01b/get-pip.py"
-ARG PYTHON_GET_PIP_SHA256="b3153ec0cf7b7bbf9556932aa37e4981c35dc2a2c501d70d91d2795aa532be79"
-
-RUN set -ex; \
-	\
-	wget -O get-pip.py "$PYTHON_GET_PIP_URL"; \
-	echo "$PYTHON_GET_PIP_SHA256 *get-pip.py" | sha256sum --check --strict -; \
-	\
-	python get-pip.py \
-		--disable-pip-version-check \
-		--no-cache-dir \
-		"pip==$PYTHON_PIP_VERSION" \
-	; \
-	pip --version; \
-	\
-	find /usr/local -depth \
-		\( \
-			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
-			-o \
-			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-		\) -exec rm -rf '{}' +; \
-	rm -f get-pip.py
+# python
+# https://github.com/docker-library/python/blob/master/3.8/buster/Dockerfile
+ARG PYTHON_VERSION="3.8.6"
+RUN set -ex && \
+    wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" && \
+    mkdir /tmp/python && \
+    tar -xJC /tmp/python --strip-components=1 -f python.tar.xz && \
+    rm python.tar.xz && \
+    cd /tmp/python && \
+    ./configure --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
+        --enable-loadable-sqlite-extensions \
+        --enable-optimizations \
+        --enable-option-checking=fatal \
+        --enable-shared \
+        --with-system-expat \
+        --with-system-ffi \
+        --with-ensurepip=upgrade \
+        && \
+    make -j "$(nproc)" && \
+    make install && \
+    ldconfig && \
+    find /usr/local -depth \
+        \( \
+            \( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
+            -o \
+            \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+        \) -exec rm -rf '{}' + && \
+    rm -rf /tmp/python && \
+    ln -s /usr/local/bin/idle3 /usr/local/bin/idle && \
+    ln -s /usr/local/bin/pydoc3 /usr/local/bin/pydoc && \
+    ln -s /usr/local/bin/python3 /usr/local/bin/python && \
+    ln -s /usr/local/bin/python3 /usr/local/bin/python-config && \
+    ln -s /usr/local/bin/pip3 /usr/local/bin/pip
+# pip
+RUN set -ex && \
+    pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir wheel
 
 # numpy/scipy with MKL
 RUN set -x && \
@@ -361,7 +320,7 @@ RUN set -x && \
     pip install --no-binary :all: numpy\<1.18 scipy\<1.5
 
 RUN set -x && \
-    pip install --upgrade --no-cache-dir pip && \
+    pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
         Augmentor \
         Flask \
