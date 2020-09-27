@@ -368,8 +368,7 @@ RUN set -x && \
         image-classifiers \
         imageio \
         imbalanced-learn \
-        # albumentations : imgaug<0.2.7,>=0.2.5  <https://github.com/albumentations-team/albumentations/blob/master/setup.py#L9>
-        imgaug==0.2.6 \
+        imgaug \
         imgdup \
         ipadic \
         ipywidgets \
