@@ -452,9 +452,7 @@ RUN set -x && \
         thinc==7.4.1 \
         tf2cv \
         tf2onnx \
-        tokenizers \
         tqdm \
-        transformers \
         tsfresh \
         # mypy用バージョン指定。なぜかchainerのPython2用の依存関係に従ってしまう？
         typing-extensions\>=3.7.4 \
@@ -479,10 +477,12 @@ RUN set -x && \
         pretrainedmodels \
         pytorch-ignite \
         pytorch-lightning \
+        tokenizers \
         torch==1.6.0+cu101 \
         torchaudio \
         torchtext \
         torchvision==0.7.0+cu101 \
+        transformers \
         --find-links=https://download.pytorch.org/whl/torch_stable.html
 
 # apex
