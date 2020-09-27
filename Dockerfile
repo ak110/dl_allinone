@@ -474,6 +474,7 @@ RUN set -x && \
         allennlp \
         cnn-finetune \
         fastai \
+        fugashi[unidic-lite] \
         pretrainedmodels \
         pytorch-ignite \
         pytorch-lightning \
