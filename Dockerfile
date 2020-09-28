@@ -39,6 +39,7 @@ ENV LANG='ja_JP.UTF-8' \
 ARG GPP_VERSION=4.8
 # aptその2
 # python用: libbluetooth-dev, tk-dev, uuid-dev
+# opencv用: libopencv-dev, libgtk2.0-dev
 # scipyビルド用: gfortran
 # TensorRT6: libnvinfer6, libnvinfer-plugin6
 RUN set -x && \
@@ -125,6 +126,7 @@ RUN set -x && \
         libbz2-dev \
         libffi-dev \
         libgdbm-dev \
+        libgtk2.0-dev \
         libjpeg-dev \
         liblzma-dev \
         libmecab-dev \
@@ -388,7 +390,7 @@ RUN set -x && \
         nose \
         numba \
         onnxmltools \
-        opencv-python-headless \
+        opencv-python \
         openpyxl \
         optuna\>=1.3.0 \
         pandas \
