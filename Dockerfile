@@ -444,7 +444,7 @@ RUN set -x && \
         stickytape \
         sympy \
         tabulate \
-        tensorflow-addons\>=0.10.0 \
+        tensorflow-addons\[tensorflow\] \
         tensorflow-datasets \
         tensorflow-hub \
         tensorflow==2.3.1 \
