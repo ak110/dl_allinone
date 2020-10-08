@@ -376,6 +376,7 @@ RUN set -x && \
         ipywidgets \
         iterative-stratification \
         janome \
+        jpholiday \
         japanize-matplotlib \
         kaggle \
         keras2onnx \
