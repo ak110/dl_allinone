@@ -30,10 +30,6 @@ RUN set -x && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV LANG='ja_JP.UTF-8' \
-    LC_ALL='ja_JP.UTF-8' \
-    LANGUAGE='ja_JP:ja'
-
 # https://horovod.readthedocs.io/en/latest/index.html
 # > If you've installed TensorFlow from PyPI, make sure that the g++-4.8.5 or g++-4.9 is installed.
 ARG GPP_VERSION=4.8
@@ -600,6 +596,7 @@ RUN set -x && \
 
 # sshd以外の使い方をするとき用環境変数色々
 ENV TZ='Asia/Tokyo' \
+    LANG='ja_JP.UTF-8' \
     PYTHONIOENCODING='utf-8' \
     PYTHONDONTWRITEBYTECODE=1 \
     BETTER_EXCEPTIONS=1 \
