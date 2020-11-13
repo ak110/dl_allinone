@@ -4,15 +4,12 @@ ARG DISTRIB_CODENAME=bionic
 # 実行時に残さないようにENVではなくARGでnoninteractive
 ARG DEBIAN_FRONTEND=noninteractive
 
-# apt用プロキシ(apt-cacher-ng用)
-ARG APT_PROXY=$http_proxy
-
 # apt
 RUN set -x && \
     sed -ie 's@http://archive.ubuntu.com/ubuntu/@http://ftp.riken.go.jp/Linux/ubuntu/@g' /etc/apt/sources.list && \
     sed -ie 's@^deb-src@# deb-src@g' /etc/apt/sources.list && \
-    http_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
+    apt-get update && \
+    apt-get install --yes --no-install-recommends \
         apt-transport-https \
         apt-utils \
         build-essential \
@@ -26,7 +23,7 @@ RUN set -x && \
     update-locale LANG=ja_JP.UTF-8 LANGUAGE='ja_JP:ja' && \
     add-apt-repository ppa:git-core/ppa && \
     wget -q https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh -O- | bash && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends git git-lfs && \
+    apt-get install --yes --no-install-recommends git git-lfs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -39,8 +36,8 @@ ARG GPP_VERSION=4.8
 # scipyビルド用: gfortran
 # TensorRT6: libnvinfer6, libnvinfer-plugin6
 RUN set -x && \
-    http_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY apt-get install --yes --no-install-recommends \
+    apt-get update && \
+    apt-get install --yes --no-install-recommends \
         accountsservice \
         ack-grep \
         apparmor \
@@ -241,8 +238,8 @@ RUN set -x && \
 RUN set -x && \
     wget -q https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB -O- | apt-key add - && \
     wget -q https://apt.repos.intel.com/setup/intelproducts.list -O /etc/apt/sources.list.d/intelproducts.list && \
-    http_proxy=$APT_PROXY apt-get update && \
-    http_proxy=$APT_PROXY apt-get install --yes intel-mkl-64bit-2020.0-088 intel-ipp-64bit-2020.0-088 && \
+    apt-get update && \
+    apt-get install --yes intel-mkl-64bit-2020.0-088 intel-ipp-64bit-2020.0-088 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     echo "/opt/intel/mkl/lib/intel64" >> /etc/ld.so.conf.d/intel.conf && \
