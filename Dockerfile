@@ -306,14 +306,16 @@ RUN set -ex && \
     pip install --no-cache-dir wheel
 
 # numpy/scipy with MKL
+# バージョン: https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/pip_package/setup.py#L77
 RUN set -x && \
     echo '[mkl]' > /root/.numpy-site.cfg && \
     echo 'library_dirs = /opt/intel/mkl/lib/intel64' >> /root/.numpy-site.cfg && \
     echo 'include_dirs = /opt/intel/mkl/include' >> /root/.numpy-site.cfg && \
     echo 'mkl_libs = mkl_rt' >> /root/.numpy-site.cfg && \
     echo 'lapack_libs =' >> /root/.numpy-site.cfg && \
-    pip install --no-binary :all: numpy\<1.18 scipy\<1.5
+    pip install --no-binary :all: numpy~=1.19.2 scipy~=1.5.2
 
+# h5py<3.0.0: https://github.com/tensorflow/tensorflow/issues/44467
 RUN set -x && \
     pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
@@ -359,6 +361,7 @@ RUN set -x && \
         gluoncv \
         gluonnlp \
         gunicorn \
+        h5py\<3.0.0 \
         hyperopt \
         image-classifiers \
         imageio \
