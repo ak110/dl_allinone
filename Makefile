@@ -19,6 +19,8 @@ ifdef PIP_INDEX_URL
 BUILD_ARGS += --build-arg="PIP_INDEX_URL=$(PIP_INDEX_URL)"
 endif
 
+BUILD_ARGS += --shm-size=1g
+
 GPU := none
 
 help:
@@ -56,6 +58,9 @@ test2:
 
 shell:
 	docker run --gpus=all --rm --interactive --tty $(RUN_ARGS) $(IMAGE_TAG) bash
+
+base-shell:
+	docker run --gpus=all --rm --interactive --tty $(RUN_ARGS) $(shell head -n 1 Dockerfile | awk '{print$$2}') bash
 
 lint:
 	docker pull hadolint/hadolint

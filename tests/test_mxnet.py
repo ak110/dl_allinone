@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.xfail(reason="MXNet")
 def test_run_nlp():
     import gluonnlp
 
@@ -6,6 +10,7 @@ def test_run_nlp():
     assert vocab["beta"] == 4
 
 
+@pytest.mark.xfail(reason="MXNet")
 def test_run_cv():
     import gluoncv
     import mxnet as mx

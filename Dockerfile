@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-cudnn7-devel
+FROM nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04
 ARG DISTRIB_CODENAME=bionic
 
 # 実行時に残さないようにENVではなくARGでnoninteractive
@@ -27,14 +27,17 @@ RUN set -x && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# command-not-found対策
+RUN set -x && \
+    rm -f /etc/apt/apt.conf.d/docker-gzip-indexes
+
 # https://horovod.readthedocs.io/en/latest/index.html
 # > If you've installed TensorFlow from PyPI, make sure that the g++-4.8.5 or g++-4.9 is installed.
-ARG GPP_VERSION=4.8
+ARG GPP_VERSION=9
 # aptその2
 # python用: libbluetooth-dev, tk-dev, uuid-dev
 # opencv用: libopencv-dev, libgtk2.0-dev
 # scipyビルド用: gfortran
-# TensorRT6: libnvinfer6, libnvinfer-plugin6
 RUN set -x && \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
@@ -52,7 +55,6 @@ RUN set -x && \
         cifs-utils \
         cmake \
         command-not-found \
-        command-not-found-data \
         console-setup \
         console-setup-linux \
         cpio \
@@ -124,8 +126,6 @@ RUN set -x && \
         liblzma-dev \
         libmecab-dev \
         libncurses5-dev \
-        libnvinfer-plugin6=6.0.1-1+cuda10.1 \
-        libnvinfer6=6.0.1-1+cuda10.1 \
         libopencv-dev \
         libpng-dev \
         libprotobuf-dev \
@@ -148,7 +148,6 @@ RUN set -x && \
         mime-support \
         mlocate \
         mtr-tiny \
-        multiarch-support \
         nano \
         net-tools \
         netbase \
@@ -193,7 +192,7 @@ RUN set -x && \
         tesseract-ocr-script-jpan \
         tesseract-ocr-script-jpan-vert \
         texlive-fonts-recommended \
-        texlive-generic-recommended \
+        texlive-plain-generic \
         texlive-xetex \
         time \
         tk-dev \
@@ -209,7 +208,6 @@ RUN set -x && \
         ufw \
         unzip \
         update-manager-core \
-        ureadahead \
         usbutils \
         uuid-dev \
         uuid-runtime \
@@ -229,8 +227,6 @@ RUN set -x && \
     update-alternatives --set mecab-dictionary /var/lib/mecab/dic/ipadic-utf8 && \
     # 後始末
     apt-get clean && \
-    # assert
-    ls /usr/include/cublas_v2.h > /dev/null && \
     :
 
 # MKL, IPP
@@ -319,6 +315,7 @@ RUN set -x && \
 RUN set -x && \
     pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
+        numpy~=1.19.2 scipy~=1.5.2 \
         Augmentor \
         Flask \
         Flask-Login \
@@ -341,7 +338,7 @@ RUN set -x && \
         chainer \
         chainerrl \
         cookiecutter \
-        cupy-cuda101 \
+        cupy-cuda110 \
         cysignals \
         cython \
         diskcache \
@@ -379,7 +376,8 @@ RUN set -x && \
         matplotlib \
         mecab-python3 \
         mpi4py \
-        mxnet-cu101mkl \
+        # CUDA 11.0対応待ち (horovodにも影響するため注意)
+        # mxnet-cu110mkl \
         mypy \
         nlp \
         nltk \
@@ -444,7 +442,7 @@ RUN set -x && \
         tensorflow-addons\[tensorflow\] \
         tensorflow-datasets \
         tensorflow-hub \
-        tensorflow==2.3.1 \
+        tensorflow~=2.4.0 \
         tensorpack \
         # https://github.com/explosion/spaCy/issues/2883
         # https://github.com/explosion/spaCy/blob/master/requirements.txt
@@ -464,7 +462,7 @@ RUN set -x && \
         # 依存関係に注意
         chainercv
 
-# PyTorch関連
+# PyTorch関連: https://pytorch.org/get-started/locally/
 RUN set -x && \
     # PyTorchが既にインストールされてしまっていないことの確認
     test $(pip freeze | grep ^torch== | wc -l) -eq 0 && \
@@ -478,10 +476,10 @@ RUN set -x && \
         pytorch-ignite \
         pytorch-lightning \
         tokenizers \
-        torch==1.6.0+cu101 \
-        torchaudio \
+        torch==1.7.1+cu110 \
+        torchaudio==0.7.2 \
         torchtext \
-        torchvision==0.7.0+cu101 \
+        torchvision==0.8.2+cu110 \
         transformers \
         --find-links=https://download.pytorch.org/whl/torch_stable.html
 
@@ -549,7 +547,7 @@ RUN set -x && \
 # 参考: https://github.com/horovod/horovod/blob/master/Dockerfile.gpu
 RUN set -x && \
     ldconfig /usr/local/cuda/lib64/stubs && \
-    HOROVOD_GPU_OPERATIONS=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=1 \
+    HOROVOD_GPU_OPERATIONS=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 HOROVOD_WITH_MXNET=0 \
         pip install --no-cache-dir horovod && \
     ldconfig
 
