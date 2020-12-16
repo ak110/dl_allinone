@@ -541,7 +541,7 @@ RUN set -x && \
 
 # LightGBM
 RUN set -x && \
-    pip install --no-cache-dir --install-option=--gpu lightgbm
+    pip install --no-cache-dir --no-binary :all: --install-option=--gpu lightgbm
 
 # horovod
 # 参考: https://github.com/horovod/horovod/blob/master/Dockerfile.gpu
