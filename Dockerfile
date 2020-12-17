@@ -1,8 +1,9 @@
 FROM nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04
-ARG DISTRIB_CODENAME=bionic
 
 # 実行時に残さないようにENVではなくARGでnoninteractive
 ARG DEBIAN_FRONTEND=noninteractive
+# ビルド中はエラーなどをググりやすいように英語
+ENV LANG C.UTF-8
 
 # apt
 RUN set -x && \
@@ -57,6 +58,7 @@ RUN set -x && \
         command-not-found \
         console-setup \
         console-setup-linux \
+        corkscrew \
         cpio \
         cron \
         dbus \
@@ -287,15 +289,16 @@ RUN set -ex && \
     find /usr/local -depth \
         \( \
             \( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
-            -o \
-            \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+            -o \( -type f -a \( -name '*.pyc' -o -name '*.pyo' -o -name '*.a' \) \) \
+            -o \( -type f -a -name 'wininst-*.exe' \) \
         \) -exec rm -rf '{}' + && \
     rm -rf /tmp/python && \
     ln -s /usr/local/bin/idle3 /usr/local/bin/idle && \
     ln -s /usr/local/bin/pydoc3 /usr/local/bin/pydoc && \
     ln -s /usr/local/bin/python3 /usr/local/bin/python && \
     ln -s /usr/local/bin/python3 /usr/local/bin/python-config && \
-    ln -s /usr/local/bin/pip3 /usr/local/bin/pip
+    ln -s /usr/local/bin/pip3 /usr/local/bin/pip && \
+    python3 --version
 # pip
 RUN set -ex && \
     pip install --no-cache-dir --upgrade pip && \
@@ -354,6 +357,7 @@ RUN set -x && \
         fire \
         flake8 \
         flake8-bugbear \
+        fugashi[unidic,unidic-lite] \
         gensim \
         gluoncv \
         gluonnlp \
@@ -425,9 +429,10 @@ RUN set -x && \
         safety \
         scikit-image \
         scikit-learn \
-        scikit-optimize\[plots\] \
+        scikit-optimize[plots] \
         seaborn \
         segmentation-models \
+        sentencepiece \
         setup-cfg-fmt \
         signate \
         six \
@@ -440,7 +445,7 @@ RUN set -x && \
         stickytape \
         sympy \
         tabulate \
-        tensorflow-addons\[tensorflow\] \
+        tensorflow-addons[tensorflow] \
         tensorflow-datasets \
         tensorflow-hub \
         tensorflow~=2.4.0 \
@@ -454,7 +459,6 @@ RUN set -x && \
         tsfresh \
         # mypy用バージョン指定。なぜかchainerのPython2用の依存関係に従ってしまう？
         typing-extensions\>=3.7.4 \
-        unidic-lite \
         xgboost \
         xlrd \
         xlwt \
@@ -472,7 +476,6 @@ RUN set -x && \
         allennlp \
         cnn-finetune \
         fastai \
-        fugashi[unidic-lite] \
         pretrainedmodels \
         pytorch-ignite \
         pytorch-lightning \
@@ -481,7 +484,7 @@ RUN set -x && \
         torchaudio==0.7.2 \
         torchtext \
         torchvision==0.8.2+cu110 \
-        transformers \
+        transformers[ja] \
         --find-links=https://download.pytorch.org/whl/torch_stable.html
 
 # apex
