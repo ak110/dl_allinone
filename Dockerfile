@@ -384,6 +384,7 @@ RUN set -x && \
         # CUDA 11.0対応待ち (horovodにも影響するため注意)
         # mxnet-cu110mkl \
         mypy \
+        natsort \
         nlp \
         nltk \
         noise \
