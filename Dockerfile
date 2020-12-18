@@ -32,9 +32,9 @@ RUN set -x && \
 RUN set -x && \
     rm -f /etc/apt/apt.conf.d/docker-gzip-indexes
 
-# https://horovod.readthedocs.io/en/latest/index.html
-# > If you've installed TensorFlow from PyPI, make sure that the g++-4.8.5 or g++-4.9 is installed.
-ARG GPP_VERSION=9
+# https://github.com/tensorflow/addons#c-custom-op-compatibility-matrix
+# > GCC 7.3.1
+ARG GPP_VERSION=7
 # aptその2
 # python用: libbluetooth-dev, tk-dev, uuid-dev
 # opencv用: libopencv-dev, libgtk2.0-dev
