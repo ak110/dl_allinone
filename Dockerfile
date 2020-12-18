@@ -5,6 +5,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 # ビルド中はエラーなどをググりやすいように英語
 ENV LANG C.UTF-8
 
+# command-not-found対策
+RUN set -x && \
+    rm -f /etc/apt/apt.conf.d/docker-gzip-indexes
+
 # apt
 RUN set -x && \
     sed -ie 's@http://archive.ubuntu.com/ubuntu/@http://ftp.riken.go.jp/Linux/ubuntu/@g' /etc/apt/sources.list && \
@@ -27,10 +31,6 @@ RUN set -x && \
     apt-get install --yes --no-install-recommends git git-lfs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# command-not-found対策
-RUN set -x && \
-    rm -f /etc/apt/apt.conf.d/docker-gzip-indexes
 
 # https://github.com/tensorflow/addons#c-custom-op-compatibility-matrix
 # > GCC 7.3.1
@@ -229,7 +229,7 @@ RUN set -x && \
     update-alternatives --set mecab-dictionary /var/lib/mecab/dic/ipadic-utf8 && \
     # 後始末
     apt-get clean && \
-    :
+    rm -rf /var/lib/apt/lists/*
 
 # MKL, IPP
 # https://software.intel.com/en-us/articles/installing-intel-free-libs-and-python-apt-repo
@@ -463,7 +463,6 @@ RUN set -x && \
         xgboost \
         xlrd \
         xlwt \
-        xonsh \
         yapf \
         # 依存関係に注意
         chainercv
