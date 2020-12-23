@@ -267,7 +267,7 @@ ARG PIP_INDEX_URL=""
 
 # python
 # https://github.com/docker-library/python/blob/master/3.8/buster/Dockerfile
-ARG PYTHON_VERSION="3.8.6"
+ARG PYTHON_VERSION="3.8.7"
 RUN set -ex && \
     wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" && \
     mkdir /tmp/python && \
