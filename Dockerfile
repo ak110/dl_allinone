@@ -544,7 +544,10 @@ RUN set -x && \
         jupyterlab_git
 
 # LightGBM
+# 参考: https://github.com/microsoft/LightGBM/issues/586
 RUN set -x && \
+    mkdir -p /etc/OpenCL/vendors && \
+    echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd && \
     pip install --no-cache-dir --no-binary :all: --install-option=--gpu lightgbm
 
 # horovod
