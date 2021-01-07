@@ -526,19 +526,19 @@ RUN set -x && \
 RUN set -x && \
     pip install --no-cache-dir \
         jupyter-tensorboard \
-        jupyterlab \
+        jupyterlab~=2.0 \
         jupyterlab-git \
         && \
-    # export NODE_OPTIONS=--max-old-space-size=4096 &&\
-    # (jupyter labextension install --debug-log-path=/tmp/jupyterlab-build.log \
-    #     @jupyter-widgets/jupyterlab-manager \
-    #     @jupyterlab/git \
-    #     @jupyterlab/toc \
-    #     jupyterlab-chart-editor \
-    #     jupyterlab-plotly \
-    #     jupyterlab_tensorboard \
-    #     plotlywidget \
-    #     || (cat /tmp/jupyterlab-build.log && false)) && \
+    export NODE_OPTIONS=--max-old-space-size=4096 &&\
+    (jupyter labextension install --debug-log-path=/tmp/jupyterlab-build.log \
+        @jupyter-widgets/jupyterlab-manager \
+        @jupyterlab/git \
+        @jupyterlab/toc \
+        jupyterlab-chart-editor \
+        jupyterlab-plotly \
+        jupyterlab_tensorboard \
+        plotlywidget \
+        || (cat /tmp/jupyterlab-build.log && false)) && \
     jupyter serverextension enable --sys-prefix --py \
         jupyterlab \
         jupyterlab_git
