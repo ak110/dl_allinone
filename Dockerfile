@@ -509,6 +509,8 @@ RUN set -x && \
     python3 -m nltk.downloader -d /usr/local/share/nltk_data popular
 RUN set -x && \
     python3 -m spacy download en --no-cache
+RUN set -x && \
+    python3 -m unidic download
 
 # nodejs
 ARG NODEJS_VERSION=v12.18.3
