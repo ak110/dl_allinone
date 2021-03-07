@@ -444,6 +444,8 @@ RUN set -x && \
         sphinx-autodoc-typehints \
         sphinx_rtd_theme \
         stickytape \
+        sudachidict_core \
+        sudachipy \
         sympy \
         tabulate \
         tensorflow-addons[tensorflow] \
